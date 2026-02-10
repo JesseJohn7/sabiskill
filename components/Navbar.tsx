@@ -27,11 +27,11 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-10 text-gray-300 font-medium">
-          <li><Link href="#home" className="hover:text-green-500 transition">Home</Link></li>
-          <li><Link href="#features" className="hover:text-green-500 transition">Features</Link></li>
-          <li><Link href="#how-it-works" className="hover:text-green-500 transition">How it Works</Link></li>
-          <li><Link href="#testimonials" className="hover:text-green-500 transition">Testimonials</Link></li>
-          <li><Link href="#faqs" className="hover:text-green-500 transition">FAQs</Link></li>
+          <li><Link href="#home" className="hover:text-blue-500 transition">Home</Link></li>
+          <li><Link href="#features" className="hover:text-blue-500 transition">Features</Link></li>
+          <li><Link href="#how-it-works" className="hover:text-blue-500 transition">How it Works</Link></li>
+          <li><Link href="#testimonials" className="hover:text-blue-500 transition">Testimonials</Link></li>
+          <li><Link href="#faqs" className="hover:text-blue-500 transition">FAQs</Link></li>
         </ul>
 
         {/* Right Side */}
