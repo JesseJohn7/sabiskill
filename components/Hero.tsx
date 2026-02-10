@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 const Hero: React.FC = () => {
-  const words = ["websites", "apps", "ideas", "products", "dreams"];
+  const words = ["Learn","Sabi","Koyi", "Kọ ẹkọ", "ịmụta"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -20,13 +20,13 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-[70px]">
-      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-12 md:py-20">
+    <div className="min-h-screen flex items-center justify-center pt-[70px] md:pt-[70px]">
+      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-4 md:py-20">
         <h1 
           className="font-extrabold text-[2.8rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem] leading-[1.08] text-white/95 tracking-tight"
           style={{ opacity: 1, transform: "none" }}
         >
-          Ship your{" "}
+          Come{" "}
           <span className="hidden md:inline">
             <span 
               className="inline-block relative overflow-hidden align-bottom text-left"
@@ -68,15 +68,15 @@ const Hero: React.FC = () => {
             </span>
           </span>
           <br className="hidden md:block" />
-          <span className="text-blue-400/90">faster than ever.</span>
+          <span className="text-blue-400/90">for free, no wahala.</span>
         </h1>
 
         <p 
           className="max-w-2xl text-[0.95rem] md:text-[1.05rem] leading-[1.7] text-white/70"
           style={{ opacity: 1, transform: "none" }}
         >
-          Flexvest is the investment platform built for speed. Connect your portfolio, 
-          track your gains. Zero config, automatic insights, and enterprise-grade analytics in one place.
+          Nigeria's free learning platform built for you. Access quality courses, 
+          learn new skills, and grow your career. No subscription fees, no hidden costs, just pure knowledge.
         </p>
 
         <div 
@@ -84,11 +84,11 @@ const Hero: React.FC = () => {
           style={{ opacity: 1, transform: "none" }}
         >
           <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-blue-500/50 hover:bg-blue-500/60 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
-            Get Started Free
+            Start Learning Free
           </button>
 
           <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-[#282c38]/50 hover:bg-white/10 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
-            Join Waitlist
+            Browse Courses
           </button>
         </div>
       </div>
