@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         {/* Right Side */}
         <div className="hidden md:flex items-center">
           <button
-            className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition cursor-pointer"
           >
             Get Started
           </button>
