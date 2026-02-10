@@ -37,9 +37,9 @@ const Navbar: React.FC = () => {
         {/* Right Side */}
         <div className="hidden md:flex items-center">
           <button
-            className="bg-green-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-green-700 transition"
+            className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition"
           >
-            Join Waitlist
+            Get Started
           </button>
         </div>
 
