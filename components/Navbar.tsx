@@ -16,14 +16,13 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "backdrop-blur-md border-b border-gray-800" : ""
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-md border-b border-gray-800" : ""
+        }`}
     >
       <div className="flex items-center justify-between h-[70px] px-6 md:px-16 lg:px-24 xl:px-32">
         {/* Logo */}
-        <Link href="#" className="text-2xl font-bold text-green-500">
-          Flex<span className="text-green-500">vest</span>
+        <Link href="#" className="text-2xl font-bold text-white-500">
+          Sabi<span className="text-blue-600">skill</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -64,9 +63,8 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden flex flex-col items-center gap-5 text-gray-300 font-medium overflow-hidden transition-all duration-500 ease-in-out ${
-          menuOpen ? "max-h-[400px] opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-5"
-        }`}
+        className={`md:hidden flex flex-col items-center gap-5 text-gray-300 font-medium overflow-hidden transition-all duration-500 ease-in-out ${menuOpen ? "max-h-[400px] opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-5"
+          }`}
       >
         <Link href="#home" className="hover:text-green-500 transition mt-4">Home</Link>
         <Link href="#features" className="hover:text-green-500 transition">Features</Link>
