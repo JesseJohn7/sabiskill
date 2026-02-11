@@ -27,47 +27,25 @@ const Hero: React.FC = () => {
           style={{ opacity: 1, transform: "none" }}
         >
           Come{" "}
-          <span className="hidden md:inline">
+          <span 
+            className="inline-block relative overflow-hidden align-bottom text-left"
+            style={{ width: "auto", transition: "width 0.3s" }}
+          >
+            <span className="invisible absolute left-0 top-0 whitespace-nowrap">
+              {words[currentWordIndex]}
+            </span>
             <span 
-              className="inline-block relative overflow-hidden align-bottom text-left"
-              style={{ width: "auto", transition: "width 0.3s" }}
+              className="block text-left"
+              style={{ 
+                opacity: isAnimating ? 0 : 1, 
+                transform: isAnimating ? "translateY(-20px)" : "none",
+                transition: "opacity 0.3s, transform 0.3s"
+              }}
             >
-              <span className="invisible absolute left-0 top-0 whitespace-nowrap">
-                {words[currentWordIndex]}
-              </span>
-              <span 
-                className="block text-left"
-                style={{ 
-                  opacity: isAnimating ? 0 : 1, 
-                  transform: isAnimating ? "translateY(-20px)" : "none",
-                  transition: "opacity 0.3s, transform 0.3s"
-                }}
-              >
-                {words[currentWordIndex]}
-              </span>
+              {words[currentWordIndex]}
             </span>
           </span>
-          <span className="block md:hidden">
-            <span 
-              className="inline-block relative overflow-hidden align-bottom text-left"
-              style={{ transition: "width 0.3s" }}
-            >
-              <span className="invisible absolute left-0 top-0 whitespace-nowrap">
-                {words[currentWordIndex]}
-              </span>
-              <span 
-                className="block text-left"
-                style={{ 
-                  opacity: isAnimating ? 0 : 1, 
-                  transform: isAnimating ? "translateY(-20px)" : "none",
-                  transition: "opacity 0.3s, transform 0.3s"
-                }}
-              >
-                {words[currentWordIndex]}
-              </span>
-            </span>
-          </span>
-          <br className="hidden md:block" />
+          <br />
           <span className="text-blue-400/90">for free, no wahala.</span>
         </h1>
 
