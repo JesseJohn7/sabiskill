@@ -101,13 +101,13 @@ const Navbar: React.FC = () => {
           >
             How it Works
           </Link>
-          <Link 
+         {/*  <Link 
             href="#testimonials" 
             className="text-2xl text-gray-200 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             Testimonials
-          </Link>
+          </Link> */}
           <Link 
             href="#faqs" 
             className="text-2xl text-gray-200 hover:text-blue-300 transition"
