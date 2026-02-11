@@ -82,35 +82,35 @@ const Navbar: React.FC = () => {
         <div className="flex flex-col justify-center items-start h-full px-8 gap-6">
           <Link 
             href="#home" 
-            className="text-2xl text-gray-300 hover:text-blue-400 transition"
+            className="text-2xl text-gray-300 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             Home
           </Link>
           <Link 
             href="#features" 
-            className="text-2xl text-gray-300 hover:text-blue-400 transition"
+            className="text-2xl text-gray-300 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             Features
           </Link>
           <Link 
             href="#how-it-works" 
-            className="text-2xl text-gray-300 hover:text-blue-400 transition"
+            className="text-2xl text-gray-300 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             How it Works
           </Link>
           <Link 
             href="#testimonials" 
-            className="text-2xl text-gray-300 hover:text-blue-400 transition"
+            className="text-2xl text-gray-300 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             Testimonials
           </Link>
           <Link 
             href="#faqs" 
-            className="text-2xl text-gray-300 hover:text-blue-400 transition"
+            className="text-2xl text-gray-300 hover:text-blue-300 transition"
             onClick={() => setMenuOpen(false)}
           >
             FAQs
