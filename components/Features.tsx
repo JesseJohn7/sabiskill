@@ -1,17 +1,13 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 
 const Features: React.FC = () => {
   const features = [
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -26,12 +22,7 @@ const Features: React.FC = () => {
     },
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -46,12 +37,7 @@ const Features: React.FC = () => {
     },
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -66,12 +52,7 @@ const Features: React.FC = () => {
     },
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -86,12 +67,7 @@ const Features: React.FC = () => {
     },
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -106,12 +82,7 @@ const Features: React.FC = () => {
     },
     {
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -127,31 +98,41 @@ const Features: React.FC = () => {
   ];
 
   return (
-    <div
-      id="features"
-      className="bg-black py-12 md:py-20 px-4 md:px-6 lg:px-8"
-    >
-      <div className="max-w-7xl mx-auto">
+    <div id="features" className="bg-black py-12 md:py-20 px-4 md:px-6 lg:px-8">
+      <motion.div
+        className="max-w-7xl mx-auto"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <p className="text-sm md:text-base font-sm tracking-wider text-blue-400 mb-2">
+          <p className="text-sm md:text-base tracking-wider text-blue-400 mb-2">
             FEATURES
           </p>
-          <h2 className="text-3xl md:text-3xl lg:text-3xl font-medium text-white mb-4">
+          <h2 className="text-3xl md:text-3xl font-medium text-white mb-4">
             Everything you need to succeed
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
-            All the tools and resources you need to start learning and building
-            your future, completely free.
+            All the tools and resources you need to start learning and building your future, completely free.
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-gray-900 border border-gray-800 rounded-lg p-6 md:p-8 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.15,
+                ease: "easeOut",
+              }}
             >
               <div className="text-blue-400 mb-4">{feature.icon}</div>
               <h3 className="text-xl md:text-2xl font-semibold text-white mb-3">
@@ -160,10 +141,10 @@ const Features: React.FC = () => {
               <p className="text-sm md:text-base text-gray-400 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
