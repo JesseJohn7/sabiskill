@@ -111,7 +111,7 @@ const Features: React.FC = () => {
           <p className="text-sm md:text-base tracking-wider text-blue-400 mb-2">
             FEATURES
           </p>
-          <h2 className="text-3xl md:text-3xl font-medium text-white mb-4">
+          <h2 className="text-3xl md:text-3xl font-sm text-white mb-4">
             Everything you need to succeed
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
