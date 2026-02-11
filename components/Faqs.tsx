@@ -14,7 +14,7 @@ const FAQ: React.FC = () => {
     {
       question: "Who can use this learning platform?",
       answer:
-        "Anyone in Nigeria (and beyond) who wants to learn new skills! Whether you're a student, professional looking to upskill, career changer, or just curious to learn something new this platform is built for you.",
+        "Anyone in Nigeria (and beyond) who wants to learn new skills! Whether you're a student, Graduate ,professional looking to upskill, career changer, or just curious to learn something new this platform is built for you.",
     },
     {
       question: "What kind of courses are available?",
