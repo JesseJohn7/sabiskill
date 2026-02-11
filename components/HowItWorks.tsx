@@ -10,7 +10,7 @@ const HowItWorks: React.FC = () => {
       icon: <PlayCircle className="w-8 h-8 text-blue-400" />,
       title: "1. Pick a Skill Track",
       description:
-        "Choose a learning track that matches your goals — from frontend development to design, AI, or marketing.",
+        "Choose a learning track that matches your goals  from frontend development to design, AI, or marketing.",
     },
     {
       icon: <CheckCircle className="w-8 h-8 text-blue-400" />,
