@@ -55,35 +55,24 @@ const Footer: React.FC = () => {
             </h4>
             <div className="flex justify-center md:justify-start gap-4">
               <a
-                href="https://twitter.com/"
+                href="https://x.com/Jesse_can_code"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <Twitter className="w-5 h-5" />
               </a>
+              
               <a
-                href="https://instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://github.com/"
+                href="https://github.com/JesseJohn7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <Github className="w-5 h-5" />
               </a>
-              <a
-                href="mailto:hello@sabiskill.com"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
+            
+              
             </div>
           </div>
         </div>
