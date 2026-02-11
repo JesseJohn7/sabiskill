@@ -19,7 +19,7 @@ const FAQ: React.FC = () => {
     {
       question: "What kind of courses are available?",
       answer:
-        "We offer quality courses across various fields including Web Dev, business, creative skills, and more. Each course is designed to help you build practical skills that you can apply immediately in your career or personal projects.",
+        "We offer quality courses across various fields including Web Development, AI Prompting , UI Design,Web3 Development,Marketing and more. Each course is designed to help you build practical skills that you can apply immediately in your career or personal projects.",
     },
     {
       question: "What is the roadmap feature?",
