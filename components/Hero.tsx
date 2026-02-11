@@ -61,7 +61,7 @@ const Hero: React.FC = () => {
           className="flex flex-col sm:flex-row items-center gap-3 mt-4"
           style={{ opacity: 1, transform: "none" }}
         >
-          <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-blue-500/50 hover:bg-blue-500/60 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
+          <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-blue-600 hover:bg-blue-500/60 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
             Start Learning 
           </button>
 
