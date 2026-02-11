@@ -134,10 +134,10 @@ const Features: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <p className="text-sm md:text-base font-medium tracking-wider text-blue-400 mb-2">
+          <p className="text-sm md:text-base font-sm tracking-wider text-blue-400 mb-2">
             FEATURES
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-4">
+          <h2 className="text-3xl md:text-3xl lg:text-3xl font-medium text-white mb-4">
             Everything you need to succeed
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">

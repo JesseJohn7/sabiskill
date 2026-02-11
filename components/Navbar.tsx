@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
             <li><Link href="#home" className="hover:text-blue-400 transition">Home</Link></li>
             <li><Link href="#features" className="hover:text-blue-400 transition">Features</Link></li>
             <li><Link href="#how-it-works" className="hover:text-blue-400 transition">How it Works</Link></li>
-            <li><Link href="#testimonials" className="hover:text-blue-400 transition">Testimonials</Link></li>
+            {/* <li><Link href="#testimonials" className="hover:text-blue-400 transition">Testimonials</Link></li> */}
             <li><Link href="#faqs" className="hover:text-blue-400 transition">FAQs</Link></li>
           </ul>
 
