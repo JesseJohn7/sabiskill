@@ -38,7 +38,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="bg-black flex items-center justify-center py-12 md:py-20 px-4 md:px-6 lg:px-8">
+    <div id="faqs" className="bg-black flex items-center justify-center py-12 md:py-20 px-4 md:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
         <div className="text-center mb-8 md:mb-12">
           <p className="text-xs md:text-sm font-medium tracking-wider text-blue-400 mb-2">
