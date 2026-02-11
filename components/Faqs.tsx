@@ -19,7 +19,7 @@ const FAQ: React.FC = () => {
     {
       question: "What kind of courses are available?",
       answer:
-        "We offer quality courses across various fields including technology, business, creative skills, and more. Each course is designed to help you build practical skills that you can apply immediately in your career or personal projects.",
+        "We offer quality courses across various fields including Web Dev, business, creative skills, and more. Each course is designed to help you build practical skills that you can apply immediately in your career or personal projects.",
     },
     {
       question: "What is the roadmap feature?",
@@ -55,14 +55,14 @@ const FAQ: React.FC = () => {
               <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-center justify-between p-3 md:p-4 text-left hover:bg-gray-800 transition-colors"
+                  className="w-full flex items-center justify-between p-3 md:p-4 text-left hover:bg-gray-800 transition-colors cursor-pointer"
                 >
-                  <span className="text-xs md:text-sm text-gray-200 pr-3 md:pr-4">
+                  <span className="text-sm md:text-base text-gray-200 pr-3 md:pr-4 font-medium">
                     {faq.question}
                   </span>
                   <span className="shrink-0">
                     {openIndex === index ? (
-                      <div className="size-6 md:size-7 rounded-full bg-white/10 flex items-center justify-center cursor-pointer">
+                      <div className="size-6 md:size-7 rounded-full bg-white/10 flex items-center justify-center">
                         <svg
                           width="20"
                           height="20"
@@ -82,7 +82,7 @@ const FAQ: React.FC = () => {
                         </svg>
                       </div>
                     ) : (
-                      <div className="size-6 md:size-7 rounded-full bg-white/10 flex items-center justify-center cursor-pointer">
+                      <div className="size-6 md:size-7 rounded-full bg-white/10 flex items-center justify-center">
                         <svg
                           width="14"
                           height="14"
@@ -114,7 +114,7 @@ const FAQ: React.FC = () => {
                 }`}
               >
                 <div className="px-4 md:px-5 py-3 md:py-4">
-                  <p className="text-xs md:text-sm font-light text-gray-400 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-200 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
