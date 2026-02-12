@@ -6,7 +6,7 @@ import Header from "../dashboard/components/Header";
 import HomeTab from  "../dashboard/components/Hometab";
 import ExploreTab from "./components/ExploreTab";
 import ResourcesTab from "../dashboard/components/ResourcesTab";
-import SettingsTab from "./components/SettingsTab";
+import SettingsTab from "../dashboard/components/SettingsTab";
 
 const DashboardPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
