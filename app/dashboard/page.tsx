@@ -5,7 +5,7 @@ import Sidebar from "../dashboard/components/sidebar";
 import Header from "../dashboard/components/Header";
 import HomeTab from  "../dashboard/components/Hometab";
 import ExploreTab from "./components/ExploreTab";
-import ResourcesTab from "./components/ResourcesTab";
+import ResourcesTab from "../dashboard/components/ResourcesTab";
 import SettingsTab from "./components/SettingsTab";
 
 const DashboardPage: React.FC = () => {
