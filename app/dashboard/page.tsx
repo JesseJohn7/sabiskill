@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Sidebar from "../dashboard/components/sidebar";
-import Header from "./components/Header";
+import Header from "../dashboard/components/Header";
 import HomeTab from "./components/HomeTab";
 import ExploreTab from "./components/ExploreTab";
 import ResourcesTab from "./components/ResourcesTab";
