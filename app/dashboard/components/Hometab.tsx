@@ -31,7 +31,7 @@ const HomeTab = () => {
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
           <div className="space-y-1.5">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-purple-600 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-blue-600 leading-tight">
               Hello, Alex
             </h1>
             <p className="text-sm sm:text-base text-slate-600 font-medium">
@@ -77,29 +77,29 @@ const HomeTab = () => {
         {/* Decorative Background */}
         <div className="absolute inset-0">
           <div className="absolute top-0 right-0 w-full h-full opacity-5">
-            <div className="absolute top-10 right-10 w-64 h-64 bg-purple-500 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-10 left-10 w-64 h-64 bg-indigo-500 rounded-full blur-3xl"></div>
+            <div className="absolute top-10 right-10 w-64 h-64 bg-blue-500 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-500 rounded-full blur-3xl"></div>
           </div>
         </div>
         
         {/* Accent Bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-purple-600"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-blue-600"></div>
         
         <div className="relative z-10 p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-12">
             {/* Content */}
             <div className="flex-1 text-center lg:text-left space-y-4 sm:space-y-5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wide shadow-lg">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wide shadow-lg">
                 <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Get Started
               </div>
               
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-800 leading-tight">
                 Master your next{" "}
                 <span className="relative inline-block">
-                  <span className="relative z-10 text-purple-600">
+                  <span className="relative z-10 text-blue-600">
                     skill path
                   </span>
-                  <span className="absolute bottom-0 left-0 w-full h-2 sm:h-3 bg-purple-100 -rotate-1 rounded-full"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-2 sm:h-3 bg-blue-100 -rotate-1 rounded-full"></span>
                 </span>
               </h2>
               
@@ -107,7 +107,7 @@ const HomeTab = () => {
                 Curated tutorials in linear learning paths. Start one to unlock your progress.
               </p>
               
-              <button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2.5">
+              <button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2.5">
                 Find Your First Track 
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -127,7 +127,7 @@ const HomeTab = () => {
                     alt=""
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-purple-900/30"></div>
+                  <div className="absolute inset-0 bg-blue-900/30"></div>
                 </div>
               ))}
             </div>
@@ -139,15 +139,15 @@ const HomeTab = () => {
       <div>
         <div className="flex items-center justify-between mb-5 sm:mb-6">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 bg-purple-600 rounded-lg">
+            <div className="p-1.5 bg-blue-600 rounded-lg">
               <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-purple-600">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-blue-600">
               Learning Tracks
             </h2>
           </div>
           
-          <button className="group hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 font-bold text-xs transition-all">
+          <button className="group hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-bold text-xs transition-all">
             View All 
             <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -157,7 +157,7 @@ const HomeTab = () => {
           {COURSES.map((c) => (
             <div
               key={c.id}
-              className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200 hover:border-purple-300 shadow-sm hover:shadow-xl transition-all overflow-hidden hover:-translate-y-0.5"
+              className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all overflow-hidden hover:-translate-y-0.5"
             >
               <div className="relative overflow-hidden">
                 <div className="aspect-video">
@@ -167,16 +167,16 @@ const HomeTab = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                   />
                 </div>
-                <div className="absolute inset-0 bg-purple-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
                 {/* Progress Badge */}
-                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg shadow-lg border border-purple-100">
-                  <span className="text-xs font-black text-purple-600">{c.progress}%</span>
+                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg shadow-lg border border-blue-100">
+                  <span className="text-xs font-black text-blue-600">{c.progress}%</span>
                 </div>
               </div>
               
               <div className="p-4 sm:p-5 space-y-3">
-                <h3 className="font-black text-base sm:text-lg text-slate-800 group-hover:text-purple-600 transition-colors line-clamp-1">
+                <h3 className="font-black text-base sm:text-lg text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-1">
                   {c.title}
                 </h3>
                 
@@ -184,7 +184,7 @@ const HomeTab = () => {
                 <div className="space-y-1.5">
                   <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="bg-purple-600 h-full rounded-full transition-all duration-500 shadow-sm"
+                      className="bg-blue-600 h-full rounded-full transition-all duration-500 shadow-sm"
                       style={{ width: `${c.progress}%` }}
                     ></div>
                   </div>
@@ -193,7 +193,7 @@ const HomeTab = () => {
                   </p>
                 </div>
                 
-                <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-sm">
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-sm">
                   Continue 
                   <Play className="w-3.5 h-3.5 fill-current" />
                 </button>
@@ -203,7 +203,7 @@ const HomeTab = () => {
         </div>
         
         {/* Mobile View All Button */}
-        <button className="sm:hidden w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-purple-200 text-purple-600 bg-white hover:bg-purple-50 font-bold text-sm transition-all">
+        <button className="sm:hidden w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-blue-200 text-blue-600 bg-white hover:bg-blue-50 font-bold text-sm transition-all">
           View All Tracks
           <ChevronRight className="w-4 h-4" />
         </button>
