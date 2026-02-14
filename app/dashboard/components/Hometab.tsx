@@ -27,7 +27,13 @@ const COURSES = [
   },
 ];
 
-const HomeTab = () => {
+const HomeTab = ({ onNavigate }) => {
+  const handleExploreClick = () => {
+    if (onNavigate) {
+      onNavigate('explore');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header Section */}
@@ -65,7 +71,10 @@ const HomeTab = () => {
                   Curated tutorials in linear learning paths. Start one to unlock your progress.
                 </p>
                 
-                <button className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                <button 
+                  onClick={handleExploreClick}
+                  className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+                >
                   Find Your First Track 
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -105,7 +114,10 @@ const HomeTab = () => {
             </h2>
           </div>
           
-          <button className="group hidden sm:flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-semibold text-[10px] sm:text-xs transition-all">
+          <button 
+            onClick={handleExploreClick}
+            className="group hidden sm:flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-semibold text-[10px] sm:text-xs transition-all"
+          >
             View All 
             <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -172,7 +184,10 @@ const HomeTab = () => {
         </div>
         
         {/* Mobile View All Button */}
-        <button className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-all">
+        <button 
+          onClick={handleExploreClick}
+          className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-all"
+        >
           View All Tracks
           <ChevronRight className="w-4 h-4" />
         </button>
