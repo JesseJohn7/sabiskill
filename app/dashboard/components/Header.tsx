@@ -43,7 +43,6 @@ const Header: React.FC<Props> = ({ toggleSidebar }) => {
             <p className="text-xs sm:text-sm font-bold text-slate-900 leading-none">
               Alex Walker
             </p>
-
           </div>
         </div>
       </div>
