@@ -70,9 +70,9 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
         {/* Header */}
         <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-blue-50 lg:border-0">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
+           {/*  <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" strokeWidth={2.5} />
-            </div>
+            </div> */}
             {isOpen && (
               <span className="font-black text-xl text-blue-900 tracking-tight lg:hidden">
                 EduFlow
