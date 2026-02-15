@@ -62,19 +62,19 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-[120] bg-white border-r border-slate-200 flex flex-col
+        className={`fixed inset-y-0 left-0 z-[120] bg-white border-r border-blue-100 flex flex-col
           transition-all duration-300 ease-out shadow-xl lg:shadow-none
           ${isOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0 lg:w-20"}
         `}
       >
         {/* Header */}
-        <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-slate-100 lg:border-0">
+        <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-blue-50 lg:border-0">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
             {isOpen && (
-              <span className="font-black text-xl text-slate-900 tracking-tight lg:hidden">
+              <span className="font-black text-xl text-blue-900 tracking-tight lg:hidden">
                 EduFlow
               </span>
             )}
@@ -83,7 +83,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           {/* Close button for mobile */}
           <button
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-blue-50 text-blue-400 hover:text-blue-900 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -91,7 +91,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-transparent">
           {sidebarItems.map((item) => {
             const isActive = currentTab === item.id;
             return (
@@ -110,8 +110,8 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                     : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"
                   }
                   ${isActive
-                    ? "bg-slate-900 text-white shadow-lg shadow-slate-900/20" 
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 active:bg-slate-100"
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20" 
+                    : "text-blue-600 hover:text-blue-700 hover:bg-blue-50 active:bg-blue-100"
                   }`}
               >
                 <item.icon 
@@ -131,11 +131,11 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                 )}
 
                 {/* Tooltip when sidebar is collapsed (desktop only) - shows on hover */}
-                <span className="absolute left-full ml-4 px-3 py-2 bg-slate-900 text-white 
+                <span className="absolute left-full ml-4 px-3 py-2 bg-blue-600 text-white 
                   text-sm font-semibold rounded-lg opacity-0 invisible
                   group-hover:opacity-100 group-hover:visible
                   whitespace-nowrap transition-all duration-200 pointer-events-none
-                  shadow-lg shadow-slate-900/20 hidden lg:group-hover:block
+                  shadow-lg shadow-blue-600/20 hidden lg:group-hover:block
                 ">
                   {item.label}
                 </span>
@@ -145,10 +145,10 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
         </nav>
 
         {/* Logout Button */}
-        <div className="p-3 border-t border-slate-100">
+        <div className="p-3 border-t border-blue-100">
           <button 
             className={`group relative flex items-center w-full rounded-xl
-              text-slate-600 hover:text-red-600 hover:bg-red-50 active:bg-red-100
+              text-blue-600 hover:text-red-600 hover:bg-red-50 active:bg-red-100
               font-semibold transition-all duration-200 ease-out
               ${isOpen 
                 ? "px-4 py-3.5 justify-start" 
