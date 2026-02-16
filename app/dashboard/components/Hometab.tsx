@@ -1,29 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
-import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock, Lock, Check } from "lucide-react";
+import React from "react";
+import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock } from "lucide-react";
 
 const COURSES = [
   {
     id: "webdev",
     title: "Complete Web Development",
     thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
-    progress: 40,
-    lessons: 12,
+    progress: 0,
+    lessons: 5,
     playlist: [
       {
         id: 1,
         title: "HTML Basics - Getting Started",
         videoId: "HGTJBPNC-Gw",
         duration: "45:30",
-        completed: true,
+        completed: false,
       },
       {
         id: 2,
         title: "HTML Tags & Elements",
         videoId: "kUMe1FH4CHE",
         duration: "38:15",
-        completed: true,
+        completed: false,
       },
       {
         id: 3,
@@ -52,28 +52,28 @@ const COURSES = [
     id: "design",
     title: "UI/UX Design Fundamentals",
     thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/maxresdefault.jpg",
-    progress: 65,
+    progress: 0,
     lessons: 14,
   },
   {
     id: "crypto",
     title: "Cryptocurrency & Blockchain",
     thumbnail: "https://i.ytimg.com/vi/SSo_EIwHSd4/maxresdefault.jpg",
-    progress: 75,
+    progress: 0,
     lessons: 8,
   },
   {
     id: "speaking",
     title: "Public Speaking Mastery",
     thumbnail: "https://i.ytimg.com/vi/w82a1FT5o88/maxresdefault.jpg",
-    progress: 20,
+    progress: 0,
     lessons: 15,
   },
   {
     id: "personal",
     title: "Personal Development & Growth",
     thumbnail: "https://i.ytimg.com/vi/75d_29QWELk/maxresdefault.jpg",
-    progress: 35,
+    progress: 0,
     lessons: 10,
   },
 ];
@@ -199,8 +199,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
           {COURSES.map((c) => (
             <div
               key={c.id}
-              className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer"
-              onClick={() => handleCourseClick(c.id)}
+              className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all overflow-hidden"
             >
               <div className="relative overflow-hidden">
                 <div className="aspect-video">
@@ -212,7 +211,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                 </div>
                 
                 <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1.5 bg-white px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg shadow-md">
-                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-600"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300"></div>
                   <span className="text-[10px] sm:text-xs font-bold text-slate-700">{c.progress}%</span>
                 </div>
 
@@ -230,23 +229,24 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-[10px] sm:text-xs">
                     <span className="text-slate-600 font-semibold">
-                      {c.progress < 30 ? 'Just started' : c.progress < 70 ? 'In progress' : 'Almost done'}
+                      Not started
                     </span>
-                    <span className="text-blue-600 font-bold">{c.progress}% complete</span>
+                    <span className="text-slate-500 font-bold">{c.progress}% complete</span>
                   </div>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                     <div
-                      className="bg-blue-600 h-full rounded-full transition-all duration-500 relative overflow-hidden"
+                      className="bg-slate-300 h-full rounded-full transition-all duration-500"
                       style={{ width: `${c.progress}%` }}
-                    >
-                      <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-                    </div>
+                    ></div>
                   </div>
                 </div>
                 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm">
+                <button 
+                  onClick={() => handleCourseClick(c.id)}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm"
+                >
                   <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
-                  Continue Learning
+                  Get Started
                 </button>
               </div>
             </div>
