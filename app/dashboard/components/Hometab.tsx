@@ -80,7 +80,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                 <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
                   Master your next{" "}
                   <span className="text-blue-600 relative inline-block">
-                    skill path
+                    Skill Path
                     <svg className="absolute -bottom-1 left-0 w-full h-2 sm:h-3" viewBox="0 0 200 10" preserveAspectRatio="none">
                       <path d="M0,5 Q50,0 100,5 T200,5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
                     </svg>
