@@ -130,15 +130,21 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                   </span>
                 )}
 
-                {/* Tooltip when sidebar is collapsed (desktop only) - shows on hover */}
-                <span className="absolute left-full ml-4 px-3 py-2 bg-blue-600 text-white 
-                  text-sm font-semibold rounded-lg opacity-0 invisible
-                  group-hover:opacity-100 group-hover:visible
-                  whitespace-nowrap transition-all duration-200 pointer-events-none
-                  shadow-lg shadow-blue-600/20 hidden lg:group-hover:block
-                ">
-                  {item.label}
-                </span>
+                {/* Tooltip when sidebar is collapsed - ALWAYS shows on hover for desktop */}
+                {!isOpen && (
+                  <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white 
+                    text-xs font-semibold rounded-lg opacity-0 invisible
+                    group-hover:opacity-100 group-hover:visible
+                    whitespace-nowrap transition-all duration-200 pointer-events-none
+                    shadow-lg hidden lg:block z-50
+                  ">
+                    {item.label}
+                    {/* Arrow pointing to the button */}
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] 
+                      border-4 border-transparent border-r-slate-900
+                    "></div>
+                  </div>
+                )}
               </button>
             );
           })}
@@ -169,15 +175,21 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
               </span>
             )}
 
-            {/* Tooltip when collapsed (desktop only) - shows on hover */}
-            <span className="absolute left-full ml-4 px-3 py-2 bg-red-600 text-white 
-              text-sm font-semibold rounded-lg opacity-0 invisible
-              group-hover:opacity-100 group-hover:visible
-              whitespace-nowrap transition-all duration-200 pointer-events-none
-              shadow-lg shadow-red-600/20 hidden lg:group-hover:block
-            ">
-              Sign Out
-            </span>
+            {/* Tooltip when collapsed - ALWAYS shows on hover for desktop */}
+            {!isOpen && (
+              <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white 
+                text-xs font-semibold rounded-lg opacity-0 invisible
+                group-hover:opacity-100 group-hover:visible
+                whitespace-nowrap transition-all duration-200 pointer-events-none
+                shadow-lg hidden lg:block z-50
+              ">
+                Sign Out
+                {/* Arrow pointing to the button */}
+                <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] 
+                  border-4 border-transparent border-r-slate-900
+                "></div>
+              </div>
+            )}
           </button>
         </div>
       </aside>
