@@ -53,7 +53,10 @@ const DashboardPage: React.FC = () => {
       <div className="flex-1 lg:ml-24 flex flex-col min-w-0">
         {/* Only show Header when not in video player mode */}
         {!selectedCourse && (
-          <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <Header 
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            onCourseSelect={handleCourseSelect}
+          />
         )}
         
         <main className={`${selectedCourse ? '' : 'p-8 sm:p-12 max-w-[1400px] mx-auto'} w-full`}>
