@@ -131,9 +131,9 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="p-1 sm:p-1.5 bg-blue-600 rounded-lg">
+           {/*  <div className="p-1 sm:p-1.5 bg-blue-600 rounded-lg">
               <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
-            </div>
+            </div> */}
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">
               Learning Tracks
             </h2>
