@@ -11,7 +11,7 @@ interface Video {
   duration: string;
   completed: boolean;
 }
-
+ 
 interface VideoPlayerProps {
   courseId: string;
   onBack: () => void;
