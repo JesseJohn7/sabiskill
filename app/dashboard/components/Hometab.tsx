@@ -27,7 +27,11 @@ const COURSES = [
   },
 ];
 
-const HomeTab = ({ onNavigate }) => {
+interface HomeTabProps {
+  onNavigate?: (tab: string) => void;
+}
+
+const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
   const handleExploreClick = () => {
     if (onNavigate) {
       onNavigate('explore');
@@ -39,7 +43,7 @@ const HomeTab = ({ onNavigate }) => {
       {/* Header Section */}
       <div className="max-w-7xl mx-auto mb-6 sm:mb-8">
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-blue-600 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-5xl font-black text-blue-600 leading-tight">
             Hello, Alex 👋
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
