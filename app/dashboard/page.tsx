@@ -22,6 +22,11 @@ const DashboardPage: React.FC = () => {
     setSelectedCourse(null);
   };
 
+  const handleNavigateFromVideo = (tab: string) => {
+    setCurrentTab(tab);
+    setSelectedCourse(null);
+  };
+
   const renderTab = () => {
     switch (currentTab) {
       case "home":
@@ -57,6 +62,7 @@ const DashboardPage: React.FC = () => {
             <VideoPlayer 
               courseId={selectedCourse} 
               onBack={handleBackFromVideo}
+              onNavigate={handleNavigateFromVideo}
             />
           ) : (
             renderTab()
