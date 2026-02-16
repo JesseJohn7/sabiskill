@@ -41,7 +41,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header Section */}
-      <div className="max-w-5xl mx-auto mb-6 sm:mb-8">
+      <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
             Hello, Alex 👋
@@ -52,44 +52,64 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Hero Banner */}
-      <div className="max-w-7xl mx-auto mb-6 sm:mb-8">
-        <div className="relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200">
+      {/* Hero Banner - Improved Mobile Design */}
+      <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
+        <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
           {/* Accent Border */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-blue-600"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
           
-          <div className="relative z-10 p-5 sm:p-8 md:p-10 lg:p-12">
-            <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8">
+          {/* Decorative Background Pattern */}
+          <div className="absolute inset-0 opacity-[0.03]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37, 99, 235) 1px, transparent 0)`,
+              backgroundSize: '32px 32px'
+            }}></div>
+          </div>
+          
+          <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
+            <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 lg:gap-8">
               {/* Content */}
-              <div className="flex-1 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-5">
-                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-xs font-bold uppercase tracking-wide">
-                  <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Get Started
+              <div className="flex-1 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-5 w-full">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-blue-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-sm">
+                  <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 
+                  <span>Get Started</span>
                 </div>
                 
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-slate-800 leading-tight">
+                {/* Heading */}
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
                   Master your next{" "}
-                  <span className="text-blue-600">skill path</span>
+                  <span className="text-blue-600 relative inline-block">
+                    skill path
+                    <svg className="absolute -bottom-1 left-0 w-full h-2 sm:h-3" viewBox="0 0 200 10" preserveAspectRatio="none">
+                      <path d="M0,5 Q50,0 100,5 T200,5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
+                    </svg>
+                  </span>
                 </h2>
                 
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                {/* Description */}
+                <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
                   Curated tutorials in linear learning paths. Start one to unlock your progress.
                 </p>
                 
-                <button 
-                  onClick={handleExploreClick}
-                  className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-xs sm:text-sm md:text-base shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
-                >
-                  Find Your First Track 
-                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                {/* CTA Button */}
+                <div className="pt-1 sm:pt-2">
+                  <button 
+                    onClick={handleExploreClick}
+                    className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+                  >
+                    <span>Find Your First Track</span>
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
               </div>
               
-              {/* Decorative Image Grid - Hidden on mobile */}
+              {/* Decorative Image Grid - Hidden on mobile, visible on large screens */}
               <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 flex-shrink-0">
                 {COURSES.slice(0, 4).map((c, i) => (
                   <div
                     key={i}
-                    className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 shadow-md hover:scale-105 transition-transform ${
+                    className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 ${
                       i % 2 === 0 ? "translate-y-2" : "-translate-y-2"
                     }`}
                   >
@@ -98,6 +118,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                       alt=""
                       className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
                 ))}
               </div>
