@@ -5,25 +5,39 @@ import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock } from 
 
 const COURSES = [
   {
-    id: "react",
-    title: "React Foundations",
+    id: "webdev",
+    title: "Web Development Bootcamp",
     thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
     progress: 40,
     lessons: 12,
   },
   {
-    id: "tailwind",
-    title: "Tailwind CSS Basics",
-    thumbnail: "https://i.ytimg.com/vi/pfaSUYaSgRo/maxresdefault.jpg",
+    id: "design",
+    title: "UI/UX Design Fundamentals",
+    thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/maxresdefault.jpg",
+    progress: 65,
+    lessons: 14,
+  },
+  {
+    id: "crypto",
+    title: "Cryptocurrency & Blockchain",
+    thumbnail: "https://i.ytimg.com/vi/qF7dkrce-mQ/maxresdefault.jpg",
     progress: 75,
     lessons: 8,
   },
   {
-    id: "typescript",
-    title: "TypeScript Mastery",
-    thumbnail: "https://i.ytimg.com/vi/BwuLxPH8IDs/maxresdefault.jpg",
+    id: "speaking",
+    title: "Public Speaking Mastery",
+    thumbnail: "https://i.ytimg.com/vi/Unzc731iCUY/maxresdefault.jpg",
     progress: 20,
     lessons: 15,
+  },
+  {
+    id: "personal",
+    title: "Personal Development & Growth",
+    thumbnail: "https://i.ytimg.com/vi/21eFwbb48sE/maxresdefault.jpg",
+    progress: 35,
+    lessons: 10,
   },
 ];
 
@@ -148,7 +162,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
           {COURSES.map((c) => (
             <div
               key={c.id}
