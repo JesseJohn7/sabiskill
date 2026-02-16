@@ -1,15 +1,52 @@
 "use client";
 
-import React from "react";
-import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock } from "lucide-react";
+import React, { useState } from "react";
+import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock, Lock, Check } from "lucide-react";
 
 const COURSES = [
   {
     id: "webdev",
-    title: "Web Development Bootcamp",
-    thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
+    title: "Complete Web Development",
+    thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
     progress: 40,
     lessons: 12,
+    playlist: [
+      {
+        id: 1,
+        title: "HTML Basics - Getting Started",
+        videoId: "HGTJBPNC-Gw",
+        duration: "45:30",
+        completed: true,
+      },
+      {
+        id: 2,
+        title: "HTML Tags & Elements",
+        videoId: "kUMe1FH4CHE",
+        duration: "38:15",
+        completed: true,
+      },
+      {
+        id: 3,
+        title: "CSS Fundamentals",
+        videoId: "OXGznpKZ_sA",
+        duration: "52:40",
+        completed: false,
+      },
+      {
+        id: 4,
+        title: "CSS Layouts & Flexbox",
+        videoId: "phWxA89Dy94",
+        duration: "41:20",
+        completed: false,
+      },
+      {
+        id: 5,
+        title: "Responsive Design",
+        videoId: "srvUrASNj0s",
+        duration: "48:10",
+        completed: false,
+      },
+    ],
   },
   {
     id: "design",
@@ -21,21 +58,21 @@ const COURSES = [
   {
     id: "crypto",
     title: "Cryptocurrency & Blockchain",
-    thumbnail: "https://i.ytimg.com/vi/qF7dkrce-mQ/maxresdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/SSo_EIwHSd4/maxresdefault.jpg",
     progress: 75,
     lessons: 8,
   },
   {
     id: "speaking",
     title: "Public Speaking Mastery",
-    thumbnail: "https://i.ytimg.com/vi/Unzc731iCUY/maxresdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/w82a1FT5o88/maxresdefault.jpg",
     progress: 20,
     lessons: 15,
   },
   {
     id: "personal",
     title: "Personal Development & Growth",
-    thumbnail: "https://i.ytimg.com/vi/21eFwbb48sE/maxresdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/75d_29QWELk/maxresdefault.jpg",
     progress: 35,
     lessons: 10,
   },
@@ -43,12 +80,19 @@ const COURSES = [
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
+  onCourseSelect?: (courseId: string) => void;
 }
 
-const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
+const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
   const handleExploreClick = () => {
     if (onNavigate) {
       onNavigate('explore');
+    }
+  };
+
+  const handleCourseClick = (courseId: string) => {
+    if (onCourseSelect) {
+      onCourseSelect(courseId);
     }
   };
 
@@ -66,13 +110,11 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Hero Banner - Improved Mobile Design */}
+      {/* Hero Banner */}
       <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
         <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
-          {/* Accent Border */}
           <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
           
-          {/* Decorative Background Pattern */}
           <div className="absolute inset-0 opacity-[0.03]">
             <div className="absolute inset-0" style={{
               backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37, 99, 235) 1px, transparent 0)`,
@@ -82,15 +124,12 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           
           <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
             <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 lg:gap-8">
-              {/* Content */}
               <div className="flex-1 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-5 w-full">
-                {/* Badge */}
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-blue-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-sm">
                   <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 
                   <span>Get Started</span>
                 </div>
                 
-                {/* Heading */}
                 <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
                   Master your next{" "}
                   <span className="text-blue-600 relative inline-block">
@@ -101,12 +140,10 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                   </span>
                 </h2>
                 
-                {/* Description */}
                 <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
                   Curated tutorials in linear learning paths. Start one to unlock your progress.
                 </p>
                 
-                {/* CTA Button */}
                 <div className="pt-1 sm:pt-2">
                   <button 
                     onClick={handleExploreClick}
@@ -118,7 +155,6 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                 </div>
               </div>
               
-              {/* Decorative Image Grid - Hidden on mobile, visible on large screens */}
               <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 flex-shrink-0">
                 {COURSES.slice(0, 4).map((c, i) => (
                   <div
@@ -145,9 +181,6 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
           <div className="flex items-center gap-2 sm:gap-2.5">
-           {/*  <div className="p-1 sm:p-1.5 bg-blue-600 rounded-lg">
-              <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
-            </div> */}
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">
               Learning Tracks
             </h2>
@@ -166,7 +199,8 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           {COURSES.map((c) => (
             <div
               key={c.id}
-              className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all overflow-hidden"
+              className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer"
+              onClick={() => handleCourseClick(c.id)}
             >
               <div className="relative overflow-hidden">
                 <div className="aspect-video">
@@ -177,13 +211,11 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                   />
                 </div>
                 
-                {/* Progress Badge */}
                 <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1.5 bg-white px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg shadow-md">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-600"></div>
                   <span className="text-[10px] sm:text-xs font-bold text-slate-700">{c.progress}%</span>
                 </div>
 
-                {/* Lesson Count */}
                 <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
                   <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                   <span className="text-[10px] sm:text-xs font-semibold text-white">{c.lessons} lessons</span>
@@ -195,7 +227,6 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
                   {c.title}
                 </h3>
                 
-                {/* Progress Section */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-[10px] sm:text-xs">
                     <span className="text-slate-600 font-semibold">
@@ -222,7 +253,6 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           ))}
         </div>
         
-        {/* Mobile View All Button */}
         <button 
           onClick={handleExploreClick}
           className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-all"
