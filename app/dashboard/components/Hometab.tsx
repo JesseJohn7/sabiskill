@@ -41,9 +41,9 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto mb-6 sm:mb-8">
+      <div className="max-w-5xl mx-auto mb-6 sm:mb-8">
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-5xl font-black text-blue-600 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
             Hello, Alex 👋
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
