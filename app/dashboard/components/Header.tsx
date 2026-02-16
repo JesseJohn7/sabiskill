@@ -40,9 +40,9 @@ const Header: React.FC<Props> = ({ toggleSidebar }) => {
             <User className="w-5 h-5 text-slate-400" />
           </div>
           <div className="hidden sm:block">
-            <p className="text-xs sm:text-sm font-bold text-slate-900 leading-none">
+           {/*  <p className="text-xs sm:text-sm font-bold text-slate-900 leading-none">
               Alex Walker
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
