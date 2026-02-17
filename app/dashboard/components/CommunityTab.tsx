@@ -11,8 +11,6 @@ import {
   Cpu,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
-  TrendingUp,
 } from "lucide-react";
 
 interface Community {
@@ -26,7 +24,6 @@ interface Community {
   color: string;
   gradient: string;
   joinLink: string;
-  trending?: boolean;
   new?: boolean;
 }
 
@@ -42,7 +39,6 @@ const communities: Community[] = [
     color: "text-violet-600",
     gradient: "from-violet-500/10 to-purple-500/10",
     joinLink: "https://docs.google.com/forms/d/e/1FAIpQLSeu4dmCuFnYSdqATlOOaFoO5ILtFRHIjuTJev2HsbZ3_M8XwQ/viewform?pli=1",
-    trending: true,
   },
   {
     id: "design",
@@ -80,7 +76,6 @@ const communities: Community[] = [
     color: "text-sky-600",
     gradient: "from-sky-500/10 to-blue-500/10",
     joinLink: "https://discord.gg/your-languages-link",
-    trending: true,
   },
   {
     id: "literature",
@@ -118,7 +113,6 @@ const communities: Community[] = [
     color: "text-blue-600",
     gradient: "from-blue-500/10 to-indigo-500/10",
     joinLink: "https://discord.gg/your-ai-link",
-    trending: true,
   },
   {
     id: "general",
@@ -159,7 +153,6 @@ const CommunityTab: React.FC = () => {
       {/* Header */}
       <div className="max-w-5xl mx-auto mb-10">
         <div className="flex items-center gap-2 mb-2">
-          {/* <Sparkles className="w-5 h-5 text-blue-500" /> */}
           <span className="text-sm font-semibold text-blue-500 tracking-wide uppercase">
             Communities
           </span>
@@ -175,8 +168,8 @@ const CommunityTab: React.FC = () => {
       </div>
 
       {/* Category Filter */}
-      <div className="max-w-5xl mx-auto mb-8 overflow-x-auto scrollbar-none">
-        <div className="flex gap-2 w-max pb-1">
+      <div className="max-w-5xl mx-auto mb-8">
+        <div className="flex gap-2 flex-wrap">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -221,7 +214,7 @@ const CommunityTab: React.FC = () => {
                 {/* Icon + badges row */}
                 <div className="flex items-start justify-between">
                   <div
-                    className={`p-2.5 rounded-xl bg-gradient-to-br ${community.gradient} border border-white shadow-sm flex items-center justify-center`}
+                    className={`p-2 rounded-xl bg-gradient-to-br ${community.gradient} border border-white shadow-sm flex items-center justify-center`}
                   >
                     {community.logoSrc ? (
                       <img
@@ -234,11 +227,6 @@ const CommunityTab: React.FC = () => {
                     ) : null}
                   </div>
                   <div className="flex gap-1.5">
-                    {community.trending && (
-                      <span className="flex items-center gap-1 text-[11px] font-bold text-orange-600 bg-orange-50 border border-orange-100 px-2 py-0.5 rounded-full">
-                        <TrendingUp className="w-3 h-3" /> Hot
-                      </span>
-                    )}
                     {community.new && (
                       <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
                         New
