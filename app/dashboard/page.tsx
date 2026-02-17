@@ -8,6 +8,7 @@ import ExploreTab from "./components/ExploreTab";
 import ResourcesTab from "../dashboard/components/ResourcesTab";
 import SettingsTab from "../dashboard/components/SettingsTab";
 import VideoPlayer from "../dashboard/components/VideoPlayer";
+import CommunityTab from "../dashboard/components/CommunityTab"; // ← ADD THIS
 
 const DashboardPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
@@ -33,6 +34,8 @@ const DashboardPage: React.FC = () => {
         return <HomeTab onNavigate={setCurrentTab} onCourseSelect={handleCourseSelect} />;
       case "explore":
         return <ExploreTab />;
+      case "community":                // ← ADD THIS CASE
+        return <CommunityTab />;
       case "resources":
         return <ResourcesTab />;
       case "settings":
@@ -51,19 +54,17 @@ const DashboardPage: React.FC = () => {
         setIsOpen={setIsSidebarOpen}
       />
       <div className="flex-1 lg:ml-24 flex flex-col min-w-0">
-        {/* Only show Header when not in video player mode */}
         {!selectedCourse && (
-          <Header 
+          <Header
             toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
             onCourseSelect={handleCourseSelect}
           />
         )}
-        
-        <main className={`${selectedCourse ? '' : 'p-8 sm:p-12 max-w-[1400px] mx-auto'} w-full`}>
-          {/* Show VideoPlayer if course selected, otherwise show tabs */}
+
+        <main className={`${selectedCourse ? "" : "p-8 sm:p-12 max-w-[1400px] mx-auto"} w-full`}>
           {selectedCourse ? (
-            <VideoPlayer 
-              courseId={selectedCourse} 
+            <VideoPlayer
+              courseId={selectedCourse}
               onBack={handleBackFromVideo}
               onNavigate={handleNavigateFromVideo}
             />

@@ -7,7 +7,7 @@ import {
   FileText,
   Settings,
   LogOut,
-  GraduationCap,
+  Users, // ← NEW: Community icon
   X,
 } from "lucide-react";
 
@@ -20,13 +20,13 @@ interface Props {
 
 const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen }) => {
   const sidebarItems = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "explore", label: "Explore", icon: Compass },
-    { id: "resources", label: "Assets", icon: FileText },
-    { id: "settings", label: "Setup", icon: Settings },
+    { id: "home",      label: "Home",      icon: Home      },
+    { id: "explore",   label: "Explore",   icon: Compass   },
+    { id: "community", label: "Community", icon: Users     }, // ← NEW TAB
+    { id: "resources", label: "Assets",    icon: FileText  },
+    { id: "settings",  label: "Setup",     icon: Settings  },
   ];
 
-  // Lock body scroll when mobile sidebar is open
   useEffect(() => {
     if (isOpen && window.innerWidth < 1024) {
       document.body.style.overflow = "hidden";
@@ -38,7 +38,6 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
     };
   }, [isOpen]);
 
-  // Close sidebar on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen && window.innerWidth < 1024) {
@@ -51,7 +50,6 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
 
   return (
     <>
-      {/* Overlay for mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] lg:hidden transition-opacity duration-300"
@@ -60,27 +58,20 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-[120] bg-white border-r border-blue-100 flex flex-col
           transition-all duration-300 ease-out shadow-xl lg:shadow-none
           ${isOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0 lg:w-20"}
         `}
       >
-        {/* Header */}
         <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-blue-50 lg:border-0">
           <div className="flex items-center gap-3">
-           {/*  <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" strokeWidth={2.5} />
-            </div> */}
             {isOpen && (
               <span className="font-black text-xl text-blue-900 tracking-tight lg:hidden">
                 EduFlow
               </span>
             )}
           </div>
-          
-          {/* Close button for mobile */}
           <button
             onClick={() => setIsOpen(false)}
             className="lg:hidden p-2 rounded-lg hover:bg-blue-50 text-blue-400 hover:text-blue-900 transition-colors"
@@ -90,7 +81,6 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-transparent">
           {sidebarItems.map((item) => {
             const isActive = currentTab === item.id;
@@ -99,50 +89,33 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                 key={item.id}
                 onClick={() => {
                   setCurrentTab(item.id);
-                  if (window.innerWidth < 1024) {
-                    setIsOpen(false);
-                  }
+                  if (window.innerWidth < 1024) setIsOpen(false);
                 }}
                 className={`group relative flex items-center w-full rounded-xl
                   transition-all duration-200 ease-out
-                  ${isOpen 
-                    ? "px-4 py-3.5 justify-start" 
-                    : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"
-                  }
+                  ${isOpen ? "px-4 py-3.5 justify-start" : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"}
                   ${isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20" 
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
                     : "text-blue-600 hover:text-blue-700 hover:bg-blue-50 active:bg-blue-100"
                   }`}
               >
-                <item.icon 
-                  className={`transition-all duration-200 flex-shrink-0
-                    ${isOpen ? "w-5 h-5" : "w-6 h-6"}
-                  `}
+                <item.icon
+                  className={`transition-all duration-200 flex-shrink-0 ${isOpen ? "w-5 h-5" : "w-6 h-6"}`}
                   strokeWidth={isActive ? 2.5 : 2}
                 />
-
-                {/* Label when sidebar is open */}
                 {isOpen && (
-                  <span className={`ml-3.5 font-semibold text-[15px] tracking-tight whitespace-nowrap
-                    transition-all duration-200
-                  `}>
+                  <span className="ml-3.5 font-semibold text-[15px] tracking-tight whitespace-nowrap transition-all duration-200">
                     {item.label}
                   </span>
                 )}
-
-                {/* Tooltip when sidebar is collapsed - ALWAYS shows on hover for desktop */}
                 {!isOpen && (
-                  <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white 
+                  <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white
                     text-xs font-semibold rounded-lg opacity-0 invisible
                     group-hover:opacity-100 group-hover:visible
                     whitespace-nowrap transition-all duration-200 pointer-events-none
-                    shadow-lg hidden lg:block z-50
-                  ">
+                    shadow-lg hidden lg:block z-50">
                     {item.label}
-                    {/* Arrow pointing to the button */}
-                    <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] 
-                      border-4 border-transparent border-r-slate-900
-                    "></div>
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900" />
                   </div>
                 )}
               </button>
@@ -150,44 +123,30 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           })}
         </nav>
 
-        {/* Logout Button */}
         <div className="p-3 border-t border-blue-100">
-          <button 
+          <button
             className={`group relative flex items-center w-full rounded-xl
               text-blue-600 hover:text-red-600 hover:bg-red-50 active:bg-red-100
               font-semibold transition-all duration-200 ease-out
-              ${isOpen 
-                ? "px-4 py-3.5 justify-start" 
-                : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"
-              }
-            `}
+              ${isOpen ? "px-4 py-3.5 justify-start" : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"}`}
           >
-            <LogOut 
-              className={`transition-all duration-200 flex-shrink-0
-                ${isOpen ? "w-5 h-5" : "w-6 h-6"}
-              `}
+            <LogOut
+              className={`transition-all duration-200 flex-shrink-0 ${isOpen ? "w-5 h-5" : "w-6 h-6"}`}
               strokeWidth={2}
             />
-            
             {isOpen && (
               <span className="ml-3.5 text-[15px] tracking-tight whitespace-nowrap transition-all duration-200">
                 Sign Out
               </span>
             )}
-
-            {/* Tooltip when collapsed - ALWAYS shows on hover for desktop */}
             {!isOpen && (
-              <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white 
+              <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white
                 text-xs font-semibold rounded-lg opacity-0 invisible
                 group-hover:opacity-100 group-hover:visible
                 whitespace-nowrap transition-all duration-200 pointer-events-none
-                shadow-lg hidden lg:block z-50
-              ">
+                shadow-lg hidden lg:block z-50">
                 Sign Out
-                {/* Arrow pointing to the button */}
-                <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] 
-                  border-4 border-transparent border-r-slate-900
-                "></div>
+                <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900" />
               </div>
             )}
           </button>
