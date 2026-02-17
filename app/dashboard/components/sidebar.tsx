@@ -68,7 +68,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           <div className="flex items-center gap-3">
             {isOpen && (
               <span className="font-black text-xl text-blue-900 tracking-tight lg:hidden">
-                EduFlow
+                Sabiskill
               </span>
             )}
           </div>
