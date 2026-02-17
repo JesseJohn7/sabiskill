@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Users,
   BookOpen,
-  Code2,
   Palette,
   FlaskConical,
   Globe,
@@ -22,7 +21,8 @@ interface Community {
   description: string;
   members: number;
   category: string;
-  icon: React.ElementType;
+  icon?: React.ElementType;
+  logoSrc?: string;
   color: string;
   gradient: string;
   joinLink: string;
@@ -32,16 +32,16 @@ interface Community {
 
 const communities: Community[] = [
   {
-    id: "webdev",
-    name: "Web Dev Hub",
+    id: "codespace",
+    name: "Codespace",
     description:
-      "Collaborate on frontend & backend projects, share resources, and grow your full-stack skills together.",
+      "Your collaborative coding environment — build projects, get code reviews, and level up with a community of developers.",
     members: 4821,
     category: "Technology",
-    icon: Code2,
+    logoSrc: "/codespace.png",
     color: "text-violet-600",
     gradient: "from-violet-500/10 to-purple-500/10",
-    joinLink: "https://discord.gg/your-webdev-link",
+    joinLink: "https://docs.google.com/forms/d/e/1FAIpQLSeu4dmCuFnYSdqATlOOaFoO5ILtFRHIjuTJev2HsbZ3_M8XwQ/viewform?pli=1",
     trending: true,
   },
   {
@@ -221,9 +221,17 @@ const CommunityTab: React.FC = () => {
                 {/* Icon + badges row */}
                 <div className="flex items-start justify-between">
                   <div
-                    className={`p-2.5 rounded-xl bg-gradient-to-br ${community.gradient} border border-white shadow-sm`}
+                    className={`p-2.5 rounded-xl bg-gradient-to-br ${community.gradient} border border-white shadow-sm flex items-center justify-center`}
                   >
-                    <Icon className={`w-5 h-5 ${community.color}`} strokeWidth={2} />
+                    {community.logoSrc ? (
+                      <img
+                        src={community.logoSrc}
+                        alt={community.name}
+                        className="w-5 h-5 object-contain"
+                      />
+                    ) : Icon ? (
+                      <Icon className={`w-5 h-5 ${community.color}`} strokeWidth={2} />
+                    ) : null}
                   </div>
                   <div className="flex gap-1.5">
                     {community.trending && (
