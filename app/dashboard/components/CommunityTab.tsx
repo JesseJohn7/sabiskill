@@ -36,7 +36,7 @@ const communities: Community[] = [
     name: "Codespace",
     description:
       "Your collaborative coding environment — build projects, get code reviews, and level up with a community of developers.",
-    members: 4821,
+    members: 1100,
     category: "Technology",
     logoSrc: "/codespace.png",
     color: "text-violet-600",
