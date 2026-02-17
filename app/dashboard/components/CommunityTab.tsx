@@ -159,7 +159,7 @@ const CommunityTab: React.FC = () => {
       {/* Header */}
       <div className="max-w-5xl mx-auto mb-10">
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 text-blue-500" />
+          {/* <Sparkles className="w-5 h-5 text-blue-500" /> */}
           <span className="text-sm font-semibold text-blue-500 tracking-wide uppercase">
             Communities
           </span>
