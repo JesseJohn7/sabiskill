@@ -45,13 +45,14 @@ const communities: Community[] = [
     id: "superteam",
     name: "Superteam",
     description:
-      "Designers",
+      "Superteam is a global community of builders, designers, and thinkers who come together to create amazing things.",
     members: 3104,
+    logoSrc: "/superteam.jpeg",
     category: "Design",
     icon: Palette,
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
-    joinLink: "https://superteam.fun/",
+    joinLink: "https://superteam.fun",
     new: true,
   },
   {
