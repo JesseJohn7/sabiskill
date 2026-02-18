@@ -124,7 +124,23 @@ const COURSES: Record<string, CourseConfig> = {
     ],
   },
 
-  "crypto":       { title: "Cryptocurrency & Blockchain",   subtitle: "Coming Soon", playlist: [] },
+  "crypto": {
+    title: "Cryptocurrency & Blockchain",
+    subtitle: "Solana Developer Bootcamp",
+    playlist: [
+      { id: 1,  title: "Welcome to the Bootcamp",                    videoId: "amAq-WHAFs8", timestamp: 0,     duration: "3:06",    completed: false, emoji: "👋" },
+      { id: 2,  title: "Blockchain Basics",                          videoId: "amAq-WHAFs8", timestamp: 186,   duration: "7:16",    completed: false, emoji: "⛓️" },
+      { id: 3,  title: "Project 1 | Building a Favorites Program",   videoId: "amAq-WHAFs8", timestamp: 622,   duration: "27:20",   completed: false, emoji: "⭐" },
+      { id: 4,  title: "Project 2 | Creating a Voting Application",  videoId: "amAq-WHAFs8", timestamp: 2262,  duration: "1:12:50", completed: false, emoji: "🗳️" },
+      { id: 5,  title: "Project 3 | Integrating Blinks and Actions", videoId: "amAq-WHAFs8", timestamp: 6632,  duration: "41:13",   completed: false, emoji: "⚡" },
+      { id: 6,  title: "Project 4 | Building a CRUD Application",    videoId: "amAq-WHAFs8", timestamp: 9105,  duration: "1:03:06", completed: false, emoji: "🔨" },
+      { id: 7,  title: "Project 5 | Creating a Token",               videoId: "amAq-WHAFs8", timestamp: 12891, duration: "14:21",   completed: false, emoji: "🪙" },
+      { id: 8,  title: "Project 6 | Creating a NFT",                 videoId: "amAq-WHAFs8", timestamp: 13752, duration: "36:10",   completed: false, emoji: "🎨" },
+      { id: 9,  title: "Project 7 | Building a Swap Program",        videoId: "amAq-WHAFs8", timestamp: 15922, duration: "1:22:53", completed: false, emoji: "🔄" },
+      { id: 10, title: "Project 8 | Creating a Token Vesting App",   videoId: "amAq-WHAFs8", timestamp: 20895, duration: "2:43:02", completed: false, emoji: "⏳" },
+      { id: 11, title: "Project 9 | Building a Token Lottery",       videoId: "amAq-WHAFs8", timestamp: 30677, duration: "rest",    completed: false, emoji: "🎰" },
+    ],
+  },
   "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
   "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
 };
