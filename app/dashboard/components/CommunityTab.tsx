@@ -48,7 +48,7 @@ const communities: Community[] = [
       "Superteam is a global community of builders, designers, and thinkers who come together to create amazing things.",
     members: 3104,
     logoSrc: "/superteam.jpeg",
-    category: "Design",
+    category: "Technology",
     icon: Palette,
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
@@ -61,7 +61,8 @@ const communities: Community[] = [
     description:
       "Google Developer Groups (GDG) are for developers who are interested in Google technologies. Join a GDG to learn about new Google products, share your knowledge with other developers, and get involved in the Google developer community.",
     members: 2257,
-    category: "STEM",
+    logoSrc: "/gdg.png",
+    category: "Technology",
     icon: FlaskConical,
     color: "text-emerald-600",
     gradient: "from-emerald-500/10 to-teal-500/10",
