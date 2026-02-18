@@ -23,7 +23,6 @@ interface Video {
 interface VideoPlayerProps {
   courseId: string;
   onBack: () => void;
-  onNavigate?: (tab: string) => void;
 }
 
 declare global {
@@ -73,7 +72,7 @@ const PLAYLIST: Video[] = [
   { id: 37, title: "Animations",            videoId: "HGTJBPNC-Gw", timestamp: 13643, duration: "8:37",  completed: false, emoji: "🎬" },
 ];
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onNavigate }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const [playlist, setPlaylist] = useState<Video[]>(PLAYLIST);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
