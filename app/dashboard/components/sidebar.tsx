@@ -22,7 +22,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
   const sidebarItems = [
     { id: "home",      label: "Home",      icon: Home      },
     { id: "explore",   label: "Explore",   icon: Compass   },
-    { id: "community", label: "Community", icon: Users     }, // ← NEW TAB
+    { id: "community", label: "Communities", icon: Users     }, // ← NEW TAB
     { id: "resources", label: "Assets",    icon: FileText  },
     { id: "settings",  label: "Setup",     icon: Settings  },
   ];
