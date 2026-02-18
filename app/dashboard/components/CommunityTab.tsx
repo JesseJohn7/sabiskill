@@ -42,16 +42,16 @@ const communities: Community[] = [
       "https://docs.google.com/forms/d/e/1FAIpQLSeu4dmCuFnYSdqATlOOaFoO5ILtFRHIjuTJev2HsbZ3_M8XwQ/viewform?pli=1",
   },
   {
-    id: "design",
-    name: "Creative Design",
+    id: "superteam",
+    name: "Superteam",
     description:
-      "UI/UX designers sharing feedback, design systems, Figma tips, and portfolio critiques.",
+      "Designers",
     members: 3104,
     category: "Design",
     icon: Palette,
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
-    joinLink: "https://discord.gg/your-design-link",
+    joinLink: "https://superteam.fun/",
     new: true,
   },
   {

@@ -31,7 +31,8 @@ declare global {
   }
 }
 
-// ─── Course data ──────────────────────────────────────────────────────────────
+// ─── All courses ──────────────────────────────────────────────────────────────
+
 const COURSES: Record<string, CourseConfig> = {
 
   "web-dev": {
@@ -93,34 +94,34 @@ const COURSES: Record<string, CourseConfig> = {
     title: "JavaScript Full Course",
     subtitle: "From Beginner to Advanced",
     playlist: [
-      { id: 1,  title: "Quick Start",                      videoId: "EfAl9bwzVZk", timestamp: 0,     duration: "7:43",    completed: false, emoji: "🚀" },
-      { id: 2,  title: "Link JavaScript to HTML",          videoId: "EfAl9bwzVZk", timestamp: 463,   duration: "7:33",    completed: false, emoji: "🔗" },
-      { id: 3,  title: "Strings",                          videoId: "EfAl9bwzVZk", timestamp: 916,   duration: "6:58",    completed: false, emoji: "📝" },
-      { id: 4,  title: "Numbers",                          videoId: "EfAl9bwzVZk", timestamp: 1334,  duration: "5:40",    completed: false, emoji: "🔢" },
-      { id: 5,  title: "Math Methods",                     videoId: "EfAl9bwzVZk", timestamp: 1674,  duration: "5:03",    completed: false, emoji: "➗" },
-      { id: 6,  title: "Code Challenge",                   videoId: "EfAl9bwzVZk", timestamp: 1977,  duration: "7:07",    completed: false, emoji: "🏆" },
-      { id: 7,  title: "If Statements",                    videoId: "EfAl9bwzVZk", timestamp: 2404,  duration: "6:06",    completed: false, emoji: "❓" },
-      { id: 8,  title: "Switch Statements",                videoId: "EfAl9bwzVZk", timestamp: 2770,  duration: "3:29",    completed: false, emoji: "🔀" },
-      { id: 9,  title: "Ternary Operators",                videoId: "EfAl9bwzVZk", timestamp: 2979,  duration: "4:59",    completed: false, emoji: "⚡" },
-      { id: 10, title: "User Input",                       videoId: "EfAl9bwzVZk", timestamp: 3278,  duration: "9:59",    completed: false, emoji: "⌨️" },
-      { id: 11, title: "Your First Game",                  videoId: "EfAl9bwzVZk", timestamp: 3877,  duration: "15:48",   completed: false, emoji: "🎮" },
-      { id: 12, title: "Loops",                            videoId: "EfAl9bwzVZk", timestamp: 4825,  duration: "15:54",   completed: false, emoji: "🔄" },
-      { id: 13, title: "Functions",                        videoId: "EfAl9bwzVZk", timestamp: 5779,  duration: "11:50",   completed: false, emoji: "🧩" },
-      { id: 14, title: "Scope - var, let, const",          videoId: "EfAl9bwzVZk", timestamp: 6489,  duration: "17:19",   completed: false, emoji: "🔭" },
-      { id: 15, title: "Arrays",                           videoId: "EfAl9bwzVZk", timestamp: 7528,  duration: "28:19",   completed: false, emoji: "📦" },
-      { id: 16, title: "Refactor the Game with Arrays",    videoId: "EfAl9bwzVZk", timestamp: 9227,  duration: "18:05",   completed: false, emoji: "🎲" },
-      { id: 17, title: "Objects",                          videoId: "EfAl9bwzVZk", timestamp: 10312, duration: "22:51",   completed: false, emoji: "🗂️" },
-      { id: 18, title: "Classes",                          videoId: "EfAl9bwzVZk", timestamp: 11683, duration: "30:51",   completed: false, emoji: "🏗️" },
-      { id: 19, title: "JSON",                             videoId: "EfAl9bwzVZk", timestamp: 13534, duration: "6:45",    completed: false, emoji: "📋" },
-      { id: 20, title: "Handling Errors",                  videoId: "EfAl9bwzVZk", timestamp: 13939, duration: "14:35",   completed: false, emoji: "🚨" },
-      { id: 21, title: "Document Object Model (DOM)",      videoId: "EfAl9bwzVZk", timestamp: 14814, duration: "35:12",   completed: false, emoji: "🌐" },
-      { id: 22, title: "Event Listeners",                  videoId: "EfAl9bwzVZk", timestamp: 16926, duration: "39:01",   completed: false, emoji: "👂" },
-      { id: 23, title: "Web Storage API",                  videoId: "EfAl9bwzVZk", timestamp: 19267, duration: "18:33",   completed: false, emoji: "💾" },
-      { id: 24, title: "Modules",                          videoId: "EfAl9bwzVZk", timestamp: 20380, duration: "16:47",   completed: false, emoji: "📦" },
-      { id: 25, title: "Higher Order Functions",           videoId: "EfAl9bwzVZk", timestamp: 21387, duration: "10:17",   completed: false, emoji: "🧠" },
-      { id: 26, title: "Promises / Fetch / Async & Await", videoId: "EfAl9bwzVZk", timestamp: 22004, duration: "1:04:34", completed: false, emoji: "⏳" },
-      { id: 27, title: "Regular Expressions",              videoId: "EfAl9bwzVZk", timestamp: 25878, duration: "21:48",   completed: false, emoji: "🔍" },
-      { id: 28, title: "Applying RegEx in JavaScript",     videoId: "EfAl9bwzVZk", timestamp: 27186, duration: "rest",    completed: false, emoji: "✅" },
+      { id: 1,  title: "Quick Start",                       videoId: "EfAl9bwzVZk", timestamp: 0,     duration: "7:43",    completed: false, emoji: "🚀" },
+      { id: 2,  title: "Link JavaScript to HTML",           videoId: "EfAl9bwzVZk", timestamp: 463,   duration: "7:33",    completed: false, emoji: "🔗" },
+      { id: 3,  title: "Strings",                           videoId: "EfAl9bwzVZk", timestamp: 916,   duration: "6:58",    completed: false, emoji: "📝" },
+      { id: 4,  title: "Numbers",                           videoId: "EfAl9bwzVZk", timestamp: 1334,  duration: "5:40",    completed: false, emoji: "🔢" },
+      { id: 5,  title: "Math Methods",                      videoId: "EfAl9bwzVZk", timestamp: 1674,  duration: "5:03",    completed: false, emoji: "➗" },
+      { id: 6,  title: "Code Challenge",                    videoId: "EfAl9bwzVZk", timestamp: 1977,  duration: "7:07",    completed: false, emoji: "🏆" },
+      { id: 7,  title: "If Statements",                     videoId: "EfAl9bwzVZk", timestamp: 2404,  duration: "6:06",    completed: false, emoji: "❓" },
+      { id: 8,  title: "Switch Statements",                 videoId: "EfAl9bwzVZk", timestamp: 2770,  duration: "3:29",    completed: false, emoji: "🔀" },
+      { id: 9,  title: "Ternary Operators",                 videoId: "EfAl9bwzVZk", timestamp: 2979,  duration: "4:59",    completed: false, emoji: "⚡" },
+      { id: 10, title: "User Input",                        videoId: "EfAl9bwzVZk", timestamp: 3278,  duration: "9:59",    completed: false, emoji: "⌨️" },
+      { id: 11, title: "Your First Game",                   videoId: "EfAl9bwzVZk", timestamp: 3877,  duration: "15:48",   completed: false, emoji: "🎮" },
+      { id: 12, title: "Loops",                             videoId: "EfAl9bwzVZk", timestamp: 4825,  duration: "15:54",   completed: false, emoji: "🔄" },
+      { id: 13, title: "Functions",                         videoId: "EfAl9bwzVZk", timestamp: 5779,  duration: "11:50",   completed: false, emoji: "🧩" },
+      { id: 14, title: "Scope - var, let, const",           videoId: "EfAl9bwzVZk", timestamp: 6489,  duration: "17:19",   completed: false, emoji: "🔭" },
+      { id: 15, title: "Arrays",                            videoId: "EfAl9bwzVZk", timestamp: 7528,  duration: "28:19",   completed: false, emoji: "📦" },
+      { id: 16, title: "Refactor the Game with Arrays",     videoId: "EfAl9bwzVZk", timestamp: 9227,  duration: "18:05",   completed: false, emoji: "🎲" },
+      { id: 17, title: "Objects",                           videoId: "EfAl9bwzVZk", timestamp: 10312, duration: "22:51",   completed: false, emoji: "🗂️" },
+      { id: 18, title: "Classes",                           videoId: "EfAl9bwzVZk", timestamp: 11683, duration: "30:51",   completed: false, emoji: "🏗️" },
+      { id: 19, title: "JSON",                              videoId: "EfAl9bwzVZk", timestamp: 13534, duration: "6:45",    completed: false, emoji: "📋" },
+      { id: 20, title: "Handling Errors",                   videoId: "EfAl9bwzVZk", timestamp: 13939, duration: "14:35",   completed: false, emoji: "🚨" },
+      { id: 21, title: "Document Object Model (DOM)",       videoId: "EfAl9bwzVZk", timestamp: 14814, duration: "35:12",   completed: false, emoji: "🌐" },
+      { id: 22, title: "Event Listeners",                   videoId: "EfAl9bwzVZk", timestamp: 16926, duration: "39:01",   completed: false, emoji: "👂" },
+      { id: 23, title: "Web Storage API",                   videoId: "EfAl9bwzVZk", timestamp: 19267, duration: "18:33",   completed: false, emoji: "💾" },
+      { id: 24, title: "Modules",                           videoId: "EfAl9bwzVZk", timestamp: 20380, duration: "16:47",   completed: false, emoji: "📦" },
+      { id: 25, title: "Higher Order Functions",            videoId: "EfAl9bwzVZk", timestamp: 21387, duration: "10:17",   completed: false, emoji: "🧠" },
+      { id: 26, title: "Promises / Fetch / Async & Await",  videoId: "EfAl9bwzVZk", timestamp: 22004, duration: "1:04:34", completed: false, emoji: "⏳" },
+      { id: 27, title: "Regular Expressions",               videoId: "EfAl9bwzVZk", timestamp: 25878, duration: "21:48",   completed: false, emoji: "🔍" },
+      { id: 28, title: "Applying RegEx in JavaScript",      videoId: "EfAl9bwzVZk", timestamp: 27186, duration: "rest",    completed: false, emoji: "✅" },
     ],
   },
 
@@ -141,6 +142,7 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 11, title: "Project 9 | Building a Token Lottery",       videoId: "amAq-WHAFs8", timestamp: 30677, duration: "rest",    completed: false, emoji: "🎰" },
     ],
   },
+
   "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
   "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
 };
@@ -150,6 +152,7 @@ const COURSES: Record<string, CourseConfig> = {
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const course = COURSES[courseId];
 
+  // Coming soon / unknown course
   if (!course || course.playlist.length === 0) {
     return (
       <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
@@ -158,9 +161,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           {course ? course.title : "Course Not Found"}
         </h2>
         <p className="text-slate-500 text-sm">
-          {course
-            ? "This course doesn't have video content yet. Check back soon!"
-            : "We couldn't find that course."}
+          {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
         </p>
         <button
           onClick={onBack}
@@ -180,29 +181,21 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // ── Refs ────────────────────────────────────────────────────────────────────
-  const playerRef  = useRef<any>(null);
-  const pollRef    = useRef<ReturnType<typeof setInterval> | null>(null);
-  const ytApiReady = useRef(false);
-
-  // THE KEY FIX: store everything the poll callback needs in a single ref
-  // so it always reads fresh data without stale closures, for every course.
-  const liveRef = useRef({
-    playlist: course.playlist.map((v) => ({ ...v, completed: false })),
+  // ── All mutable state lives in one ref so the interval NEVER has stale data ─
+  // This is the key pattern: plain setInterval reads from refs, never closures.
+  const refs = useRef({
+    player:      null as any,
+    interval:    null as ReturnType<typeof setInterval> | null,
+    ytReady:     false,
+    // current course timestamps — updated before interval restarts
+    timestamps:  course.playlist.map((v) => v.timestamp),
+    // React state setters — stable references, safe to store once
     setPlaylist,
     setCurrentVideoIndex,
     setShowConfetti,
   });
 
-  // Keep liveRef in sync with latest state/callbacks on every render
-  liveRef.current.playlist         = playlist;
-  liveRef.current.setPlaylist      = setPlaylist;
-  liveRef.current.setCurrentVideoIndex = setCurrentVideoIndex;
-  liveRef.current.setShowConfetti  = setShowConfetti;
-
-  // Also store the current course's raw PLAYLIST in a ref so the poll
-  // always checks against the right timestamps, even after course changes
-  const rawPlaylistRef = useRef(course.playlist);
+  // Sync timestamps ref whenever courseId changes (done in effect below)
 
   // ── Derived ─────────────────────────────────────────────────────────────────
   const currentVideo       = playlist[currentVideoIndex];
@@ -210,36 +203,36 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
   const allCompleted       = playlist.every((v) => v.completed);
 
-  // ── Polling helpers ─────────────────────────────────────────────────────────
+  // ── Pure functions — no closures over component state ────────────────────────
 
-  const stopPolling = () => {
-    if (pollRef.current) {
-      clearInterval(pollRef.current);
-      pollRef.current = null;
+  function stopPolling() {
+    if (refs.current.interval) {
+      clearInterval(refs.current.interval);
+      refs.current.interval = null;
     }
-  };
+  }
 
-  const startPolling = () => {
+  function startPolling() {
     stopPolling();
-    pollRef.current = setInterval(() => {
-      const player = playerRef.current;
+    refs.current.interval = setInterval(() => {
+      const player = refs.current.player;
       if (!player || typeof player.getCurrentTime !== "function") return;
 
       const currentTime: number = player.getCurrentTime();
-      const rawPl = rawPlaylistRef.current; // always current course's timestamps
+      const timestamps = refs.current.timestamps; // always the current course's
 
-      // Find which lesson we're currently in based on playback time
+      // Which lesson are we currently in?
       let activeIndex = 0;
-      for (let i = 0; i < rawPl.length; i++) {
-        if (currentTime >= rawPl[i].timestamp) activeIndex = i;
+      for (let i = 0; i < timestamps.length; i++) {
+        if (currentTime >= timestamps[i]) activeIndex = i;
         else break;
       }
 
-      // Update highlighted lesson in sidebar
-      liveRef.current.setCurrentVideoIndex(activeIndex);
+      // Update the highlighted lesson in the sidebar
+      refs.current.setCurrentVideoIndex(activeIndex);
 
-      // Mark all lessons whose timestamp has been passed as complete
-      liveRef.current.setPlaylist((prev) => {
+      // Mark every lesson before activeIndex as completed
+      refs.current.setPlaylist((prev: Video[]) => {
         let changed = false;
         const updated = prev.map((video, i) => {
           if (i < activeIndex && !video.completed) {
@@ -249,55 +242,53 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           return video;
         });
         if (changed && updated.every((v) => v.completed)) {
-          liveRef.current.setShowConfetti(true);
-          setTimeout(() => liveRef.current.setShowConfetti(false), 5000);
+          refs.current.setShowConfetti(true);
+          setTimeout(() => refs.current.setShowConfetti(false), 5000);
         }
         return changed ? updated : prev;
       });
     }, 1000);
-  };
+  }
 
-  // ── Bootstrap / course-change effect ────────────────────────────────────────
+  // ── Bootstrap effect — reruns when courseId changes ──────────────────────────
   useEffect(() => {
-    const freshPlaylist = course.playlist.map((v) => ({ ...v, completed: false }));
+    // 1. Update timestamps ref to the new course BEFORE restarting the poll
+    refs.current.timestamps = course.playlist.map((v) => v.timestamp);
 
-    // Update the raw playlist ref FIRST so poll uses new course's timestamps
-    rawPlaylistRef.current = course.playlist;
-
-    // Reset state for the new course
-    setPlaylist(freshPlaylist);
+    // 2. Reset visible state
+    setPlaylist(course.playlist.map((v) => ({ ...v, completed: false })));
     setCurrentVideoIndex(0);
     stopPolling();
 
-    const initPlayer = () => {
-      if (playerRef.current?.loadVideoById) {
-        // Player already exists — swap video and restart poll
-        playerRef.current.loadVideoById({
+    function initPlayer() {
+      if (refs.current.player?.loadVideoById) {
+        // Player already exists — just load the new video
+        refs.current.player.loadVideoById({
           videoId: course.playlist[0].videoId,
           startSeconds: 0,
         });
         startPolling();
       } else {
-        // First load — create the YT player
-        playerRef.current = new window.YT.Player("yt-player", {
+        // First time — create the player
+        refs.current.player = new window.YT.Player("yt-player", {
           videoId: course.playlist[0].videoId,
           playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
           events: {
             onReady: () => startPolling(),
             onStateChange: (event: any) => {
-              // 1 = playing, 3 = buffering → poll; anything else → stop
+              // 1 = playing, 3 = buffering → poll; pause/end → stop
               if (event.data === 1 || event.data === 3) startPolling();
               else stopPolling();
             },
           },
         });
       }
-    };
+    }
 
     if (window.YT?.Player) {
       initPlayer();
-    } else if (!ytApiReady.current) {
-      ytApiReady.current = true;
+    } else if (!refs.current.ytReady) {
+      refs.current.ytReady = true;
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
@@ -305,13 +296,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     }
 
     return () => stopPolling();
-  }, [courseId]); // re-run whenever user opens a different course
+  }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
   const handleVideoSelect = (index: number) => {
     if (index !== 0 && !playlist[index - 1].completed) return;
-    playerRef.current?.seekTo(course.playlist[index].timestamp, true);
+    refs.current.player?.seekTo(course.playlist[index].timestamp, true);
     setCurrentVideoIndex(index);
   };
 
@@ -327,7 +318,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     });
     const next = currentVideoIndex + 1;
     if (next < course.playlist.length) {
-      playerRef.current?.seekTo(course.playlist[next].timestamp, true);
+      refs.current.player?.seekTo(course.playlist[next].timestamp, true);
       setCurrentVideoIndex(next);
     }
   };
@@ -335,7 +326,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const handlePreviousVideo = () => {
     if (currentVideoIndex > 0) {
       const i = currentVideoIndex - 1;
-      playerRef.current?.seekTo(course.playlist[i].timestamp, true);
+      refs.current.player?.seekTo(course.playlist[i].timestamp, true);
       setCurrentVideoIndex(i);
     }
   };
@@ -343,7 +334,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const handleNextVideo = () => {
     const i = currentVideoIndex + 1;
     if (i < course.playlist.length && currentVideo.completed) {
-      playerRef.current?.seekTo(course.playlist[i].timestamp, true);
+      refs.current.player?.seekTo(course.playlist[i].timestamp, true);
       setCurrentVideoIndex(i);
     }
   };
@@ -380,6 +371,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       </div>
 
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
+
         {/* Main Content */}
         <div className="flex-1 min-w-0">
 
@@ -486,7 +478,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
               {playlist.map((video, index) => {
                 const isUnlocked = isVideoUnlocked(index);
                 const isCurrent  = index === currentVideoIndex;
-
                 return (
                   <button
                     key={video.id}
@@ -536,4 +527,4 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   );
 };
 
-export default VideoPlayer;
+export default VideoPlayer
