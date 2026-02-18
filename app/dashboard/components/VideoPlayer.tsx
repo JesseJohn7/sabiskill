@@ -1,13 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  ChevronLeft,
-  Lock,
-  Check,
-  Play,
-  Clock,
-  ArrowRight,
-} from "lucide-react";
+import { ChevronLeft, Lock, Check, Play, Clock, ArrowRight } from "lucide-react";
 import Confetti from "react-confetti";
 
 interface Video {
@@ -38,9 +31,10 @@ declare global {
   }
 }
 
-// ─── All course playlists ────────────────────────────────────────────────────
-
+// ─── Course data ──────────────────────────────────────────────────────────────
+// Keys here must EXACTLY match the id values in HomeTab's COURSES array
 const COURSES: Record<string, CourseConfig> = {
+
   "web-dev": {
     title: "Complete Web Development",
     subtitle: "HTML & CSS Full Course",
@@ -89,81 +83,72 @@ const COURSES: Record<string, CourseConfig> = {
     title: "UI/UX Design Fundamentals",
     subtitle: "Full Design Course",
     playlist: [
-      { id: 1, title: "Introduction",  videoId: "c9Wg6Cb_YlU", timestamp: 0,    duration: "1:27",    completed: false, emoji: "👋" },
-      { id: 2, title: "Wireframing",   videoId: "c9Wg6Cb_YlU", timestamp: 87,   duration: "29:31",   completed: false, emoji: "✏️" },
-      { id: 3, title: "UI Layout",     videoId: "c9Wg6Cb_YlU", timestamp: 1858, duration: "35:40",   completed: false, emoji: "🖥️" },
-      { id: 4, title: "Mockup",        videoId: "c9Wg6Cb_YlU", timestamp: 3998, duration: "remaining", completed: false, emoji: "🎨" },
+      { id: 1, title: "Introduction", videoId: "c9Wg6Cb_YlU", timestamp: 0,    duration: "1:27",  completed: false, emoji: "👋" },
+      { id: 2, title: "Wireframing",  videoId: "c9Wg6Cb_YlU", timestamp: 87,   duration: "29:31", completed: false, emoji: "✏️" },
+      { id: 3, title: "UI Layout",    videoId: "c9Wg6Cb_YlU", timestamp: 1858, duration: "35:40", completed: false, emoji: "🖥️" },
+      { id: 4, title: "Mockup",       videoId: "c9Wg6Cb_YlU", timestamp: 3998, duration: "rest",  completed: false, emoji: "🎨" },
     ],
   },
+
+  // Coming soon — shows placeholder screen
+  "crypto":       { title: "Cryptocurrency & Blockchain",   subtitle: "Coming Soon", playlist: [] },
+  "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
+  "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
 };
 
-// ─── Fallback: if courseId doesn't match, use web-dev ───────────────────────
-const getCourse = (courseId: string): CourseConfig =>
-  COURSES[courseId] ?? COURSES["web-dev"];
-
-// ─── Component ───────────────────────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
-  const course = getCourse(courseId);
+  const course = COURSES[courseId];
+
+  // Unknown course or no content yet → placeholder
+  if (!course || course.playlist.length === 0) {
+    return (
+      <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
+        <div className="text-5xl">🚧</div>
+        <h2 className="text-xl font-bold text-slate-700">
+          {course ? course.title : "Course Not Found"}
+        </h2>
+        <p className="text-slate-500 text-sm">
+          {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
+        </p>
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors font-semibold text-slate-700 text-sm"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Back
+        </button>
+      </div>
+    );
+  }
+
   const PLAYLIST = course.playlist;
 
-  const [playlist, setPlaylist] = useState<Video[]>(PLAYLIST);
+  const [playlist, setPlaylist] = useState<Video[]>(() =>
+    PLAYLIST.map((v) => ({ ...v, completed: false }))
+  );
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const playerRef = useRef<any>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const ytApiLoaded = useRef(false);
+  const playlistRef = useRef(PLAYLIST);
 
   const currentVideo = playlist[currentVideoIndex];
   const completedCount = playlist.filter((v) => v.completed).length;
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
   const allCompleted = playlist.every((v) => v.completed);
 
-  const getLessonIndexForTime = (currentTime: number): number => {
+  const getLessonIndexForTime = useCallback((currentTime: number): number => {
+    const pl = playlistRef.current;
     let activeIndex = 0;
-    for (let i = 0; i < PLAYLIST.length; i++) {
-      if (currentTime >= PLAYLIST[i].timestamp) {
-        activeIndex = i;
-      } else {
-        break;
-      }
+    for (let i = 0; i < pl.length; i++) {
+      if (currentTime >= pl[i].timestamp) activeIndex = i;
+      else break;
     }
     return activeIndex;
-  };
-
-  const startPolling = useCallback(() => {
-    if (pollRef.current) clearInterval(pollRef.current);
-
-    pollRef.current = setInterval(() => {
-      if (!playerRef.current || typeof playerRef.current.getCurrentTime !== "function") return;
-
-      const currentTime: number = playerRef.current.getCurrentTime();
-      const activeIndex = getLessonIndexForTime(currentTime);
-
-      setCurrentVideoIndex(activeIndex);
-
-      setPlaylist((prev) => {
-        let changed = false;
-        const updated = prev.map((video, i) => {
-          if (i < activeIndex && !video.completed) {
-            changed = true;
-            return { ...video, completed: true };
-          }
-          return video;
-        });
-
-        if (changed) {
-          const allDone = updated.every((v) => v.completed);
-          if (allDone) {
-            setShowConfetti(true);
-            setTimeout(() => setShowConfetti(false), 5000);
-          }
-        }
-
-        return changed ? updated : prev;
-      });
-    }, 1000);
   }, []);
 
   const stopPolling = useCallback(() => {
@@ -173,53 +158,72 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     }
   }, []);
 
-  useEffect(() => {
-    // Reset state when course changes
-    setPlaylist(PLAYLIST.map(v => ({ ...v, completed: false })));
-    setCurrentVideoIndex(0);
-
-    if (ytApiLoaded.current && playerRef.current?.loadVideoById) {
-      // API already loaded — just load the new video
-      playerRef.current.loadVideoById({
-        videoId: PLAYLIST[0].videoId,
-        startSeconds: 0,
+  const startPolling = useCallback(() => {
+    stopPolling();
+    pollRef.current = setInterval(() => {
+      if (!playerRef.current || typeof playerRef.current.getCurrentTime !== "function") return;
+      const currentTime: number = playerRef.current.getCurrentTime();
+      const activeIndex = getLessonIndexForTime(currentTime);
+      setCurrentVideoIndex(activeIndex);
+      setPlaylist((prev) => {
+        let changed = false;
+        const updated = prev.map((video, i) => {
+          if (i < activeIndex && !video.completed) {
+            changed = true;
+            return { ...video, completed: true };
+          }
+          return video;
+        });
+        if (changed && updated.every((v) => v.completed)) {
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 5000);
+        }
+        return changed ? updated : prev;
       });
-      return;
-    }
+    }, 1000);
+  }, [getLessonIndexForTime, stopPolling]);
 
-    if (ytApiLoaded.current) return;
-    ytApiLoaded.current = true;
+  useEffect(() => {
+    // Update refs and reset state for new course
+    playlistRef.current = PLAYLIST;
+    setPlaylist(PLAYLIST.map((v) => ({ ...v, completed: false })));
+    setCurrentVideoIndex(0);
+    stopPolling();
 
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-
-    window.onYouTubeIframeAPIReady = () => {
+    const initPlayer = () => {
+      if (playerRef.current?.loadVideoById) {
+        playerRef.current.loadVideoById({ videoId: PLAYLIST[0].videoId, startSeconds: 0 });
+        startPolling();
+        return;
+      }
       playerRef.current = new window.YT.Player("yt-player", {
         videoId: PLAYLIST[0].videoId,
         playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
         events: {
           onReady: () => startPolling(),
           onStateChange: (event: any) => {
-            if (event.data === 1 || event.data === 3) {
-              startPolling();
-            } else {
-              stopPolling();
-            }
+            if (event.data === 1 || event.data === 3) startPolling();
+            else stopPolling();
           },
         },
       });
     };
 
-    return () => {
-      stopPolling();
-      playerRef.current?.destroy();
-    };
-  }, [courseId]);
+    if (window.YT?.Player) {
+      initPlayer();
+    } else if (!ytApiLoaded.current) {
+      ytApiLoaded.current = true;
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      window.onYouTubeIframeAPIReady = initPlayer;
+    }
+
+    return () => stopPolling();
+  }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleVideoSelect = (index: number) => {
-    const isUnlocked = index === 0 || playlist[index - 1].completed;
-    if (!isUnlocked) return;
+    if (index !== 0 && !playlist[index - 1].completed) return;
     playerRef.current?.seekTo(PLAYLIST[index].timestamp, true);
     setCurrentVideoIndex(index);
   };
@@ -228,18 +232,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     setPlaylist((prev) => {
       const updated = [...prev];
       updated[currentVideoIndex] = { ...updated[currentVideoIndex], completed: true };
-      const allDone = updated.every((v) => v.completed);
-      if (allDone) {
+      if (updated.every((v) => v.completed)) {
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
       }
       return updated;
     });
-
-    const nextIndex = currentVideoIndex + 1;
-    if (nextIndex < PLAYLIST.length) {
-      playerRef.current?.seekTo(PLAYLIST[nextIndex].timestamp, true);
-      setCurrentVideoIndex(nextIndex);
+    const next = currentVideoIndex + 1;
+    if (next < PLAYLIST.length) {
+      playerRef.current?.seekTo(PLAYLIST[next].timestamp, true);
+      setCurrentVideoIndex(next);
     }
   };
 
@@ -292,13 +294,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-
-          {/* YouTube Player */}
           <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
             <div id="yt-player" className="w-full h-full" />
           </div>
 
-          {/* Video Info */}
           <div className="mt-4 bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -331,15 +330,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
               )}
             </div>
 
-            {/* Info strip */}
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
-              <span>
-                Lessons auto-complete as you watch — once the video reaches the next lesson's timestamp, the previous lesson is marked done automatically
-              </span>
+              <span>Lessons auto-complete as you watch — once the video reaches the next lesson's timestamp, the previous one is marked done</span>
             </div>
 
-            {/* Navigation Buttons */}
             <div className="flex gap-2 mt-4">
               <button
                 onClick={handlePreviousVideo}
@@ -360,7 +355,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
             </div>
           </div>
 
-          {/* Completion Card */}
           {allCompleted && (
             <div className="mt-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 text-white text-center shadow-lg">
               <div className="text-4xl mb-3">🎉</div>
