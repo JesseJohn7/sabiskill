@@ -56,7 +56,7 @@ const communities: Community[] = [
     /* new: true, */
   },
   {
-    id: "science",
+    id: "gdg",
     name: "Google Developer Groups",
     description:
       "Google Developer Groups (GDG) are for developers who are interested in Google technologies. Join a GDG to learn about new Google products, share your knowledge with other developers, and get involved in the Google developer community.",
@@ -69,16 +69,17 @@ const communities: Community[] = [
     joinLink: "https://developers.google.com/community",
   },
   {
-    id: "languages",
-    name: "World Languages",
+    id: "shecodeafrica",
+    name: "shecodeafrica",
     description:
-      "Practice speaking, find language exchange partners, and explore cultures from every corner of the world.",
+      "SheCodeAfrica is a community of women in tech who are passionate about coding and technology. Join us to learn, grow, and connect with other women in tech.",
     members: 5603,
-    category: "Languages",
+    logoSrc: "/she.png",
+    category: "Technology",
     icon: Globe,
     color: "text-sky-600",
     gradient: "from-sky-500/10 to-blue-500/10",
-    joinLink: "https://discord.gg/your-languages-link",
+    joinLink: "https://shecodeafrica.org/community",
   },
   {
     id: "literature",
