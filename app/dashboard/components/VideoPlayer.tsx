@@ -231,13 +231,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
 
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="bg-slate-50">
       {showConfetti && <Confetti />}
 
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-4 sticky top-0 z-10">
-        <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-          <ChevronLeft className="w-5 h-5" />
+      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-4 sticky top-0 z-10">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Back
         </button>
         <div className="flex-1 min-w-0">
           <h1 className="font-bold text-slate-800 truncate">Complete Web Development</h1>
