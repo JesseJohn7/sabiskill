@@ -168,7 +168,7 @@ const CommunityTab: React.FC = () => {
             </h1>
             <p className="mt-2 text-sm sm:text-base lg:text-lg text-slate-500 max-w-xl leading-relaxed">
               Join communities of learners who share your interests. Click{" "}
-              <span className="font-semibold text-blue-600">Get Started</span> to
+              <span>Get Started</span> to
               jump into the conversation.
             </p>
           </div>
