@@ -7,10 +7,6 @@ import {
   Play,
   Clock,
   ArrowRight,
-  Home,
-  Compass,
-  FileText,
-  Settings,
 } from "lucide-react";
 import Confetti from "react-confetti";
 
@@ -233,12 +229,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onNavigate 
   const isVideoUnlocked = (index: number) =>
     index === 0 || playlist[index - 1].completed;
 
-  const sidebarItems = [
-    { id: "home",      label: "Home",    icon: Home },
-    { id: "explore",   label: "Explore", icon: Compass },
-    { id: "resources", label: "Assets",  icon: FileText },
-    { id: "settings",  label: "Setup",   icon: Settings },
-  ];
+
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -263,19 +254,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onNavigate 
         </div>
       </div>
 
-      {/* Quick Navigation Tabs */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 flex gap-2 overflow-x-auto">
-        {sidebarItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onNavigate?.(item.id)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700"
-          >
-            <item.icon className="w-4 h-4" />
-            {item.label}
-          </button>
-        ))}
-      </div>
+
 
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
         {/* Main Content */}
