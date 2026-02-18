@@ -20,6 +20,12 @@ interface Video {
   emoji?: string;
 }
 
+interface CourseConfig {
+  title: string;
+  subtitle: string;
+  playlist: Video[];
+}
+
 interface VideoPlayerProps {
   courseId: string;
   onBack: () => void;
@@ -32,47 +38,75 @@ declare global {
   }
 }
 
-const PLAYLIST: Video[] = [
-  { id: 1,  title: "Introduction to HTML",  videoId: "HGTJBPNC-Gw", timestamp: 0,     duration: "1:56",  completed: false, emoji: "🌎" },
-  { id: 2,  title: "Hyperlinks",            videoId: "HGTJBPNC-Gw", timestamp: 667,   duration: "4:08",  completed: false, emoji: "👈" },
-  { id: 3,  title: "Images",                videoId: "HGTJBPNC-Gw", timestamp: 915,   duration: "6:18",  completed: false, emoji: "🖼️" },
-  { id: 4,  title: "Audio",                 videoId: "HGTJBPNC-Gw", timestamp: 1293,  duration: "5:16",  completed: false, emoji: "🔊" },
-  { id: 5,  title: "Video",                 videoId: "HGTJBPNC-Gw", timestamp: 1609,  duration: "4:31",  completed: false, emoji: "🎥" },
-  { id: 6,  title: "Favicons",              videoId: "HGTJBPNC-Gw", timestamp: 1880,  duration: "2:59",  completed: false, emoji: "🗿" },
-  { id: 7,  title: "Text Formatting",       videoId: "HGTJBPNC-Gw", timestamp: 2059,  duration: "3:51",  completed: false, emoji: "💬" },
-  { id: 8,  title: "Span & Div",            videoId: "HGTJBPNC-Gw", timestamp: 2290,  duration: "4:47",  completed: false, emoji: "🏁" },
-  { id: 9,  title: "Lists",                 videoId: "HGTJBPNC-Gw", timestamp: 2577,  duration: "6:34",  completed: false, emoji: "📄" },
-  { id: 10, title: "Tables",                videoId: "HGTJBPNC-Gw", timestamp: 2971,  duration: "4:42",  completed: false, emoji: "📊" },
-  { id: 11, title: "Buttons",               videoId: "HGTJBPNC-Gw", timestamp: 3253,  duration: "5:15",  completed: false, emoji: "🔘" },
-  { id: 12, title: "Forms",                 videoId: "HGTJBPNC-Gw", timestamp: 3568,  duration: "17:54", completed: false, emoji: "📝" },
-  { id: 13, title: "Headers & Footers",     videoId: "HGTJBPNC-Gw", timestamp: 4642,  duration: "5:48",  completed: false, emoji: "🤯" },
-  { id: 14, title: "Introduction to CSS",   videoId: "HGTJBPNC-Gw", timestamp: 4990,  duration: "8:00",  completed: false, emoji: "🎨" },
-  { id: 15, title: "Colors",                videoId: "HGTJBPNC-Gw", timestamp: 5470,  duration: "4:12",  completed: false, emoji: "🖌️" },
-  { id: 16, title: "Fonts",                 videoId: "HGTJBPNC-Gw", timestamp: 5722,  duration: "7:20",  completed: false, emoji: "🔤" },
-  { id: 17, title: "Borders",               videoId: "HGTJBPNC-Gw", timestamp: 6162,  duration: "4:27",  completed: false, emoji: "🖼" },
-  { id: 18, title: "Shadows",               videoId: "HGTJBPNC-Gw", timestamp: 6429,  duration: "3:18",  completed: false, emoji: "👥" },
-  { id: 19, title: "Margins",               videoId: "HGTJBPNC-Gw", timestamp: 6627,  duration: "5:14",  completed: false, emoji: "↔️" },
-  { id: 20, title: "Float",                 videoId: "HGTJBPNC-Gw", timestamp: 6941,  duration: "4:27",  completed: false, emoji: "🎈" },
-  { id: 21, title: "Overflow",              videoId: "HGTJBPNC-Gw", timestamp: 7208,  duration: "3:23",  completed: false, emoji: "🌊" },
-  { id: 22, title: "Display Property",      videoId: "HGTJBPNC-Gw", timestamp: 7411,  duration: "4:12",  completed: false, emoji: "🧱" },
-  { id: 23, title: "Height and Width",      videoId: "HGTJBPNC-Gw", timestamp: 7663,  duration: "6:54",  completed: false, emoji: "📏" },
-  { id: 24, title: "Positions",             videoId: "HGTJBPNC-Gw", timestamp: 8077,  duration: "6:23",  completed: false, emoji: "🎯" },
-  { id: 25, title: "Background Images",     videoId: "HGTJBPNC-Gw", timestamp: 8460,  duration: "3:15",  completed: false, emoji: "🏙️" },
-  { id: 26, title: "Combinators",           videoId: "HGTJBPNC-Gw", timestamp: 8655,  duration: "4:57",  completed: false, emoji: "➕" },
-  { id: 27, title: "Pseudo-classes",        videoId: "HGTJBPNC-Gw", timestamp: 8952,  duration: "7:38",  completed: false, emoji: "☟" },
-  { id: 28, title: "Pseudo-elements",       videoId: "HGTJBPNC-Gw", timestamp: 9410,  duration: "5:56",  completed: false, emoji: "✔" },
-  { id: 29, title: "Pagination",            videoId: "HGTJBPNC-Gw", timestamp: 9766,  duration: "8:58",  completed: false, emoji: "🕮" },
-  { id: 30, title: "Dropdown Menus",        videoId: "HGTJBPNC-Gw", timestamp: 10304, duration: "6:35",  completed: false, emoji: "🔻" },
-  { id: 31, title: "Navigation Bar",        videoId: "HGTJBPNC-Gw", timestamp: 10699, duration: "6:27",  completed: false, emoji: "🧭" },
-  { id: 32, title: "Website Layout",        videoId: "HGTJBPNC-Gw", timestamp: 11086, duration: "9:27",  completed: false, emoji: "🗺️" },
-  { id: 33, title: "Image Gallery",         videoId: "HGTJBPNC-Gw", timestamp: 11653, duration: "5:37",  completed: false, emoji: "📷" },
-  { id: 34, title: "Icons",                 videoId: "HGTJBPNC-Gw", timestamp: 11990, duration: "8:33",  completed: false, emoji: "🐤" },
-  { id: 35, title: "Flexbox",               videoId: "HGTJBPNC-Gw", timestamp: 12503, duration: "10:00", completed: false, emoji: "💪" },
-  { id: 36, title: "Transformations",       videoId: "HGTJBPNC-Gw", timestamp: 13103, duration: "9:00",  completed: false, emoji: "🔄" },
-  { id: 37, title: "Animations",            videoId: "HGTJBPNC-Gw", timestamp: 13643, duration: "8:37",  completed: false, emoji: "🎬" },
-];
+// ─── All course playlists ────────────────────────────────────────────────────
+
+const COURSES: Record<string, CourseConfig> = {
+  "web-dev": {
+    title: "Complete Web Development",
+    subtitle: "HTML & CSS Full Course",
+    playlist: [
+      { id: 1,  title: "Introduction to HTML",  videoId: "HGTJBPNC-Gw", timestamp: 0,     duration: "1:56",  completed: false, emoji: "🌎" },
+      { id: 2,  title: "Hyperlinks",            videoId: "HGTJBPNC-Gw", timestamp: 667,   duration: "4:08",  completed: false, emoji: "👈" },
+      { id: 3,  title: "Images",                videoId: "HGTJBPNC-Gw", timestamp: 915,   duration: "6:18",  completed: false, emoji: "🖼️" },
+      { id: 4,  title: "Audio",                 videoId: "HGTJBPNC-Gw", timestamp: 1293,  duration: "5:16",  completed: false, emoji: "🔊" },
+      { id: 5,  title: "Video",                 videoId: "HGTJBPNC-Gw", timestamp: 1609,  duration: "4:31",  completed: false, emoji: "🎥" },
+      { id: 6,  title: "Favicons",              videoId: "HGTJBPNC-Gw", timestamp: 1880,  duration: "2:59",  completed: false, emoji: "🗿" },
+      { id: 7,  title: "Text Formatting",       videoId: "HGTJBPNC-Gw", timestamp: 2059,  duration: "3:51",  completed: false, emoji: "💬" },
+      { id: 8,  title: "Span & Div",            videoId: "HGTJBPNC-Gw", timestamp: 2290,  duration: "4:47",  completed: false, emoji: "🏁" },
+      { id: 9,  title: "Lists",                 videoId: "HGTJBPNC-Gw", timestamp: 2577,  duration: "6:34",  completed: false, emoji: "📄" },
+      { id: 10, title: "Tables",                videoId: "HGTJBPNC-Gw", timestamp: 2971,  duration: "4:42",  completed: false, emoji: "📊" },
+      { id: 11, title: "Buttons",               videoId: "HGTJBPNC-Gw", timestamp: 3253,  duration: "5:15",  completed: false, emoji: "🔘" },
+      { id: 12, title: "Forms",                 videoId: "HGTJBPNC-Gw", timestamp: 3568,  duration: "17:54", completed: false, emoji: "📝" },
+      { id: 13, title: "Headers & Footers",     videoId: "HGTJBPNC-Gw", timestamp: 4642,  duration: "5:48",  completed: false, emoji: "🤯" },
+      { id: 14, title: "Introduction to CSS",   videoId: "HGTJBPNC-Gw", timestamp: 4990,  duration: "8:00",  completed: false, emoji: "🎨" },
+      { id: 15, title: "Colors",                videoId: "HGTJBPNC-Gw", timestamp: 5470,  duration: "4:12",  completed: false, emoji: "🖌️" },
+      { id: 16, title: "Fonts",                 videoId: "HGTJBPNC-Gw", timestamp: 5722,  duration: "7:20",  completed: false, emoji: "🔤" },
+      { id: 17, title: "Borders",               videoId: "HGTJBPNC-Gw", timestamp: 6162,  duration: "4:27",  completed: false, emoji: "🖼" },
+      { id: 18, title: "Shadows",               videoId: "HGTJBPNC-Gw", timestamp: 6429,  duration: "3:18",  completed: false, emoji: "👥" },
+      { id: 19, title: "Margins",               videoId: "HGTJBPNC-Gw", timestamp: 6627,  duration: "5:14",  completed: false, emoji: "↔️" },
+      { id: 20, title: "Float",                 videoId: "HGTJBPNC-Gw", timestamp: 6941,  duration: "4:27",  completed: false, emoji: "🎈" },
+      { id: 21, title: "Overflow",              videoId: "HGTJBPNC-Gw", timestamp: 7208,  duration: "3:23",  completed: false, emoji: "🌊" },
+      { id: 22, title: "Display Property",      videoId: "HGTJBPNC-Gw", timestamp: 7411,  duration: "4:12",  completed: false, emoji: "🧱" },
+      { id: 23, title: "Height and Width",      videoId: "HGTJBPNC-Gw", timestamp: 7663,  duration: "6:54",  completed: false, emoji: "📏" },
+      { id: 24, title: "Positions",             videoId: "HGTJBPNC-Gw", timestamp: 8077,  duration: "6:23",  completed: false, emoji: "🎯" },
+      { id: 25, title: "Background Images",     videoId: "HGTJBPNC-Gw", timestamp: 8460,  duration: "3:15",  completed: false, emoji: "🏙️" },
+      { id: 26, title: "Combinators",           videoId: "HGTJBPNC-Gw", timestamp: 8655,  duration: "4:57",  completed: false, emoji: "➕" },
+      { id: 27, title: "Pseudo-classes",        videoId: "HGTJBPNC-Gw", timestamp: 8952,  duration: "7:38",  completed: false, emoji: "☟" },
+      { id: 28, title: "Pseudo-elements",       videoId: "HGTJBPNC-Gw", timestamp: 9410,  duration: "5:56",  completed: false, emoji: "✔" },
+      { id: 29, title: "Pagination",            videoId: "HGTJBPNC-Gw", timestamp: 9766,  duration: "8:58",  completed: false, emoji: "🕮" },
+      { id: 30, title: "Dropdown Menus",        videoId: "HGTJBPNC-Gw", timestamp: 10304, duration: "6:35",  completed: false, emoji: "🔻" },
+      { id: 31, title: "Navigation Bar",        videoId: "HGTJBPNC-Gw", timestamp: 10699, duration: "6:27",  completed: false, emoji: "🧭" },
+      { id: 32, title: "Website Layout",        videoId: "HGTJBPNC-Gw", timestamp: 11086, duration: "9:27",  completed: false, emoji: "🗺️" },
+      { id: 33, title: "Image Gallery",         videoId: "HGTJBPNC-Gw", timestamp: 11653, duration: "5:37",  completed: false, emoji: "📷" },
+      { id: 34, title: "Icons",                 videoId: "HGTJBPNC-Gw", timestamp: 11990, duration: "8:33",  completed: false, emoji: "🐤" },
+      { id: 35, title: "Flexbox",               videoId: "HGTJBPNC-Gw", timestamp: 12503, duration: "10:00", completed: false, emoji: "💪" },
+      { id: 36, title: "Transformations",       videoId: "HGTJBPNC-Gw", timestamp: 13103, duration: "9:00",  completed: false, emoji: "🔄" },
+      { id: 37, title: "Animations",            videoId: "HGTJBPNC-Gw", timestamp: 13643, duration: "8:37",  completed: false, emoji: "🎬" },
+    ],
+  },
+
+  "ui-ux": {
+    title: "UI/UX Design Fundamentals",
+    subtitle: "Full Design Course",
+    playlist: [
+      { id: 1, title: "Introduction",  videoId: "c9Wg6Cb_YlU", timestamp: 0,    duration: "1:27",    completed: false, emoji: "👋" },
+      { id: 2, title: "Wireframing",   videoId: "c9Wg6Cb_YlU", timestamp: 87,   duration: "29:31",   completed: false, emoji: "✏️" },
+      { id: 3, title: "UI Layout",     videoId: "c9Wg6Cb_YlU", timestamp: 1858, duration: "35:40",   completed: false, emoji: "🖥️" },
+      { id: 4, title: "Mockup",        videoId: "c9Wg6Cb_YlU", timestamp: 3998, duration: "remaining", completed: false, emoji: "🎨" },
+    ],
+  },
+};
+
+// ─── Fallback: if courseId doesn't match, use web-dev ───────────────────────
+const getCourse = (courseId: string): CourseConfig =>
+  COURSES[courseId] ?? COURSES["web-dev"];
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
+  const course = getCourse(courseId);
+  const PLAYLIST = course.playlist;
+
   const [playlist, setPlaylist] = useState<Video[]>(PLAYLIST);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -86,8 +120,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
   const allCompleted = playlist.every((v) => v.completed);
 
-  // ─── Core: figure out which lesson index the current playback time maps to ──
-  // A lesson is "active" from its timestamp until the next lesson's timestamp.
   const getLessonIndexForTime = (currentTime: number): number => {
     let activeIndex = 0;
     for (let i = 0; i < PLAYLIST.length; i++) {
@@ -100,7 +132,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     return activeIndex;
   };
 
-  // ─── Poll every second; update active lesson + auto-complete previous ones ──
   const startPolling = useCallback(() => {
     if (pollRef.current) clearInterval(pollRef.current);
 
@@ -110,15 +141,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       const currentTime: number = playerRef.current.getCurrentTime();
       const activeIndex = getLessonIndexForTime(currentTime);
 
-      // Update highlighted lesson in sidebar
       setCurrentVideoIndex(activeIndex);
 
-      // Mark every lesson whose timestamp has been passed as completed
       setPlaylist((prev) => {
         let changed = false;
         const updated = prev.map((video, i) => {
-          // A lesson is complete once the video has moved past it (i.e. the NEXT
-          // lesson's timestamp has been reached, meaning i < activeIndex)
           if (i < activeIndex && !video.completed) {
             changed = true;
             return { ...video, completed: true };
@@ -146,8 +173,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     }
   }, []);
 
-  // ─── Bootstrap YouTube IFrame API ───────────────────────────────────────────
   useEffect(() => {
+    // Reset state when course changes
+    setPlaylist(PLAYLIST.map(v => ({ ...v, completed: false })));
+    setCurrentVideoIndex(0);
+
+    if (ytApiLoaded.current && playerRef.current?.loadVideoById) {
+      // API already loaded — just load the new video
+      playerRef.current.loadVideoById({
+        videoId: PLAYLIST[0].videoId,
+        startSeconds: 0,
+      });
+      return;
+    }
+
     if (ytApiLoaded.current) return;
     ytApiLoaded.current = true;
 
@@ -162,7 +201,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
         events: {
           onReady: () => startPolling(),
           onStateChange: (event: any) => {
-            // 1 = playing, 3 = buffering → keep polling; 2 = paused, 0 = ended → stop
             if (event.data === 1 || event.data === 3) {
               startPolling();
             } else {
@@ -177,11 +215,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       stopPolling();
       playerRef.current?.destroy();
     };
-  }, [startPolling, stopPolling]);
+  }, [courseId]);
 
-  // ─── Handlers ───────────────────────────────────────────────────────────────
-
-  // Clicking a lesson in the sidebar seeks the video to that timestamp
   const handleVideoSelect = (index: number) => {
     const isUnlocked = index === 0 || playlist[index - 1].completed;
     if (!isUnlocked) return;
@@ -189,7 +224,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     setCurrentVideoIndex(index);
   };
 
-  // Manual "Mark Complete" — marks current lesson and seeks to the next one
   const handleMarkComplete = () => {
     setPlaylist((prev) => {
       const updated = [...prev];
@@ -228,8 +262,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const isVideoUnlocked = (index: number) =>
     index === 0 || playlist[index - 1].completed;
 
-
-
   return (
     <div className="bg-slate-50">
       {showConfetti && <Confetti />}
@@ -244,8 +276,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           Back
         </button>
         <div className="flex-1 min-w-0">
-          <h1 className="font-bold text-slate-800 truncate">Complete Web Development</h1>
-          <p className="text-xs text-slate-500">HTML & CSS Full Course</p>
+          <h1 className="font-bold text-slate-800 truncate">{course.title}</h1>
+          <p className="text-xs text-slate-500">{course.subtitle}</p>
         </div>
         <div className="flex items-center gap-2">
           {allCompleted && (
@@ -256,8 +288,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           <span className="text-sm font-bold text-blue-600">{progressPercentage}%</span>
         </div>
       </div>
-
-
 
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
         {/* Main Content */}
@@ -305,8 +335,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
               <span>
-                Lessons auto-complete as you watch once the video reaches the next lesson's
-                timestamp, the previous lesson is marked done automatically
+                Lessons auto-complete as you watch — once the video reaches the next lesson's timestamp, the previous lesson is marked done automatically
               </span>
             </div>
 
@@ -337,7 +366,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
               <div className="text-4xl mb-3">🎉</div>
               <h3 className="text-xl font-bold mb-2">Congratulations!</h3>
               <p className="text-blue-100 mb-4">
-                You've completed the Complete Web Development course with {playlist.length} lessons!
+                You've completed {course.title} with {playlist.length} lessons!
               </p>
               <button
                 onClick={onBack}

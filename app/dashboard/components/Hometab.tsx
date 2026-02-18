@@ -3,57 +3,21 @@
 import React from "react";
 import { Trophy, CheckCircle2, Rocket, Target, ChevronRight, Play, Clock } from "lucide-react";
 
+// ⚠️ These IDs must match the keys in VideoPlayer's COURSES object exactly
 const COURSES = [
   {
-    id: "webdev",
+    id: "web-dev",
     title: "Complete Web Development",
     thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
     progress: 0,
-    lessons: 5,
-    playlist: [
-      {
-        id: 1,
-        title: "HTML Basics - Getting Started",
-        videoId: "HGTJBPNC-Gw",
-        duration: "45:30",
-        completed: false,
-      },
-      {
-        id: 2,
-        title: "HTML Tags & Elements",
-        videoId: "kUMe1FH4CHE",
-        duration: "38:15",
-        completed: false,
-      },
-      {
-        id: 3,
-        title: "CSS Fundamentals",
-        videoId: "OXGznpKZ_sA",
-        duration: "52:40",
-        completed: false,
-      },
-      {
-        id: 4,
-        title: "CSS Layouts & Flexbox",
-        videoId: "phWxA89Dy94",
-        duration: "41:20",
-        completed: false,
-      },
-      {
-        id: 5,
-        title: "Responsive Design",
-        videoId: "srvUrASNj0s",
-        duration: "48:10",
-        completed: false,
-      },
-    ],
+    lessons: 37,
   },
   {
-    id: "design",
+    id: "ui-ux",
     title: "UI/UX Design Fundamentals",
     thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/maxresdefault.jpg",
     progress: 0,
-    lessons: 14,
+    lessons: 4,
   },
   {
     id: "crypto",
@@ -63,14 +27,14 @@ const COURSES = [
     lessons: 8,
   },
   {
-    id: "speaking",
+    id: "public-speak",
     title: "Public Speaking Mastery",
     thumbnail: "https://i.ytimg.com/vi/w82a1FT5o88/maxresdefault.jpg",
     progress: 0,
     lessons: 15,
   },
   {
-    id: "personal",
+    id: "personal-dev",
     title: "Personal Development & Growth",
     thumbnail: "https://i.ytimg.com/vi/75d_29QWELk/maxresdefault.jpg",
     progress: 0,
@@ -85,15 +49,11 @@ interface HomeTabProps {
 
 const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
   const handleExploreClick = () => {
-    if (onNavigate) {
-      onNavigate('explore');
-    }
+    if (onNavigate) onNavigate("explore");
   };
 
   const handleCourseClick = (courseId: string) => {
-    if (onCourseSelect) {
-      onCourseSelect(courseId);
-    }
+    if (onCourseSelect) onCourseSelect(courseId);
   };
 
   return (
@@ -114,38 +74,51 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
       <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
         <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
           <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
-          
+
           <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37, 99, 235) 1px, transparent 0)`,
-              backgroundSize: '32px 32px'
-            }}></div>
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37, 99, 235) 1px, transparent 0)`,
+                backgroundSize: "32px 32px",
+              }}
+            ></div>
           </div>
-          
+
           <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
             <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 lg:gap-8">
               <div className="flex-1 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-5 w-full">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-blue-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-sm">
-                  <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 
+                  <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>Get Started</span>
                 </div>
-                
+
                 <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
                   Master your next{" "}
                   <span className="text-blue-600 relative inline-block">
                     Skill Path
-                    <svg className="absolute -bottom-1 left-0 w-full h-2 sm:h-3" viewBox="0 0 200 10" preserveAspectRatio="none">
-                      <path d="M0,5 Q50,0 100,5 T200,5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
+                    <svg
+                      className="absolute -bottom-1 left-0 w-full h-2 sm:h-3"
+                      viewBox="0 0 200 10"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        d="M0,5 Q50,0 100,5 T200,5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        opacity="0.3"
+                      />
                     </svg>
                   </span>
                 </h2>
-                
+
                 <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
                   Curated tutorials in linear learning paths. Start one to unlock your progress.
                 </p>
-                
+
                 <div className="pt-1 sm:pt-2">
-                  <button 
+                  <button
                     onClick={handleExploreClick}
                     className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
                   >
@@ -154,7 +127,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 flex-shrink-0">
                 {COURSES.slice(0, 4).map((c, i) => (
                   <div
@@ -163,11 +136,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                       i % 2 === 0 ? "translate-y-2" : "-translate-y-2"
                     }`}
                   >
-                    <img
-                      src={c.thumbnail}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
                 ))}
@@ -180,17 +149,14 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
       {/* Learning Tracks Section */}
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">
-              Learning Tracks
-            </h2>
-          </div>
-          
-          <button 
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">
+            Learning Tracks
+          </h2>
+          <button
             onClick={handleExploreClick}
             className="group hidden sm:flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-semibold text-[10px] sm:text-xs transition-all"
           >
-            View All 
+            View All
             <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -203,13 +169,13 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
             >
               <div className="relative overflow-hidden">
                 <div className="aspect-video">
-                  <img 
-                    src={c.thumbnail} 
+                  <img
+                    src={c.thumbnail}
                     alt={c.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                
+
                 <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1.5 bg-white px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg shadow-md">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-300"></div>
                   <span className="text-[10px] sm:text-xs font-bold text-slate-700">{c.progress}%</span>
@@ -220,17 +186,15 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                   <span className="text-[10px] sm:text-xs font-semibold text-white">{c.lessons} lessons</span>
                 </div>
               </div>
-              
+
               <div className="p-4 sm:p-5 space-y-3 sm:space-y-4">
                 <h3 className="font-black text-sm sm:text-base md:text-lg text-slate-800 line-clamp-1">
                   {c.title}
                 </h3>
-                
+
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                    <span className="text-slate-600 font-semibold">
-                      Not started
-                    </span>
+                    <span className="text-slate-600 font-semibold">Not started</span>
                     <span className="text-slate-500 font-bold">{c.progress}% complete</span>
                   </div>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
@@ -240,8 +204,8 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
                     ></div>
                   </div>
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => handleCourseClick(c.id)}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm"
                 >
@@ -252,8 +216,8 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate, onCourseSelect }) => {
             </div>
           ))}
         </div>
-        
-        <button 
+
+        <button
           onClick={handleExploreClick}
           className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-all"
         >
