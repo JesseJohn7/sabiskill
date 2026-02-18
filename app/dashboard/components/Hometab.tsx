@@ -20,6 +20,13 @@ const COURSES = [
     lessons: 4,
   },
   {
+    id: "javascript",
+    title: "JavaScript Full Course",
+    thumbnail: "https://i.ytimg.com/vi/EfAl9bwzVZk/maxresdefault.jpg",
+    progress: 0,
+    lessons: 28,
+  },
+  {
     id: "crypto",
     title: "Cryptocurrency & Blockchain",
     thumbnail: "https://i.ytimg.com/vi/SSo_EIwHSd4/maxresdefault.jpg",
