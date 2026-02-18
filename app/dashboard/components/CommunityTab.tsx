@@ -57,15 +57,15 @@ const communities: Community[] = [
   },
   {
     id: "science",
-    name: "Science & Research",
+    name: "Google Developer Groups",
     description:
-      "Discuss papers, lab work, and breakthroughs across biology, chemistry, physics, and more.",
+      "Google Developer Groups (GDG) are for developers who are interested in Google technologies. Join a GDG to learn about new Google products, share your knowledge with other developers, and get involved in the Google developer community.",
     members: 2257,
     category: "STEM",
     icon: FlaskConical,
     color: "text-emerald-600",
     gradient: "from-emerald-500/10 to-teal-500/10",
-    joinLink: "https://discord.gg/your-science-link",
+    joinLink: "https://developers.google.com/community",
   },
   {
     id: "languages",
