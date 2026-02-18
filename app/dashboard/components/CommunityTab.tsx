@@ -53,7 +53,7 @@ const communities: Community[] = [
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
     joinLink: "https://superteam.fun",
-    new: true,
+    /* new: true, */
   },
   {
     id: "science",
