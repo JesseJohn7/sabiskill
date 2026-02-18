@@ -29,9 +29,9 @@ const COURSES = [
   {
     id: "crypto",
     title: "Cryptocurrency & Blockchain",
-    thumbnail: "https://i.ytimg.com/vi/SSo_EIwHSd4/maxresdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/gyMwXuJrbJQ/maxresdefault.jpg",
     progress: 0,
-    lessons: 8,
+    lessons: 19,
   },
   {
     id: "public-speak",

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, Lock, Check, Play, Clock, ArrowRight } from "lucide-react";
 import Confetti from "react-confetti";
 
@@ -32,7 +32,6 @@ declare global {
 }
 
 // ─── Course data ──────────────────────────────────────────────────────────────
-// Keys here must EXACTLY match the id values in HomeTab's COURSES array
 const COURSES: Record<string, CourseConfig> = {
 
   "web-dev": {
@@ -125,7 +124,6 @@ const COURSES: Record<string, CourseConfig> = {
     ],
   },
 
-  // Coming soon — shows placeholder screen
   "crypto":       { title: "Cryptocurrency & Blockchain",   subtitle: "Coming Soon", playlist: [] },
   "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
   "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
@@ -136,7 +134,6 @@ const COURSES: Record<string, CourseConfig> = {
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const course = COURSES[courseId];
 
-  // Unknown course or no content yet → placeholder
   if (!course || course.playlist.length === 0) {
     return (
       <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
@@ -145,7 +142,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           {course ? course.title : "Course Not Found"}
         </h2>
         <p className="text-slate-500 text-sm">
-          {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
+          {course
+            ? "This course doesn't have video content yet. Check back soon!"
+            : "We couldn't find that course."}
         </p>
         <button
           onClick={onBack}
@@ -158,49 +157,73 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     );
   }
 
-  const PLAYLIST = course.playlist;
-
+  // ── State ───────────────────────────────────────────────────────────────────
   const [playlist, setPlaylist] = useState<Video[]>(() =>
-    PLAYLIST.map((v) => ({ ...v, completed: false }))
+    course.playlist.map((v) => ({ ...v, completed: false }))
   );
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const playerRef = useRef<any>(null);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const ytApiLoaded = useRef(false);
-  const playlistRef = useRef(PLAYLIST);
+  // ── Refs ────────────────────────────────────────────────────────────────────
+  const playerRef  = useRef<any>(null);
+  const pollRef    = useRef<ReturnType<typeof setInterval> | null>(null);
+  const ytApiReady = useRef(false);
 
-  const currentVideo = playlist[currentVideoIndex];
-  const completedCount = playlist.filter((v) => v.completed).length;
+  // THE KEY FIX: store everything the poll callback needs in a single ref
+  // so it always reads fresh data without stale closures, for every course.
+  const liveRef = useRef({
+    playlist: course.playlist.map((v) => ({ ...v, completed: false })),
+    setPlaylist,
+    setCurrentVideoIndex,
+    setShowConfetti,
+  });
+
+  // Keep liveRef in sync with latest state/callbacks on every render
+  liveRef.current.playlist         = playlist;
+  liveRef.current.setPlaylist      = setPlaylist;
+  liveRef.current.setCurrentVideoIndex = setCurrentVideoIndex;
+  liveRef.current.setShowConfetti  = setShowConfetti;
+
+  // Also store the current course's raw PLAYLIST in a ref so the poll
+  // always checks against the right timestamps, even after course changes
+  const rawPlaylistRef = useRef(course.playlist);
+
+  // ── Derived ─────────────────────────────────────────────────────────────────
+  const currentVideo       = playlist[currentVideoIndex];
+  const completedCount     = playlist.filter((v) => v.completed).length;
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
-  const allCompleted = playlist.every((v) => v.completed);
+  const allCompleted       = playlist.every((v) => v.completed);
 
-  const getLessonIndexForTime = useCallback((currentTime: number): number => {
-    const pl = playlistRef.current;
-    let activeIndex = 0;
-    for (let i = 0; i < pl.length; i++) {
-      if (currentTime >= pl[i].timestamp) activeIndex = i;
-      else break;
-    }
-    return activeIndex;
-  }, []);
+  // ── Polling helpers ─────────────────────────────────────────────────────────
 
-  const stopPolling = useCallback(() => {
+  const stopPolling = () => {
     if (pollRef.current) {
       clearInterval(pollRef.current);
       pollRef.current = null;
     }
-  }, []);
+  };
 
-  const startPolling = useCallback(() => {
+  const startPolling = () => {
     stopPolling();
     pollRef.current = setInterval(() => {
-      if (!playerRef.current || typeof playerRef.current.getCurrentTime !== "function") return;
-      const currentTime: number = playerRef.current.getCurrentTime();
-      const activeIndex = getLessonIndexForTime(currentTime);
-      setCurrentVideoIndex(activeIndex);
-      setPlaylist((prev) => {
+      const player = playerRef.current;
+      if (!player || typeof player.getCurrentTime !== "function") return;
+
+      const currentTime: number = player.getCurrentTime();
+      const rawPl = rawPlaylistRef.current; // always current course's timestamps
+
+      // Find which lesson we're currently in based on playback time
+      let activeIndex = 0;
+      for (let i = 0; i < rawPl.length; i++) {
+        if (currentTime >= rawPl[i].timestamp) activeIndex = i;
+        else break;
+      }
+
+      // Update highlighted lesson in sidebar
+      liveRef.current.setCurrentVideoIndex(activeIndex);
+
+      // Mark all lessons whose timestamp has been passed as complete
+      liveRef.current.setPlaylist((prev) => {
         let changed = false;
         const updated = prev.map((video, i) => {
           if (i < activeIndex && !video.completed) {
@@ -210,44 +233,55 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           return video;
         });
         if (changed && updated.every((v) => v.completed)) {
-          setShowConfetti(true);
-          setTimeout(() => setShowConfetti(false), 5000);
+          liveRef.current.setShowConfetti(true);
+          setTimeout(() => liveRef.current.setShowConfetti(false), 5000);
         }
         return changed ? updated : prev;
       });
     }, 1000);
-  }, [getLessonIndexForTime, stopPolling]);
+  };
 
+  // ── Bootstrap / course-change effect ────────────────────────────────────────
   useEffect(() => {
-    // Update refs and reset state for new course
-    playlistRef.current = PLAYLIST;
-    setPlaylist(PLAYLIST.map((v) => ({ ...v, completed: false })));
+    const freshPlaylist = course.playlist.map((v) => ({ ...v, completed: false }));
+
+    // Update the raw playlist ref FIRST so poll uses new course's timestamps
+    rawPlaylistRef.current = course.playlist;
+
+    // Reset state for the new course
+    setPlaylist(freshPlaylist);
     setCurrentVideoIndex(0);
     stopPolling();
 
     const initPlayer = () => {
       if (playerRef.current?.loadVideoById) {
-        playerRef.current.loadVideoById({ videoId: PLAYLIST[0].videoId, startSeconds: 0 });
+        // Player already exists — swap video and restart poll
+        playerRef.current.loadVideoById({
+          videoId: course.playlist[0].videoId,
+          startSeconds: 0,
+        });
         startPolling();
-        return;
-      }
-      playerRef.current = new window.YT.Player("yt-player", {
-        videoId: PLAYLIST[0].videoId,
-        playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
-        events: {
-          onReady: () => startPolling(),
-          onStateChange: (event: any) => {
-            if (event.data === 1 || event.data === 3) startPolling();
-            else stopPolling();
+      } else {
+        // First load — create the YT player
+        playerRef.current = new window.YT.Player("yt-player", {
+          videoId: course.playlist[0].videoId,
+          playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
+          events: {
+            onReady: () => startPolling(),
+            onStateChange: (event: any) => {
+              // 1 = playing, 3 = buffering → poll; anything else → stop
+              if (event.data === 1 || event.data === 3) startPolling();
+              else stopPolling();
+            },
           },
-        },
-      });
+        });
+      }
     };
 
     if (window.YT?.Player) {
       initPlayer();
-    } else if (!ytApiLoaded.current) {
-      ytApiLoaded.current = true;
+    } else if (!ytApiReady.current) {
+      ytApiReady.current = true;
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
@@ -255,11 +289,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     }
 
     return () => stopPolling();
-  }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId]); // re-run whenever user opens a different course
+
+  // ── Handlers ────────────────────────────────────────────────────────────────
 
   const handleVideoSelect = (index: number) => {
     if (index !== 0 && !playlist[index - 1].completed) return;
-    playerRef.current?.seekTo(PLAYLIST[index].timestamp, true);
+    playerRef.current?.seekTo(course.playlist[index].timestamp, true);
     setCurrentVideoIndex(index);
   };
 
@@ -274,8 +310,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       return updated;
     });
     const next = currentVideoIndex + 1;
-    if (next < PLAYLIST.length) {
-      playerRef.current?.seekTo(PLAYLIST[next].timestamp, true);
+    if (next < course.playlist.length) {
+      playerRef.current?.seekTo(course.playlist[next].timestamp, true);
       setCurrentVideoIndex(next);
     }
   };
@@ -283,15 +319,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const handlePreviousVideo = () => {
     if (currentVideoIndex > 0) {
       const i = currentVideoIndex - 1;
-      playerRef.current?.seekTo(PLAYLIST[i].timestamp, true);
+      playerRef.current?.seekTo(course.playlist[i].timestamp, true);
       setCurrentVideoIndex(i);
     }
   };
 
   const handleNextVideo = () => {
     const i = currentVideoIndex + 1;
-    if (i < PLAYLIST.length && currentVideo.completed) {
-      playerRef.current?.seekTo(PLAYLIST[i].timestamp, true);
+    if (i < course.playlist.length && currentVideo.completed) {
+      playerRef.current?.seekTo(course.playlist[i].timestamp, true);
       setCurrentVideoIndex(i);
     }
   };
@@ -299,6 +335,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const isVideoUnlocked = (index: number) =>
     index === 0 || playlist[index - 1].completed;
 
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <div className="bg-slate-50">
       {showConfetti && <Confetti />}
@@ -329,10 +366,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
         {/* Main Content */}
         <div className="flex-1 min-w-0">
+
+          {/* YouTube Player */}
           <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
             <div id="yt-player" className="w-full h-full" />
           </div>
 
+          {/* Video Info */}
           <div className="mt-4 bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -367,7 +407,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
 
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
-              <span>Lessons auto-complete as you watch — once the video reaches the next lesson's timestamp, the previous one is marked done</span>
+              <span>
+                Lessons auto-complete as you watch — once the video passes a lesson's timestamp, the previous one is marked done automatically
+              </span>
             </div>
 
             <div className="flex gap-2 mt-4">
@@ -390,6 +432,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
             </div>
           </div>
 
+          {/* Completion Card */}
           {allCompleted && (
             <div className="mt-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 text-white text-center shadow-lg">
               <div className="text-4xl mb-3">🎉</div>
@@ -426,7 +469,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
             <div className="overflow-y-auto max-h-[60vh] lg:max-h-[70vh]">
               {playlist.map((video, index) => {
                 const isUnlocked = isVideoUnlocked(index);
-                const isCurrent = index === currentVideoIndex;
+                const isCurrent  = index === currentVideoIndex;
 
                 return (
                   <button
@@ -434,7 +477,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
                     onClick={() => handleVideoSelect(index)}
                     disabled={!isUnlocked}
                     className={`w-full p-3 sm:p-4 flex items-start gap-3 border-b border-slate-100 transition-all text-left
-                      ${isCurrent ? "bg-blue-50 border-l-4 border-l-blue-600" : ""}
+                      ${isCurrent  ? "bg-blue-50 border-l-4 border-l-blue-600" : ""}
                       ${isUnlocked ? "hover:bg-slate-50 cursor-pointer" : "opacity-50 cursor-not-allowed"}
                     `}
                   >
