@@ -305,7 +305,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
               <span>
-                Lessons auto-complete as you watch — once the video reaches the next lesson's
+                Lessons auto-complete as you watch once the video reaches the next lesson's
                 timestamp, the previous lesson is marked done automatically
               </span>
             </div>
