@@ -234,9 +234,10 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
 interface VideoPlayerProps {
   videoId: string;
   title: string;
+  autoPlay?: boolean;
 }
-function VideoPlayer({ videoId, title }: VideoPlayerProps) {
-  const [playing, setPlaying] = useState(false);
+function VideoPlayer({ videoId, title, autoPlay = false }: VideoPlayerProps) {
+  const [playing, setPlaying] = useState(autoPlay);
 
   if (!playing) {
     return (
@@ -364,9 +365,10 @@ interface CourseDetailProps {
   onStart: (courseId: string) => void;
   onReviewSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
   backLabel?: string;
+  autoPlayVideo?: boolean;
 }
 
-function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit, backLabel = "Back to Explore" }: CourseDetailProps) {
+function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit, backLabel = "Back to Explore", autoPlayVideo = false }: CourseDetailProps) {
   const [topicsOpen, setTopicsOpen] = useState(false);
   const isLocked = status === "locked";
   const isCompleted = status === "completed";
@@ -374,6 +376,11 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
   const avgRating = reviews.length
     ? reviews.reduce((a, r) => a + r.rating, 0) / reviews.length
     : course.rating;
+
+  // Always scroll to top when detail view mounts
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -422,7 +429,7 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
                 {/* ── Embedded Video Player ── */}
-                <VideoPlayer videoId={course.videoId} title={course.title} />
+                <VideoPlayer videoId={course.videoId} title={course.title} autoPlay={autoPlayVideo} />
 
                 <div className="p-5 space-y-4">
                   {isLocked ? (
@@ -558,6 +565,7 @@ interface ExploreTabProps {
   activeCourseId?: string | null;
   completedCourseIds?: string[];
   onCourseSelect?: (courseId: string) => void;
+  onNavigate?: (tab: string) => void;
   // Optional: allow HomeTab to open a course detail directly
   initialCourseId?: string | null;
   onDetailClose?: () => void;
@@ -567,10 +575,12 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   activeCourseId = null,
   completedCourseIds = [],
   onCourseSelect,
+  onNavigate,
   initialCourseId = null,
   onDetailClose,
 }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(initialCourseId);
+  const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
   const [extraReviews, setExtraReviews] = useState<
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
@@ -582,14 +592,26 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
     return "available";
   };
 
+  // Open detail page (no autoplay — user clicked the card thumbnail area)
   const handleCardClick = (id: string) => {
+    setAutoPlayOnOpen(false);
     setSelectedCourseId(id);
   };
 
+  // "Get Started" / "Continue" clicked from the grid → set as active course, go to Home to watch
+  const handleStartFromGrid = (courseId: string) => {
+    const status = getStatus(courseId);
+    if (status === "locked") return;
+    if (onCourseSelect) onCourseSelect(courseId);
+    if (onNavigate) onNavigate("home");
+  };
+
+  // "Start Course" / "Continue Learning" clicked from INSIDE the detail page → set active + go to Home
   const handleStart = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
     if (onCourseSelect) onCourseSelect(courseId);
+    if (onNavigate) onNavigate("home");
   };
 
   const handleReviewSubmit = (
@@ -625,6 +647,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
         onStart={handleStart}
         onReviewSubmit={handleReviewSubmit}
         backLabel="Back to Explore"
+        autoPlayVideo={autoPlayOnOpen}
       />
     );
   }
@@ -769,15 +792,24 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                         <Lock className="w-3.5 h-3.5" /> Locked
                       </button>
                     ) : isCompleted ? (
-                      <button className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2"
+                      >
                         <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
                       </button>
                     ) : isActive ? (
-                      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
+                      >
                         <Play className="w-3.5 h-3.5 fill-current" /> Continue
                       </button>
                     ) : (
-                      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
+                      >
                         <Play className="w-3.5 h-3.5 fill-current" /> View Course
                       </button>
                     )}

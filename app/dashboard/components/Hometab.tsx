@@ -25,6 +25,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 }) => {
   // Track which course detail is open (null = home view)
   const [detailCourseId, setDetailCourseId] = useState<string | null>(null);
+  const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
   const [extraReviews, setExtraReviews] = useState<
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
@@ -40,8 +41,15 @@ const HomeTab: React.FC<HomeTabProps> = ({
     return "available";
   };
 
-  // Open course detail on card click (any status — detail explains locked)
+  // Open course detail without autoplay (clicked thumbnail/card area)
   const handleCourseCardClick = (courseId: string) => {
+    setAutoPlayOnOpen(false);
+    setDetailCourseId(courseId);
+  };
+
+  // Open course detail WITH autoplay (clicked "Get Started" / "Continue" button)
+  const handleStartFromGrid = (courseId: string) => {
+    setAutoPlayOnOpen(true);
     setDetailCourseId(courseId);
   };
 
@@ -75,6 +83,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         onStart={handleStartFromDetail}
         onReviewSubmit={handleReviewSubmit}
         backLabel="Back to Home"
+        autoPlayVideo={autoPlayOnOpen}
       />
     );
   }
@@ -230,7 +239,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                       </div>
                     </div>
                     <button
-                      onClick={(e) => { e.stopPropagation(); handleCourseCardClick(c.id); }}
+                      onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
                       className={`w-full font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs
                         ${isCompleted
                           ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200"
@@ -360,12 +369,18 @@ const HomeTab: React.FC<HomeTabProps> = ({
                         <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
                     ) : isCompleted ? (
-                      <button className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2"
+                      >
                         <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Review Course
                       </button>
                     ) : (
-                      <button className={`w-full text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm
-                        ${isActive ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-600 hover:bg-blue-700"}`}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        className={`w-full text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm
+                          ${isActive ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-600 hover:bg-blue-700"}`}
+                      >
                         <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
                         {isActive ? "Continue" : "Get Started"}
                       </button>
