@@ -16,8 +16,6 @@ import {
   ChevronDown,
   ChevronUp,
   Send,
-  X,
-  Maximize2,
 } from "lucide-react";
 
 // ⚠️ These IDs must match the keys in VideoPlayer's COURSES object exactly
@@ -29,7 +27,6 @@ export const ALL_COURSES = [
     longDescription:
       "This comprehensive course takes you from absolute beginner to confident web developer. You'll master HTML structure, CSS styling, responsive design, and modern JavaScript — then build real-world projects including a personal portfolio, a landing page, and a dynamic web app.",
     thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
-    // YouTube video ID for preview
     videoId: "HGTJBPNC-Gw",
     lessons: 37,
     level: "Beginner",
@@ -247,9 +244,7 @@ function VideoPlayer({ videoId, title, autoPlay = false }: VideoPlayerProps) {
           alt={title}
           className="w-full h-full object-cover opacity-80"
         />
-        {/* Dark gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-        {/* Play button */}
         <button
           onClick={() => setPlaying(true)}
           className="absolute inset-0 flex flex-col items-center justify-center gap-3 group"
@@ -357,7 +352,7 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
 }
 
 // ─── Course Detail View ──────────────────────────────────────────────────────
-interface CourseDetailProps {
+export interface CourseDetailProps {
   course: (typeof ALL_COURSES)[0];
   status: "completed" | "active" | "locked" | "available";
   reviews: { name: string; rating: number; date: string; comment: string }[];
@@ -368,7 +363,16 @@ interface CourseDetailProps {
   autoPlayVideo?: boolean;
 }
 
-function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit, backLabel = "Back to Explore", autoPlayVideo = false }: CourseDetailProps) {
+export function CourseDetail({
+  course,
+  status,
+  reviews,
+  onBack,
+  onStart,
+  onReviewSubmit,
+  backLabel = "Back to Explore",
+  autoPlayVideo = false,
+}: CourseDetailProps) {
   const [topicsOpen, setTopicsOpen] = useState(false);
   const isLocked = status === "locked";
   const isCompleted = status === "completed";
@@ -377,7 +381,6 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
     ? reviews.reduce((a, r) => a + r.rating, 0) / reviews.length
     : course.rating;
 
-  // Always scroll to top when detail view mounts
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
@@ -387,7 +390,6 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
       {/* Hero */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-          {/* Back button */}
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-slate-300 hover:text-white text-sm font-semibold mb-6 transition-colors group"
@@ -428,16 +430,20 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
             {/* Right: Video + CTA card */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-                {/* ── Embedded Video Player ── */}
                 <VideoPlayer videoId={course.videoId} title={course.title} autoPlay={autoPlayVideo} />
 
                 <div className="p-5 space-y-4">
                   {isLocked ? (
                     <>
-                      <button disabled className="w-full bg-slate-100 text-slate-400 font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+                      <button
+                        disabled
+                        className="w-full bg-slate-100 text-slate-400 font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed"
+                      >
                         <Lock className="w-4 h-4" /> Locked
                       </button>
-                      <p className="text-xs text-center text-slate-500">Finish your active track to unlock this course.</p>
+                      <p className="text-xs text-center text-slate-500">
+                        Finish your active track to unlock this course.
+                      </p>
                     </>
                   ) : isCompleted ? (
                     <button
@@ -566,9 +572,6 @@ interface ExploreTabProps {
   completedCourseIds?: string[];
   onCourseSelect?: (courseId: string) => void;
   onNavigate?: (tab: string) => void;
-  // Optional: allow HomeTab to open a course detail directly
-  initialCourseId?: string | null;
-  onDetailClose?: () => void;
 }
 
 const ExploreTab: React.FC<ExploreTabProps> = ({
@@ -576,10 +579,8 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   completedCourseIds = [],
   onCourseSelect,
   onNavigate,
-  initialCourseId = null,
-  onDetailClose,
 }) => {
-  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(initialCourseId);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
   const [extraReviews, setExtraReviews] = useState<
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
@@ -588,29 +589,31 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
     if (completedCourseIds.includes(id)) return "completed";
     if (id === activeCourseId) return "active";
-    if (activeCourseId && id !== activeCourseId) return "locked";
+    // Lock everything else if there's an active (non-completed) course
+    if (activeCourseId && !completedCourseIds.includes(activeCourseId) && id !== activeCourseId) return "locked";
     return "available";
   };
 
-  // Open detail page (no autoplay — user clicked the card thumbnail area)
+  // Card thumbnail clicked → open detail, no autoplay
   const handleCardClick = (id: string) => {
     setAutoPlayOnOpen(false);
     setSelectedCourseId(id);
   };
 
-  // "Get Started" / "Continue" clicked from the grid → set as active course, go to Home to watch
+  // "Get Started" / "Continue" grid button → open detail WITH autoplay
   const handleStartFromGrid = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
-    if (onCourseSelect) onCourseSelect(courseId);
-    if (onNavigate) onNavigate("home");
+    setAutoPlayOnOpen(true);
+    setSelectedCourseId(courseId);
   };
 
-  // "Start Course" / "Continue Learning" clicked from INSIDE the detail page → set active + go to Home
-  const handleStart = (courseId: string) => {
+  // "Start Course" / "Continue Learning" from inside detail → set as active + go to VideoPlayer
+  const handleStartFromDetail = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
     if (onCourseSelect) onCourseSelect(courseId);
+    setSelectedCourseId(null);
     if (onNavigate) onNavigate("home");
   };
 
@@ -620,16 +623,8 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   ) => {
     setExtraReviews((prev) => ({
       ...prev,
-      [courseId]: [
-        { ...review, date: "Just now" },
-        ...(prev[courseId] || []),
-      ],
+      [courseId]: [{ ...review, date: "Just now" }, ...(prev[courseId] || [])],
     }));
-  };
-
-  const handleBack = () => {
-    setSelectedCourseId(null);
-    if (onDetailClose) onDetailClose();
   };
 
   // ── Detail view ──────────────────────────────────────────────────────────
@@ -643,8 +638,8 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
         course={course}
         status={getStatus(selectedCourseId)}
         reviews={allReviews}
-        onBack={handleBack}
-        onStart={handleStart}
+        onBack={() => setSelectedCourseId(null)}
+        onStart={handleStartFromDetail}
         onReviewSubmit={handleReviewSubmit}
         backLabel="Back to Explore"
         autoPlayVideo={autoPlayOnOpen}
@@ -662,15 +657,15 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
             Explore Tracks 🔍
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
-            {activeCourseId
+            {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "Finish your active course to unlock other tracks."
               : "Pick one track to start — complete it before unlocking the next."}
           </p>
         </div>
       </div>
 
-      {/* Active course notice */}
-      {activeCourseId &&
+      {/* Active course notice banner */}
+      {activeCourseId && !completedCourseIds.includes(activeCourseId) &&
         (() => {
           const active = ALL_COURSES.find((c) => c.id === activeCourseId);
           return active ? (
@@ -678,7 +673,8 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
               <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
                 <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" />
                 <p className="text-xs sm:text-sm text-blue-700 font-semibold">
-                  You're currently on <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
+                  You're currently on{" "}
+                  <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
                 </p>
                 <button
                   onClick={() => handleCardClick(activeCourseId)}
@@ -699,20 +695,20 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
             const isLocked = status === "locked";
             const isCompleted = status === "completed";
             const isActive = status === "active";
+            const progress = isCompleted ? 100 : isActive ? 40 : 0;
 
             return (
               <div
                 key={c.id}
                 onClick={() => handleCardClick(c.id)}
                 className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
-                  ${
-                    isLocked
-                      ? "border-slate-200 opacity-60"
-                      : isCompleted
-                      ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
-                      : isActive
-                      ? "border-blue-300 hover:shadow-xl ring-2 ring-blue-400 ring-offset-1"
-                      : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
+                  ${isLocked
+                    ? "border-slate-200 opacity-60"
+                    : isCompleted
+                    ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
+                    : isActive
+                    ? "border-blue-300 hover:shadow-xl ring-2 ring-blue-400 ring-offset-1"
+                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
                   }`}
               >
                 {/* Thumbnail */}
@@ -721,32 +717,37 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     <img
                       src={c.thumbnail}
                       alt={c.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className={`w-full h-full object-cover transition-transform duration-500 ${!isLocked ? "group-hover:scale-105" : ""}`}
                     />
                   </div>
 
-                  {/* Play overlay on hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
-                      <Play className="w-5 h-5 text-blue-600 fill-current ml-0.5" />
-                    </div>
-                  </div>
-
-                  {isLocked && (
-                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
-                      <Lock className="w-6 h-6 text-white" />
-                      <span className="text-white text-[10px] font-bold">Finish active track first</span>
+                  {/* Play overlay on hover (non-locked, non-completed) */}
+                  {!isLocked && (
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
+                        <Play className="w-5 h-5 text-blue-600 fill-current ml-0.5" />
+                      </div>
                     </div>
                   )}
 
+                  {/* Locked overlay */}
+                  {isLocked && (
+                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
+                      <Lock className="w-6 h-6 text-white" />
+                      <span className="text-white text-[10px] font-bold text-center px-2">Finish active track first</span>
+                    </div>
+                  )}
+
+                  {/* Completed overlay */}
                   {isCompleted && (
-                    <div className="absolute inset-0 bg-emerald-900/30 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-emerald-900/20 flex items-center justify-center">
                       <div className="bg-white rounded-full p-1.5 shadow-lg">
                         <CheckCircle2 className="w-7 h-7 text-emerald-500" />
                       </div>
                     </div>
                   )}
 
+                  {/* Active badge */}
                   {isActive && (
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
                       <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />
@@ -754,6 +755,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
+                  {/* Tag badge */}
                   {c.tag && !isLocked && !isCompleted && !isActive && (
                     <div className="absolute top-2 left-2 bg-amber-400 text-amber-900 text-[9px] font-black uppercase px-2 py-1 rounded-full shadow flex items-center gap-1">
                       <Star className="w-2.5 h-2.5 fill-current" />
@@ -761,8 +763,14 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
-                  <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-white" />
+                  {/* Progress badge top-right */}
+                  <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
+                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`}></div>
+                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">{progress}%</span>
+                  </div>
+
+                  <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
+                    <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                     <span className="text-[10px] sm:text-xs font-semibold text-white">{c.lessons} lessons</span>
                   </div>
                 </div>
@@ -786,10 +794,29 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   </div>
 
+                  {/* Progress bar */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] sm:text-xs">
+                      <span className="text-slate-600 font-semibold">
+                        {isCompleted ? "Completed" : isActive ? "In progress" : "Not started"}
+                      </span>
+                      <span className="text-slate-500 font-bold">{progress}% complete</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`}
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  </div>
+
                   <div className="mt-auto pt-1">
                     {isLocked ? (
-                      <button className="w-full bg-slate-100 text-slate-400 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5" /> Locked
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleCardClick(c.id); }}
+                        className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"
+                      >
+                        <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
                     ) : isCompleted ? (
                       <button
@@ -810,7 +837,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                         onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
                       >
-                        <Play className="w-3.5 h-3.5 fill-current" /> View Course
+                        <Play className="w-3.5 h-3.5 fill-current" /> Get Started
                       </button>
                     )}
                   </div>
@@ -824,6 +851,5 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   );
 };
 
-export { CourseDetail, VideoPlayer };
-export type { CourseDetailProps };
+export { VideoPlayer };
 export default ExploreTab;
