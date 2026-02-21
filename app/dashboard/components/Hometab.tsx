@@ -1,8 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Trophy, Rocket, Target, ChevronRight, Play, Clock, Lock, CheckCircle2, Zap } from "lucide-react";
 import { ALL_COURSES } from "./ExploreTab"; // ← shared course data
+import { CourseDetail } from "./ExploreTab"; // ← shared detail view
+import type { CourseDetailProps } from "./ExploreTab";
+
+// We also need COURSE_REVIEWS — import or duplicate a minimal version
+// Since it's not exported, we'll pass empty reviews (you can export it from ExploreTab if desired)
+const EMPTY_REVIEWS: { name: string; rating: number; date: string; comment: string }[] = [];
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -17,14 +23,14 @@ const HomeTab: React.FC<HomeTabProps> = ({
   activeCourseId = null,
   completedCourseIds = [],
 }) => {
+  // Track which course detail is open (null = home view)
+  const [detailCourseId, setDetailCourseId] = useState<string | null>(null);
+  const [extraReviews, setExtraReviews] = useState<
+    Record<string, { name: string; rating: number; date: string; comment: string }[]>
+  >({});
+
   const handleExploreClick = () => {
     if (onNavigate) onNavigate("explore");
-  };
-
-  const handleCourseClick = (courseId: string) => {
-    const status = getStatus(courseId);
-    if (status === "locked") return;
-    if (onCourseSelect) onCourseSelect(courseId);
   };
 
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
@@ -33,6 +39,45 @@ const HomeTab: React.FC<HomeTabProps> = ({
     if (activeCourseId && id !== activeCourseId) return "locked";
     return "available";
   };
+
+  // Open course detail on card click (any status — detail explains locked)
+  const handleCourseCardClick = (courseId: string) => {
+    setDetailCourseId(courseId);
+  };
+
+  const handleStartFromDetail = (courseId: string) => {
+    const status = getStatus(courseId);
+    if (status === "locked") return;
+    if (onCourseSelect) onCourseSelect(courseId);
+    setDetailCourseId(null);
+  };
+
+  const handleReviewSubmit = (
+    courseId: string,
+    review: { name: string; rating: number; comment: string }
+  ) => {
+    setExtraReviews((prev) => ({
+      ...prev,
+      [courseId]: [{ ...review, date: "Just now" }, ...(prev[courseId] || [])],
+    }));
+  };
+
+  // ── Course Detail View ─────────────────────────────────────────────────
+  if (detailCourseId) {
+    const course = ALL_COURSES.find((c) => c.id === detailCourseId)!;
+    const userReviews = extraReviews[detailCourseId] || [];
+    return (
+      <CourseDetail
+        course={course}
+        status={getStatus(detailCourseId)}
+        reviews={userReviews}
+        onBack={() => setDetailCourseId(null)}
+        onStart={handleStartFromDetail}
+        onReviewSubmit={handleReviewSubmit}
+        backLabel="Back to Home"
+      />
+    );
+  }
 
   // Courses to feature in "Recently Started" — active first, then completed
   const recentCourses = [
@@ -102,7 +147,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
                 {ALL_COURSES.slice(0, 4).map((c, i) => (
                   <div
                     key={i}
-                    className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 ${
+                    onClick={() => handleCourseCardClick(c.id)}
+                    className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer ${
                       i % 2 === 0 ? "translate-y-2" : "-translate-y-2"
                     }`}
                   >
@@ -132,19 +178,24 @@ const HomeTab: React.FC<HomeTabProps> = ({
             {recentCourses.map((c) => {
               const isCompleted = completedCourseIds.includes(c.id);
               const isActive = c.id === activeCourseId;
-              // Fake progress for display: active = 40%, completed = 100%
               const progress = isCompleted ? 100 : isActive ? 40 : 0;
 
               return (
                 <div
                   key={c.id}
-                  onClick={() => handleCourseClick(c.id)}
+                  onClick={() => handleCourseCardClick(c.id)}
                   className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer
                     ${isActive ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1" : "border-emerald-200 hover:border-emerald-300"}`}
                 >
                   <div className="relative overflow-hidden">
                     <div className="aspect-video">
                       <img src={c.thumbnail} alt={c.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    {/* Play overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-200 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
+                        <Play className="w-4 h-4 text-blue-600 fill-current ml-0.5" />
+                      </div>
                     </div>
                     {isActive && (
                       <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
@@ -178,11 +229,13 @@ const HomeTab: React.FC<HomeTabProps> = ({
                         />
                       </div>
                     </div>
-                    <button className={`w-full font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs
-                      ${isCompleted
-                        ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                      }`}>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleCourseCardClick(c.id); }}
+                      className={`w-full font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs
+                        ${isCompleted
+                          ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200"
+                          : "bg-blue-600 hover:bg-blue-700 text-white"
+                        }`}>
                       {isCompleted ? (
                         <><CheckCircle2 className="w-3.5 h-3.5" /> Review</>
                       ) : (
@@ -223,15 +276,15 @@ const HomeTab: React.FC<HomeTabProps> = ({
             return (
               <div
                 key={c.id}
-                onClick={() => handleCourseClick(c.id)}
-                className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col
+                onClick={() => handleCourseCardClick(c.id)}
+                className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
                   ${isLocked
-                    ? "border-slate-200 opacity-60 cursor-not-allowed"
+                    ? "border-slate-200 opacity-60"
                     : isActive
-                    ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1 hover:shadow-xl cursor-pointer"
+                    ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1 hover:shadow-xl"
                     : isCompleted
-                    ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl cursor-pointer"
-                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl cursor-pointer"
+                    ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
+                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
                   }`}
               >
                 <div className="relative overflow-hidden">
@@ -242,6 +295,15 @@ const HomeTab: React.FC<HomeTabProps> = ({
                       className={`w-full h-full object-cover transition-transform duration-500 ${!isLocked ? "group-hover:scale-105" : ""}`}
                     />
                   </div>
+
+                  {/* Play overlay on hover (non-locked) */}
+                  {!isLocked && !isCompleted && (
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-200 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
+                        <Play className="w-4 h-4 text-blue-600 fill-current ml-0.5" />
+                      </div>
+                    </div>
+                  )}
 
                   {/* Locked overlay */}
                   {isLocked && (
@@ -291,8 +353,11 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
                   <div className="mt-auto">
                     {isLocked ? (
-                      <button disabled className="w-full bg-slate-100 text-slate-400 font-semibold py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5" /> Locked
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleCourseCardClick(c.id); }}
+                        className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"
+                      >
+                        <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
                     ) : isCompleted ? (
                       <button className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2">
@@ -324,4 +389,4 @@ const HomeTab: React.FC<HomeTabProps> = ({
   );
 };
 
-export default HomeTab;   
+export default HomeTab;

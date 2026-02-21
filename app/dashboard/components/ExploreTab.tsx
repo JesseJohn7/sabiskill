@@ -17,6 +17,7 @@ import {
   ChevronUp,
   Send,
   X,
+  Maximize2,
 } from "lucide-react";
 
 // ⚠️ These IDs must match the keys in VideoPlayer's COURSES object exactly
@@ -28,6 +29,8 @@ export const ALL_COURSES = [
     longDescription:
       "This comprehensive course takes you from absolute beginner to confident web developer. You'll master HTML structure, CSS styling, responsive design, and modern JavaScript — then build real-world projects including a personal portfolio, a landing page, and a dynamic web app.",
     thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
+    // YouTube video ID for preview
+    videoId: "HGTJBPNC-Gw",
     lessons: 37,
     level: "Beginner",
     tag: "Most Popular",
@@ -54,6 +57,7 @@ export const ALL_COURSES = [
     longDescription:
       "Discover the art and science behind great digital products. Learn how to conduct user research, create wireframes and prototypes, and apply proven design principles to build interfaces people love. No prior design experience required.",
     thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/maxresdefault.jpg",
+    videoId: "c9Wg6Cb_YlU",
     lessons: 4,
     level: "Beginner",
     tag: "Quick Start",
@@ -76,6 +80,7 @@ export const ALL_COURSES = [
     longDescription:
       "Go beyond the basics with a thorough exploration of modern JavaScript. This course covers closures, prototypes, async/await, the event loop, and how to write clean, professional-grade code. Perfect for developers who already know the basics.",
     thumbnail: "https://i.ytimg.com/vi/EfAl9bwzVZk/maxresdefault.jpg",
+    videoId: "EfAl9bwzVZk",
     lessons: 28,
     level: "Intermediate",
     tag: "Trending",
@@ -102,6 +107,7 @@ export const ALL_COURSES = [
     longDescription:
       "Get a solid, no-hype understanding of blockchain technology and the crypto ecosystem. Learn how Bitcoin and Ethereum work under the hood, explore DeFi protocols and NFTs, and understand how to evaluate projects and manage risk in a volatile market.",
     thumbnail: "https://i.ytimg.com/vi/amAq-WHAFs8/maxresdefault.jpg",
+    videoId: "amAq-WHAFs8",
     lessons: 11,
     level: "Beginner",
     tag: null,
@@ -126,6 +132,7 @@ export const ALL_COURSES = [
     longDescription:
       "Whether you're presenting to your team or speaking on a stage, this course gives you the tools to communicate with power and presence. Learn breathing techniques, storytelling frameworks, and how to handle nerves so you can speak with confidence every time.",
     thumbnail: "https://i.ytimg.com/vi/w82a1FT5o88/maxresdefault.jpg",
+    videoId: "w82a1FT5o88",
     lessons: 15,
     level: "All Levels",
     tag: null,
@@ -151,6 +158,7 @@ export const ALL_COURSES = [
     longDescription:
       "Transform your life by understanding the science of habits, motivation, and peak performance. This course blends psychology, neuroscience, and practical frameworks to help you set meaningful goals, build lasting habits, and develop a resilient, growth-oriented mindset.",
     thumbnail: "https://i.ytimg.com/vi/75d_29QWELk/maxresdefault.jpg",
+    videoId: "75d_29QWELk",
     lessons: 10,
     level: "All Levels",
     tag: null,
@@ -218,6 +226,54 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
           className={`${sz} ${s <= Math.round(rating) ? "text-amber-400 fill-amber-400" : "text-slate-300 fill-slate-300"}`}
         />
       ))}
+    </div>
+  );
+}
+
+// ─── Embedded Video Player ───────────────────────────────────────────────────
+interface VideoPlayerProps {
+  videoId: string;
+  title: string;
+}
+function VideoPlayer({ videoId, title }: VideoPlayerProps) {
+  const [playing, setPlaying] = useState(false);
+
+  if (!playing) {
+    return (
+      <div className="relative w-full aspect-video bg-slate-900 rounded-t-2xl overflow-hidden group">
+        <img
+          src={`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
+          alt={title}
+          className="w-full h-full object-cover opacity-80"
+        />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+        {/* Play button */}
+        <button
+          onClick={() => setPlaying(true)}
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 group"
+          aria-label="Play preview"
+        >
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 flex items-center justify-center shadow-2xl group-hover:scale-110 group-active:scale-95 transition-transform duration-200 ring-4 ring-white/30">
+            <Play className="w-7 h-7 sm:w-9 sm:h-9 text-blue-600 fill-current ml-1" />
+          </div>
+          <span className="text-white text-xs sm:text-sm font-semibold bg-black/40 backdrop-blur-sm px-4 py-1.5 rounded-full">
+            Watch Preview
+          </span>
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full aspect-video bg-black rounded-t-2xl overflow-hidden">
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="w-full h-full"
+      />
     </div>
   );
 }
@@ -307,9 +363,10 @@ interface CourseDetailProps {
   onBack: () => void;
   onStart: (courseId: string) => void;
   onReviewSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
+  backLabel?: string;
 }
 
-function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit }: CourseDetailProps) {
+function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit, backLabel = "Back to Explore" }: CourseDetailProps) {
   const [topicsOpen, setTopicsOpen] = useState(false);
   const isLocked = status === "locked";
   const isCompleted = status === "completed";
@@ -329,7 +386,7 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
             className="flex items-center gap-2 text-slate-300 hover:text-white text-sm font-semibold mb-6 transition-colors group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Explore
+            {backLabel}
           </button>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
@@ -361,17 +418,12 @@ function CourseDetail({ course, status, reviews, onBack, onStart, onReviewSubmit
               <p className="text-slate-400 text-xs">Instructor: <span className="text-white font-semibold">{course.instructor}</span></p>
             </div>
 
-            {/* Right: CTA card */}
+            {/* Right: Video + CTA card */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-                <div className="aspect-video relative">
-                  <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-                      <Play className="w-6 h-6 text-slate-900 fill-current ml-0.5" />
-                    </div>
-                  </div>
-                </div>
+                {/* ── Embedded Video Player ── */}
+                <VideoPlayer videoId={course.videoId} title={course.title} />
+
                 <div className="p-5 space-y-4">
                   {isLocked ? (
                     <>
@@ -506,14 +558,19 @@ interface ExploreTabProps {
   activeCourseId?: string | null;
   completedCourseIds?: string[];
   onCourseSelect?: (courseId: string) => void;
+  // Optional: allow HomeTab to open a course detail directly
+  initialCourseId?: string | null;
+  onDetailClose?: () => void;
 }
 
 const ExploreTab: React.FC<ExploreTabProps> = ({
   activeCourseId = null,
   completedCourseIds = [],
   onCourseSelect,
+  initialCourseId = null,
+  onDetailClose,
 }) => {
-  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(initialCourseId);
   const [extraReviews, setExtraReviews] = useState<
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
@@ -526,7 +583,6 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   };
 
   const handleCardClick = (id: string) => {
-    // Always open detail page (even locked — detail page explains why)
     setSelectedCourseId(id);
   };
 
@@ -549,6 +605,11 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
     }));
   };
 
+  const handleBack = () => {
+    setSelectedCourseId(null);
+    if (onDetailClose) onDetailClose();
+  };
+
   // ── Detail view ──────────────────────────────────────────────────────────
   if (selectedCourseId) {
     const course = ALL_COURSES.find((c) => c.id === selectedCourseId)!;
@@ -560,9 +621,10 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
         course={course}
         status={getStatus(selectedCourseId)}
         reviews={allReviews}
-        onBack={() => setSelectedCourseId(null)}
+        onBack={handleBack}
         onStart={handleStart}
         onReviewSubmit={handleReviewSubmit}
+        backLabel="Back to Explore"
       />
     );
   }
@@ -638,6 +700,13 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                       alt={c.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                  </div>
+
+                  {/* Play overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
+                      <Play className="w-5 h-5 text-blue-600 fill-current ml-0.5" />
+                    </div>
                   </div>
 
                   {isLocked && (
@@ -723,4 +792,6 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   );
 };
 
+export { CourseDetail, VideoPlayer };
+export type { CourseDetailProps };
 export default ExploreTab;
