@@ -671,7 +671,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
           return active ? (
             <div className="max-w-7xl mx-auto mb-5 sm:mb-6">
               <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-                <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                {/* <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" /> */}
                 <p className="text-xs sm:text-sm text-blue-700 font-semibold">
                   You're currently on{" "}
                   <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
