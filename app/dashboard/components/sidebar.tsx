@@ -24,7 +24,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
     { id: "explore",   label: "Explore",   icon: Compass   },
     { id: "community", label: "Communities", icon: Users     }, // ← NEW TAB
     { id: "resources", label: "Resources",    icon: FileText  },
-    { id: "settings",  label: "Setup",     icon: Settings  },
+    { id: "settings",  label: "Settings",     icon: Settings  },
   ];
 
   useEffect(() => {
