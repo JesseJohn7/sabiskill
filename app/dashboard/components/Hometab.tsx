@@ -220,9 +220,9 @@ const HomeTab: React.FC<HomeTabProps> = ({
         <div className="max-w-7xl mx-auto mb-7 sm:mb-8">
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
            {/*  <Zap className="w-5 h-5 text-blue-600" /> */}
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">
-              Recently Started
-            </h2>
+           <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800">
+            Recently Started
+          </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
