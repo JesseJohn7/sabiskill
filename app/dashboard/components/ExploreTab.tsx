@@ -654,7 +654,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
       <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-            Explore Tracks 🔍
+            Explore Tracks 
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
