@@ -43,6 +43,11 @@ const DashboardPage: React.FC = () => {
     setSelectedCourse(null);
   };
 
+  // ── Navigate to settings when bell icon is clicked ──
+  const handleNotificationClick = () => {
+    handleTabChange("settings");
+  };
+
   const renderTab = () => {
     switch (currentTab) {
       case "home":
@@ -92,7 +97,11 @@ const DashboardPage: React.FC = () => {
 
       <div className="flex-1 lg:ml-24 flex flex-col min-w-0">
         {!selectedCourse && (
-          <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <Header
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            onCourseSelect={handleCourseSelect}
+            onNotificationClick={handleNotificationClick}
+          />
         )}
 
         <main
