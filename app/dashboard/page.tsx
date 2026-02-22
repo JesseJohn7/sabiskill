@@ -96,7 +96,7 @@ const DashboardPage: React.FC = () => {
         {!selectedCourse && (
           <Header
             toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-            onNotificationClick={handleNotificationClick}  // ← new prop
+            onNotificationClick={handleNotificationClick}  
           />
         )}
 
