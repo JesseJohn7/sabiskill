@@ -15,17 +15,14 @@ const DashboardPage: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
-  // ── Shared course progress state (lifted so Home & Explore stay in sync) ──
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
   const [completedCourseIds, setCompletedCourseIds] = useState<string[]>([]);
 
-  // Called when user clicks "Get Started" / "Continue" on any course card
   const handleCourseSelect = (courseId: string) => {
     setActiveCourseId(courseId);
     setSelectedCourse(courseId);
   };
 
-  // Call this to mark a course complete (wire up inside VideoPlayer if it supports it)
   const handleCourseComplete = (courseId: string) => {
     setCompletedCourseIds((prev) =>
       prev.includes(courseId) ? prev : [...prev, courseId]
@@ -43,7 +40,7 @@ const DashboardPage: React.FC = () => {
     setSelectedCourse(null);
   };
 
-  // ── Navigate to settings when bell icon is clicked ──
+  // ── Clicking the notification bell navigates to Settings ──
   const handleNotificationClick = () => {
     handleTabChange("settings");
   };
@@ -99,8 +96,7 @@ const DashboardPage: React.FC = () => {
         {!selectedCourse && (
           <Header
             toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-            onCourseSelect={handleCourseSelect}
-            onNotificationClick={handleNotificationClick}
+            onNotificationClick={handleNotificationClick}  // ← new prop
           />
         )}
 
@@ -123,4 +119,4 @@ const DashboardPage: React.FC = () => {
   );
 };
 
-export default DashboardPage;
+export default DashboardPage; 

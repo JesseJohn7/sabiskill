@@ -13,6 +13,7 @@ interface Course {
 interface Props {
   toggleSidebar: () => void;
   onCourseSelect?: (courseId: string) => void;
+  onNotificationClick?: () => void;
 }
 
 const COURSES: Course[] = [
@@ -48,7 +49,7 @@ const COURSES: Course[] = [
   },
 ];
 
-const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect }) => {
+const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect, onNotificationClick }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Course[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -90,7 +91,7 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect }) => {
         >
           <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
-        
+
         <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-2xl">
           <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 pointer-events-none" />
           <input
@@ -113,13 +114,11 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect }) => {
           {/* Search Results Dropdown */}
           {showResults && (
             <>
-              {/* Backdrop to close dropdown */}
               <div
                 className="fixed inset-0 z-40"
                 onClick={() => setShowResults(false)}
               ></div>
 
-              {/* Results */}
               <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 max-h-[400px] overflow-y-auto">
                 {searchResults.length > 0 ? (
                   <>
@@ -167,11 +166,16 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect }) => {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
-        <button className="p-2 sm:p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl relative transition-colors">
+        {/* Notification Bell — clicks navigate to Settings */}
+        <button
+          onClick={onNotificationClick}
+          className="p-2 sm:p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl relative transition-colors"
+          aria-label="Notifications"
+        >
           <Bell className="w-5 h-5" />
           <span className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
         </button>
-        
+
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl border border-slate-200 flex items-center justify-center">
             <User className="w-5 h-5 text-slate-400" />
