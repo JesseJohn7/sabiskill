@@ -267,7 +267,7 @@ export default function SignupPage() {
                   <div className="w-2 h-2 rounded-full bg-emerald-400" />
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 </div>
-                <div className="text-white text-xs font-semibold">2.4k online now</div>
+                <div className="text-white text-xs font-semibold">2 Active courses</div>
               </div>
             </div>
           </div>
@@ -276,8 +276,8 @@ export default function SignupPage() {
         {/* Bottom tagline */}
         <div className="relative z-10 px-10 xl:px-14 pb-10">
           <h2 className="text-3xl xl:text-4xl font-bold text-white leading-tight">
-            Learn the skills<br />
-            <span className="gradient-text">Africa needs most.</span>
+            Learn In Demand<br />
+            <span className="gradient-text">Real World Skills.</span>
           </h2>
         </div>
       </div>
