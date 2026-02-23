@@ -17,6 +17,8 @@
 /.next/
 /out/
 
+#environment variables
+
 # production
 /build
 
