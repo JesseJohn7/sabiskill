@@ -224,7 +224,7 @@ export default function LoginPage() {
                   <div className="w-2 h-2 rounded-full bg-emerald-400" />
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 </div>
-                <div className="text-white text-xs font-semibold">2.4k online now</div>
+                <div className="text-white text-xs font-semibold">2 Active courses</div>
               </div>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function LoginPage() {
         <div className="relative z-10 px-10 xl:px-14 pb-10">
           <h2 className="text-3xl xl:text-4xl font-bold text-white leading-tight">
             Welcome back.<br />
-            <span className="gradient-text">Keep growing.</span>
+            <span className="text-blue-400">Keep Learning.</span>
           </h2>
         </div>
       </div>
