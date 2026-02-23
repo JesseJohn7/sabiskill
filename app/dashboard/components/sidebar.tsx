@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Home,
   Compass,
   FileText,
   Settings,
   LogOut,
-  Users, // ← NEW: Community icon
+  Users,
   X,
 } from "lucide-react";
+import { createClient } from "../../lib/supabase/client";
 
 interface Props {
   currentTab: string;
@@ -19,13 +21,21 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen }) => {
+  const router = useRouter();
+
   const sidebarItems = [
-    { id: "home",      label: "Home",      icon: Home      },
-    { id: "explore",   label: "Explore",   icon: Compass   },
-    { id: "community", label: "Communities", icon: Users     }, // ← NEW TAB
-    { id: "resources", label: "Resources",    icon: FileText  },
-    { id: "settings",  label: "Settings",     icon: Settings  },
+    { id: "home",      label: "Home",        icon: Home      },
+    { id: "explore",   label: "Explore",     icon: Compass   },
+    { id: "community", label: "Communities", icon: Users     },
+    { id: "resources", label: "Resources",   icon: FileText  },
+    { id: "settings",  label: "Settings",    icon: Settings  },
   ];
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   useEffect(() => {
     if (isOpen && window.innerWidth < 1024) {
@@ -81,7 +91,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           </button>
         </div>
 
-        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-transparent">
+        <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto">
           {sidebarItems.map((item) => {
             const isActive = currentTab === item.id;
             return (
@@ -104,7 +114,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                   strokeWidth={isActive ? 2.5 : 2}
                 />
                 {isOpen && (
-                  <span className="ml-3.5 font-semibold text-[15px] tracking-tight whitespace-nowrap transition-all duration-200">
+                  <span className="ml-3.5 font-semibold text-[15px] tracking-tight whitespace-nowrap">
                     {item.label}
                   </span>
                 )}
@@ -123,8 +133,10 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
           })}
         </nav>
 
+        {/* Sign Out Button */}
         <div className="p-3 border-t border-blue-100">
           <button
+            onClick={handleSignOut}
             className={`group relative flex items-center w-full rounded-xl
               text-blue-600 hover:text-red-600 hover:bg-red-50 active:bg-red-100
               font-semibold transition-all duration-200 ease-out
@@ -135,7 +147,7 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
               strokeWidth={2}
             />
             {isOpen && (
-              <span className="ml-3.5 text-[15px] tracking-tight whitespace-nowrap transition-all duration-200">
+              <span className="ml-3.5 text-[15px] tracking-tight whitespace-nowrap">
                 Sign Out
               </span>
             )}
