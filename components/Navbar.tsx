@@ -7,19 +7,17 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Scroll effect: add shadow/blur when scrolling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent scroll when menu is open
   useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [menuOpen]);
 
@@ -41,17 +39,17 @@ const Navbar: React.FC = () => {
             <li><Link href="#home" className="hover:text-blue-400 transition">Home</Link></li>
             <li><Link href="#features" className="hover:text-blue-400 transition">Features</Link></li>
             <li><Link href="#how-it-works" className="hover:text-blue-400 transition">How it Works</Link></li>
-            {/* <li><Link href="#testimonials" className="hover:text-blue-400 transition">Testimonials</Link></li> */}
             <li><Link href="#faqs" className="hover:text-blue-400 transition">FAQs</Link></li>
           </ul>
 
-          {/* Right Side */}
+          {/* Right Side — Desktop Get Started */}
           <div className="hidden md:flex items-center">
-            <button
+            
+              href="/signup"
               className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition cursor-pointer"
             >
               Get Started
-            </button>
+            </a>
           </div>
 
           {/* Mobile Hamburger */}
@@ -60,15 +58,9 @@ const Navbar: React.FC = () => {
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden flex flex-col justify-center items-center gap-1 transition-all active:scale-90 z-50"
           >
-            <span
-              className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}`}
-            />
-            <span
-              className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}`}
-            />
+            <span className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}`} />
+            <span className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`h-[2px] w-6 bg-blue-500 rounded transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}`} />
           </button>
         </div>
       </nav>
@@ -80,51 +72,30 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="flex flex-col justify-center items-start h-full px-8 gap-6">
-          <Link 
-            href="#home" 
-            className="text-2xl text-gray-300 hover:text-blue-300 transition"
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link href="#home" className="text-2xl text-gray-300 hover:text-blue-300 transition" onClick={() => setMenuOpen(false)}>
             Home
           </Link>
-          <Link 
-            href="#features" 
-            className="text-2xl text-gray-200 hover:text-blue-300 transition"
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link href="#features" className="text-2xl text-gray-200 hover:text-blue-300 transition" onClick={() => setMenuOpen(false)}>
             Features
           </Link>
-          <Link 
-            href="#how-it-works" 
-            className="text-2xl text-gray-200 hover:text-blue-300 transition"
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link href="#how-it-works" className="text-2xl text-gray-200 hover:text-blue-300 transition" onClick={() => setMenuOpen(false)}>
             How it Works
           </Link>
-         {/*  <Link 
-            href="#testimonials" 
-            className="text-2xl text-gray-200 hover:text-blue-300 transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            Testimonials
-          </Link> */}
-          <Link 
-            href="#faqs" 
-            className="text-2xl text-gray-200 hover:text-blue-300 transition"
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link href="#faqs" className="text-2xl text-gray-200 hover:text-blue-300 transition" onClick={() => setMenuOpen(false)}>
             FAQs
           </Link>
 
-          <button
+          {/* Mobile Get Started */}
+          
+            href="/signup"
             onClick={() => setMenuOpen(false)}
             className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-700 transition cursor-pointer mt-8"
           >
             Get Started
-          </button>
+          </a>
         </div>
       </div>
-    </>
+    </> 
   );
 };
 
