@@ -299,7 +299,7 @@ export default function SignupPage() {
           {/* Heading */}
           <div className="fade-1 mb-7">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1.5">Create your account</h2>
-            <p className="text-slate-500 text-sm">Start learning today — completely free.</p>
+            <p className="text-slate-500 text-sm">Start learning today completely free.</p>
           </div>
 
           {/* Google */}
