@@ -277,7 +277,7 @@ export default function SignupPage() {
         <div className="relative z-10 px-10 xl:px-14 pb-10">
           <h2 className="text-3xl xl:text-4xl font-bold text-white leading-tight">
             Learn In Demand<br />
-            <span className="gradient-text">Real World Skills.</span>
+            <span className="text-blue-400">Real World Skills.</span>
           </h2>
         </div>
       </div>
