@@ -90,7 +90,7 @@ const DashboardPage: React.FC = () => {
         setCurrentTab={handleTabChange}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
-      />
+      /> 
 
       <div className="flex-1 lg:ml-24 flex flex-col min-w-0">
         {!selectedCourse && (
