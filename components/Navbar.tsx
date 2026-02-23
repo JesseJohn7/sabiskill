@@ -29,12 +29,10 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="flex items-center justify-between h-[70px] px-6 md:px-16 lg:px-24 xl:px-32">
-          {/* Logo */}
           <Link href="#" className="text-2xl font-bold text-white z-50">
             Sabi<span className="text-blue-500">skill</span>
           </Link>
 
-          {/* Desktop Menu */}
           <ul className="hidden md:flex items-center gap-10 text-gray-300 font-medium">
             <li><Link href="#home" className="hover:text-blue-400 transition">Home</Link></li>
             <li><Link href="#features" className="hover:text-blue-400 transition">Features</Link></li>
@@ -42,17 +40,12 @@ const Navbar: React.FC = () => {
             <li><Link href="#faqs" className="hover:text-blue-400 transition">FAQs</Link></li>
           </ul>
 
-          {/* Right Side — Desktop Get Started */}
           <div className="hidden md:flex items-center">
-            
-              href="/signup"
-              className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition cursor-pointer"
-            >
+            <a href="/signup" className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 transition cursor-pointer">
               Get Started
             </a>
           </div>
 
-          {/* Mobile Hamburger */}
           <button
             aria-label="menu"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -65,7 +58,6 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Full Screen Menu */}
       <div
         className={`fixed inset-0 bg-black z-40 md:hidden transition-all duration-500 ease-in-out ${
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -84,18 +76,12 @@ const Navbar: React.FC = () => {
           <Link href="#faqs" className="text-2xl text-gray-200 hover:text-blue-300 transition" onClick={() => setMenuOpen(false)}>
             FAQs
           </Link>
-
-          {/* Mobile Get Started */}
-          
-            href="/signup"
-            onClick={() => setMenuOpen(false)}
-            className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-700 transition cursor-pointer mt-8"
-          >
+          <a href="/signup" onClick={() => setMenuOpen(false)} className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-700 transition cursor-pointer mt-8">
             Get Started
           </a>
         </div>
       </div>
-    </> 
+    </>
   );
 };
 
