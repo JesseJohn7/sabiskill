@@ -392,9 +392,9 @@ export default function SignupPage() {
 
           <p className="fade-5 text-center text-xs text-slate-600 mt-4 leading-relaxed">
             By signing up you agree to our{" "}
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">Terms</a>
+            <a href="#" className="text-slate-600 hover:text-white transition-colors">Terms</a>
             {" "}and{" "}
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="text-slate-600 hover:text-white transition-colors">Privacy Policy</a>
           </p>
 
           <p className="fade-5 text-center text-sm text-slate-500 mt-3">
