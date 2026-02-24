@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
+import Link from "next/link";
 const Hero: React.FC = () => {
   const words = ["Learn","Sabi","Koyi", "Kọ ẹkọ", "ịmụta"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -61,11 +61,14 @@ const Hero: React.FC = () => {
           className="flex flex-col sm:flex-row items-center gap-3 mt-4"
           style={{ opacity: 1, transform: "none" }}
         >
-          <button className="w-full font-medium text-base md:text-[16px] whitespace-nowrap leading-[22px] rounded-full px-8 py-4 md:px-[40px] md:py-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-48 md:min-w-40">Start Learning</button> 
-
+         <Link href="/signup">
+          <button className="w-full font-medium text-base md:text-[16px] whitespace-nowrap leading-[22px] rounded-full px-8 py-4 md:px-[40px] md:py-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-48 md:min-w-40">
+            Start Learning
+          </button>
+        </Link>
           {/* <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-[#282c38]/50 hover:bg-white/10 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
             Browse Courses
-          </button> */}
+          </button> */} 
         </div>
       </div>
     </div>
