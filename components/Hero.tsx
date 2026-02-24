@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
           {/* <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-[#282c38]/50 hover:bg-white/10 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
             Browse Courses
           </button> */} 
-        </div>
+        </div> 
       </div>
     </div>
   );
