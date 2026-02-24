@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Trophy,
   Rocket,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { ALL_COURSES, CourseDetail } from "./ExploreTab";
 import type { CourseDetailProps } from "./ExploreTab";
+import { createClient } from "@/app/lib/supabase/client";
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -34,6 +35,38 @@ const HomeTab: React.FC<HomeTabProps> = ({
   const [extraReviews, setExtraReviews] = useState<
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
+  const [firstName, setFirstName] = useState<string>("there");
+
+  // ── Fetch logged-in user's first name from Supabase ──────────────────
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        // Try full_name from user_metadata (Google OAuth populates this)
+        const fullName =
+          user.user_metadata?.full_name ||
+          user.user_metadata?.name ||
+          "";
+
+        if (fullName) {
+          setFirstName(fullName.split(" ")[0]);
+        } else if (user.email) {
+          // Fall back to the part before @ in the email
+          const emailPrefix = user.email.split("@")[0];
+          // Capitalise first letter, strip dots/underscores/numbers
+          const cleaned = emailPrefix
+            .replace(/[._\-0-9]/g, " ")
+            .trim()
+            .split(" ")[0];
+          setFirstName(cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleExploreClick = () => {
     if (onNavigate) onNavigate("explore");
@@ -43,19 +76,16 @@ const HomeTab: React.FC<HomeTabProps> = ({
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
     if (completedCourseIds.includes(id)) return "completed";
     if (id === activeCourseId) return "active";
-    // Lock everything else if there is an active course that isn't yet completed
     if (activeCourseId && !completedCourseIds.includes(activeCourseId) && id !== activeCourseId)
       return "locked";
     return "available";
   };
 
-  // Card body click → open detail, no autoplay
   const handleCourseCardClick = (courseId: string) => {
     setAutoPlayOnOpen(false);
     setDetailCourseId(courseId);
   };
 
-  // Action button click → open detail WITH autoplay
   const handleStartFromGrid = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
@@ -63,7 +93,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
     setDetailCourseId(courseId);
   };
 
-  // "Start Course" / "Continue" from inside the detail → launch VideoPlayer
   const handleStartFromDetail = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
@@ -99,7 +128,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
     );
   }
 
-  // Courses to show in "Recently Started"
   const recentCourses = [
     ...ALL_COURSES.filter((c) => c.id === activeCourseId),
     ...ALL_COURSES.filter((c) => completedCourseIds.includes(c.id)),
@@ -112,7 +140,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
       <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-            Hello, Alex 👋
+            Hello, {firstName} 👋
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
@@ -128,7 +156,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
         return active ? (
           <div className="max-w-7xl mx-auto mb-5 sm:mb-6">
             <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-              {/* <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" /> */}
               <p className="text-xs sm:text-sm text-blue-700 font-semibold">
                 You're currently on{" "}
                 <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
@@ -219,10 +246,9 @@ const HomeTab: React.FC<HomeTabProps> = ({
       {hasRecents && (
         <div className="max-w-7xl mx-auto mb-7 sm:mb-8">
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
-           {/*  <Zap className="w-5 h-5 text-blue-600" /> */}
-           <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800">
-            Recently Started
-          </h2>
+            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800">
+              Recently Started
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
@@ -357,7 +383,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     />
                   </div>
 
-                  {/* Play overlay */}
                   {!isLocked && (
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-200 flex items-center justify-center">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
@@ -366,7 +391,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   )}
 
-                  {/* Locked overlay */}
                   {isLocked && (
                     <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
                       <Lock className="w-6 h-6 text-white" />
@@ -376,7 +400,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   )}
 
-                  {/* Active badge */}
                   {isActive && (
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
                       <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />
@@ -384,7 +407,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   )}
 
-                  {/* Progress badge */}
                   <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
                     <div
                       className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
