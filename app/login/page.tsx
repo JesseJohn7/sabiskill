@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase/client";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -114,6 +116,21 @@ export default function LoginPage() {
           background:rgba(15,20,40,0.85);
           border:1px solid rgba(255,255,255,0.1);
           backdrop-filter:blur(16px);
+        }
+
+        .password-toggle{
+          color: rgba(148,163,184,0.6);
+          transition: color 0.2s ease;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .password-toggle:hover{
+          color: rgba(148,163,184,1);
         }
       `}</style>
 
@@ -304,14 +321,30 @@ export default function LoginPage() {
                   Forgot password?
                 </a>
               </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="input-dark px-4 py-3.5 rounded-xl text-sm"
-              />
+              {/* Password field with toggle */}
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="input-dark px-4 py-3.5 pr-12 rounded-xl text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="password-toggle absolute right-4 top-1/2 -translate-y-1/2"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -338,7 +371,7 @@ export default function LoginPage() {
                     </svg>
                     Signing in...
                   </span>
-                ) : "Sign In →"}
+                ) : "Sign In "}
               </button>
             </div>
           </form>
@@ -346,7 +379,7 @@ export default function LoginPage() {
           <p className="fade-5 text-center text-sm text-slate-500 mt-5">
             Don't have an account?{" "}
             <a href="/signup" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-              Sign up 
+              Sign up
             </a>
           </p>
         </div>

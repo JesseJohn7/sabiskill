@@ -385,7 +385,7 @@ export default function SignupPage() {
                     </svg>
                     Creating account...
                   </span>
-                ) : "Create Account →"}
+                ) : "Create Account "}
               </button>
             </div>
           </form>
