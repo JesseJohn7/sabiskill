@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Users,
   BookOpen,
@@ -12,7 +12,6 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { useCommunityActivity } from "./useCommunityActivity";
 
 interface Community {
   id: string;
@@ -54,12 +53,13 @@ const communities: Community[] = [
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
     joinLink: "https://superteam.fun",
+    /* new: true, */
   },
   {
     id: "gdg",
     name: "Google Developer Groups",
     description:
-      "Google Developer Groups (GDG) are for developers who are interested in Google technologies.",
+      "Google Developer Groups (GDG) are for developers who are interested in Google technologies. Join a GDG to learn about new Google products, share your knowledge with other developers, and get involved in the Google developer community.",
     members: 2257,
     logoSrc: "/gdg.png",
     category: "Technology",
@@ -72,7 +72,7 @@ const communities: Community[] = [
     id: "shecodeafrica",
     name: "shecodeafrica",
     description:
-      "SheCodeAfrica is a community of women in tech who are passionate about coding and technology.",
+      "SheCodeAfrica is a community of women in tech who are passionate about coding and technology. Join us to learn, grow, and connect with other women in tech.",
     members: 5603,
     logoSrc: "/she.png",
     category: "Technology",
@@ -139,40 +139,26 @@ function formatMembers(n: number) {
 }
 
 const CommunityTab: React.FC = () => {
-  // ── All join state comes from Supabase now ──────────────────────
-  const { joinedIds, loading, joinCommunity } = useCommunityActivity();
-  const [activeCategory, setActiveCategory] = React.useState("All");
+  const [joined, setJoined] = useState<Set<string>>(new Set());
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredCommunities =
     activeCategory === "All"
       ? communities
       : communities.filter((c) => c.category === activeCategory);
 
-  const handleJoin = async (community: Community) => {
-    // 1. Save to database
-    await joinCommunity(community.id);
-    // 2. Open the external link
+  const handleJoin = (community: Community) => {
+    setJoined((prev) => new Set(prev).add(community.id));
     window.open(community.joinLink, "_blank", "noopener,noreferrer");
   };
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-500 text-sm font-medium">Loading communities…</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
+      {/* Scrollable content with safe padding for sidebar on desktop */}
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 xl:px-10">
         <div className="max-w-5xl mx-auto">
 
-          {/* Header */}
+          {/* ── Header ── */}
           <div className="mb-8 sm:mb-10">
             <span className="text-xs sm:text-sm font-semibold text-blue-500 tracking-widest uppercase">
               Communities
@@ -182,12 +168,14 @@ const CommunityTab: React.FC = () => {
             </h1>
             <p className="mt-2 text-sm sm:text-base lg:text-lg text-slate-500 max-w-xl leading-relaxed">
               Join communities of learners who share your interests. Click{" "}
-              <span className="font-semibold text-slate-700">Get Started</span> to jump into the conversation.
+              <span>Get Started</span> to
+              jump into the conversation.
             </p>
           </div>
 
-          {/* Category Filter */}
+          {/* ── Category Filter ── */}
           <div className="mb-6 sm:mb-8">
+            {/* Horizontally scrollable on mobile, wraps on larger screens */}
             <div className="flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0 scrollbar-none">
               {categories.map((cat) => (
                 <button
@@ -195,9 +183,10 @@ const CommunityTab: React.FC = () => {
                   onClick={() => setActiveCategory(cat)}
                   className={`flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold
                     transition-all duration-200 whitespace-nowrap
-                    ${activeCategory === cat
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/25"
-                      : "bg-white text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-600"
+                    ${
+                      activeCategory === cat
+                        ? "bg-blue-600 text-white shadow-md shadow-blue-600/25"
+                        : "bg-white text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-600"
                     }`}
                 >
                   {cat}
@@ -206,11 +195,11 @@ const CommunityTab: React.FC = () => {
             </div>
           </div>
 
-          {/* Cards Grid */}
+          {/* ── Cards Grid ── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filteredCommunities.map((community) => {
               const Icon = community.icon;
-              const isJoined = joinedIds.has(community.id);
+              const isJoined = joined.has(community.id);
 
               return (
                 <div
@@ -244,12 +233,6 @@ const CommunityTab: React.FC = () => {
                       {community.new && (
                         <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
                           New
-                        </span>
-                      )}
-                      {/* Show "Joined" badge if already joined */}
-                      {isJoined && !community.new && (
-                        <span className="text-[10px] sm:text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
-                          Joined ✓
                         </span>
                       )}
                     </div>
@@ -303,7 +286,7 @@ const CommunityTab: React.FC = () => {
             })}
           </div>
 
-          {/* Empty state */}
+          {/* ── Empty state ── */}
           {filteredCommunities.length === 0 && (
             <div className="text-center py-16 sm:py-20 text-slate-400">
               <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 opacity-30" />
