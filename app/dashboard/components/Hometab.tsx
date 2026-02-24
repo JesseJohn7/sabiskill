@@ -10,7 +10,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { ALL_COURSES, CourseDetail } from "./ExploreTab";
-import { createClient } from "../lib/supabase/client";
+import { createClient } from "../../lib/supabase/client";
 import { useCourseProgress } from "./useCourseProgress";
 
 interface HomeTabProps {
@@ -152,7 +152,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "You have an active course — finish it to unlock more tracks."
-              : "Continue mastering your next skill today"}
+              : "Continue masterin your next skill today"}
           </p>
         </div>
       </div>
