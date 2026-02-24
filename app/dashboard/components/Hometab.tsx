@@ -151,8 +151,8 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
-              ? "You have an active course — finish it to unlock more tracks."
-              : "Continue masterin your next skill today"}
+              ? "You have an active course  finish it to unlock more tracks."
+              : "Continue mastering your next skill today"}
           </p>
         </div>
       </div>
