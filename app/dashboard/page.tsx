@@ -20,8 +20,8 @@ const DashboardPage: React.FC = () => {
 
   const handleCourseSelect = (courseId: string) => {
     setActiveCourseId(courseId);
-    setSelectedCourse(courseId);
-  };
+    setSelectedCourse(courseId); 
+  }; 
 
   const handleCourseComplete = (courseId: string) => {
     setCompletedCourseIds((prev) =>
