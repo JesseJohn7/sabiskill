@@ -9,7 +9,7 @@ import ResourcesTab from "../dashboard/components/ResourcesTab";
 import SettingsTab from "../dashboard/components/SettingsTab";
 import VideoPlayer from "../dashboard/components/VideoPlayer";
 import CommunityTab from "../dashboard/components/CommunityTab";
-import { useCourseProgress } from "./components/useCourseProgress";
+import { useCourseProgress } from "../dashboard/components/UseCourseProgress";
 
 const DashboardPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
