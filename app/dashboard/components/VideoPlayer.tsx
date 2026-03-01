@@ -22,6 +22,7 @@ interface CourseConfig {
 interface VideoPlayerProps {
   courseId: string;
   onBack: () => void;
+  onComplete?: (courseId: string) => void; // ← NEW: fires when every lesson is done
 }
 
 declare global {
@@ -34,7 +35,6 @@ declare global {
 // ─── All courses ──────────────────────────────────────────────────────────────
 
 const COURSES: Record<string, CourseConfig> = {
-
   "web-dev": {
     title: "Complete Web Development",
     subtitle: "HTML & CSS Full Course",
@@ -149,7 +149,7 @@ const COURSES: Record<string, CourseConfig> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete }) => {
   const course = COURSES[courseId];
 
   // Coming soon / unknown course
@@ -161,7 +161,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
           {course ? course.title : "Course Not Found"}
         </h2>
         <p className="text-slate-500 text-sm">
-          {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
+          {course
+            ? "This course doesn't have video content yet. Check back soon!"
+            : "We couldn't find that course."}
         </p>
         <button
           onClick={onBack}
@@ -181,21 +183,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // ── All mutable state lives in one ref so the interval NEVER has stale data ─
-  // This is the key pattern: plain setInterval reads from refs, never closures.
+  // Track whether onComplete has already been called for this session
+  const completeFiredRef = useRef(false);
+
   const refs = useRef({
-    player:      null as any,
-    interval:    null as ReturnType<typeof setInterval> | null,
-    ytReady:     false,
-    // current course timestamps — updated before interval restarts
-    timestamps:  course.playlist.map((v) => v.timestamp),
-    // React state setters — stable references, safe to store once
+    player:             null as any,
+    interval:           null as ReturnType<typeof setInterval> | null,
+    ytReady:            false,
+    timestamps:         course.playlist.map((v) => v.timestamp),
     setPlaylist,
     setCurrentVideoIndex,
     setShowConfetti,
   });
-
-  // Sync timestamps ref whenever courseId changes (done in effect below)
 
   // ── Derived ─────────────────────────────────────────────────────────────────
   const currentVideo       = playlist[currentVideoIndex];
@@ -203,7 +202,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
   const allCompleted       = playlist.every((v) => v.completed);
 
-  // ── Pure functions — no closures over component state ────────────────────────
+  // ── Fire onComplete exactly once when allCompleted flips to true ─────────
+  useEffect(() => {
+    if (allCompleted && !completeFiredRef.current && onComplete) {
+      completeFiredRef.current = true;
+      onComplete(courseId); // → DashboardPage.handleCourseComplete → Supabase
+    }
+  }, [allCompleted, courseId, onComplete]);
+
+  // ── Pure functions ───────────────────────────────────────────────────────────
 
   function stopPolling() {
     if (refs.current.interval) {
@@ -219,19 +226,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
       if (!player || typeof player.getCurrentTime !== "function") return;
 
       const currentTime: number = player.getCurrentTime();
-      const timestamps = refs.current.timestamps; // always the current course's
+      const timestamps = refs.current.timestamps;
 
-      // Which lesson are we currently in?
       let activeIndex = 0;
       for (let i = 0; i < timestamps.length; i++) {
         if (currentTime >= timestamps[i]) activeIndex = i;
         else break;
       }
 
-      // Update the highlighted lesson in the sidebar
       refs.current.setCurrentVideoIndex(activeIndex);
 
-      // Mark every lesson before activeIndex as completed
       refs.current.setPlaylist((prev: Video[]) => {
         let changed = false;
         const updated = prev.map((video, i) => {
@@ -250,33 +254,29 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
     }, 1000);
   }
 
-  // ── Bootstrap effect — reruns when courseId changes ──────────────────────────
+  // ── Bootstrap effect ─────────────────────────────────────────────────────────
   useEffect(() => {
-    // 1. Update timestamps ref to the new course BEFORE restarting the poll
     refs.current.timestamps = course.playlist.map((v) => v.timestamp);
+    completeFiredRef.current = false; // reset for new course
 
-    // 2. Reset visible state
     setPlaylist(course.playlist.map((v) => ({ ...v, completed: false })));
     setCurrentVideoIndex(0);
     stopPolling();
 
     function initPlayer() {
       if (refs.current.player?.loadVideoById) {
-        // Player already exists — just load the new video
         refs.current.player.loadVideoById({
           videoId: course.playlist[0].videoId,
           startSeconds: 0,
         });
         startPolling();
       } else {
-        // First time — create the player
         refs.current.player = new window.YT.Player("yt-player", {
           videoId: course.playlist[0].videoId,
           playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
           events: {
             onReady: () => startPolling(),
             onStateChange: (event: any) => {
-              // 1 = playing, 3 = buffering → poll; pause/end → stop
               if (event.data === 1 || event.data === 3) startPolling();
               else stopPolling();
             },
@@ -393,7 +393,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
                     <Clock className="w-4 h-4" />
                     {currentVideo.duration}
                   </span>
-                  <span>Lesson {currentVideoIndex + 1} of {playlist.length}</span>
+                  <span>
+                    Lesson {currentVideoIndex + 1} of {playlist.length}
+                  </span>
                 </div>
               </div>
 
@@ -431,7 +433,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
               </button>
               <button
                 onClick={handleNextVideo}
-                disabled={currentVideoIndex === playlist.length - 1 || !currentVideo.completed}
+                disabled={
+                  currentVideoIndex === playlist.length - 1 ||
+                  !currentVideo.completed
+                }
                 className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto"
               >
                 Next Lesson
@@ -504,7 +509,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${isCurrent ? "text-blue-700" : "text-slate-700"}`}>
+                      <p
+                        className={`text-sm font-medium truncate ${
+                          isCurrent ? "text-blue-700" : "text-slate-700"
+                        }`}
+                      >
                         {video.emoji && <span className="mr-1">{video.emoji}</span>}
                         {video.title}
                       </p>
@@ -513,7 +522,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
                         {video.duration}
                       </p>
                       {!isUnlocked && (
-                        <p className="text-xs text-slate-400 mt-0.5">🔒 Complete previous lesson</p>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          🔒 Complete previous lesson
+                        </p>
                       )}
                     </div>
                   </button>
@@ -527,4 +538,4 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack }) => {
   );
 };
 
-export default VideoPlayer
+export default VideoPlayer;
