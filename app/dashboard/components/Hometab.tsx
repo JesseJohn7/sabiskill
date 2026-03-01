@@ -10,6 +10,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ALL_COURSES, CourseDetail } from "./ExploreTab";
+import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
 
 interface HomeTabProps {
@@ -18,6 +19,7 @@ interface HomeTabProps {
   onCourseSelect?: (courseId: string) => void;
   activeCourseId?: string | null;
   completedCourseIds?: string[];
+  progressMap?: Record<string, CourseProgressDetail>;
 }
 
 const HomeTab: React.FC<HomeTabProps> = ({
@@ -25,6 +27,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
   onCourseSelect,
   activeCourseId = null,
   completedCourseIds = [],
+  progressMap = {},
 }) => {
   const [detailCourseId, setDetailCourseId] = useState<string | null>(null);
   const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
@@ -268,7 +271,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             {recentCourses.map((c) => {
               const isCompleted = completedCourseIds.includes(c.id);
               const isActive = c.id === activeCourseId;
-              const progress = isCompleted ? 100 : isActive ? 40 : 0;
+              const progress = isCompleted ? 100 : (progressMap[c.id]?.progressPct ?? 0);
 
               return (
                 <div
@@ -388,7 +391,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             const isLocked = status === "locked";
             const isCompleted = status === "completed";
             const isActive = status === "active";
-            const progress = isCompleted ? 100 : isActive ? 40 : 0;
+            const progress = isCompleted ? 100 : (progressMap[c.id]?.progressPct ?? 0);
 
             return (
               <div
