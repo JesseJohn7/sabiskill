@@ -304,7 +304,7 @@ export default function LoginPage() {
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="fade-3">
               <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">Email</label>
-              <input
+              <input 
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

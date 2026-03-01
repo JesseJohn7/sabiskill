@@ -9,25 +9,29 @@ import ResourcesTab from "../dashboard/components/ResourcesTab";
 import SettingsTab from "../dashboard/components/SettingsTab";
 import VideoPlayer from "../dashboard/components/VideoPlayer";
 import CommunityTab from "../dashboard/components/CommunityTab";
+import { useCourseProgress } from "./components/useCourseProgress";
 
 const DashboardPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
-  const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
-  const [completedCourseIds, setCompletedCourseIds] = useState<string[]>([]);
+  // ── All course progress now loaded from & saved to Supabase ──
+  const {
+    activeCourseId,
+    completedCourseIds,
+    selectCourse,
+    completeCourse,
+    loading,
+  } = useCourseProgress();
 
-  const handleCourseSelect = (courseId: string) => {
-    setActiveCourseId(courseId);
-    setSelectedCourse(courseId); 
-  }; 
+  const handleCourseSelect = async (courseId: string) => {
+    await selectCourse(courseId);   // saves to Supabase
+    setSelectedCourse(courseId);
+  };
 
-  const handleCourseComplete = (courseId: string) => {
-    setCompletedCourseIds((prev) =>
-      prev.includes(courseId) ? prev : [...prev, courseId]
-    );
-    setActiveCourseId(null);
+  const handleCourseComplete = async (courseId: string) => {
+    await completeCourse(courseId); // saves to Supabase
     setSelectedCourse(null);
   };
 
@@ -40,7 +44,6 @@ const DashboardPage: React.FC = () => {
     setSelectedCourse(null);
   };
 
-  // ── Clicking the notification bell navigates to Settings ──
   const handleNotificationClick = () => {
     handleTabChange("settings");
   };
@@ -90,13 +93,13 @@ const DashboardPage: React.FC = () => {
         setCurrentTab={handleTabChange}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
-      /> 
+      />
 
       <div className="flex-1 lg:ml-24 flex flex-col min-w-0">
         {!selectedCourse && (
           <Header
             toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-            onNotificationClick={handleNotificationClick}  
+            onNotificationClick={handleNotificationClick}
           />
         )}
 
@@ -109,7 +112,16 @@ const DashboardPage: React.FC = () => {
             <VideoPlayer
               courseId={selectedCourse}
               onBack={handleBackFromVideo}
+              onComplete={handleCourseComplete}
             />
+          ) : loading ? (
+            // Brief loading state while Supabase fetches progress
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+                <p className="text-sm text-slate-500 font-medium">Loading your progress...</p>
+              </div>
+            </div>
           ) : (
             renderTab()
           )}
@@ -119,4 +131,4 @@ const DashboardPage: React.FC = () => {
   );
 };
 
-export default DashboardPage; 
+export default DashboardPage;
