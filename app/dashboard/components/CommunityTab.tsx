@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Users,
   BookOpen,
@@ -12,6 +12,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { createClient } from "@/app/lib/supabase/client";
 
 interface Community {
   id: string;
@@ -53,7 +54,6 @@ const communities: Community[] = [
     color: "text-pink-600",
     gradient: "from-pink-500/10 to-rose-500/10",
     joinLink: "https://superteam.fun",
-    /* new: true, */
   },
   {
     id: "gdg",
@@ -132,7 +132,15 @@ const communities: Community[] = [
   },
 ];
 
-const categories = ["All", "Technology", "Design", "STEM", "Languages", "Arts", "General"];
+const categories = [
+  "All",
+  "Technology",
+  "Design",
+  "STEM",
+  "Languages",
+  "Arts",
+  "General",
+];
 
 function formatMembers(n: number) {
   return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();
@@ -141,20 +149,97 @@ function formatMembers(n: number) {
 const CommunityTab: React.FC = () => {
   const [joined, setJoined] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState("All");
+  const [loadingJoins, setLoadingJoins] = useState(true);
+
+  // ── Load joined communities from Supabase on mount ──────────────────
+  useEffect(() => {
+    const loadJoins = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          setLoadingJoins(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("community_joins")
+          .select("community_id")
+          .eq("user_id", user.id);
+
+        if (error) {
+          console.error("Error loading community joins:", error.message);
+        } else if (data) {
+          setJoined(new Set(data.map((row) => row.community_id)));
+        }
+      } catch (err) {
+        console.error("Failed to load community joins:", err);
+      } finally {
+        setLoadingJoins(false);
+      }
+    };
+
+    loadJoins();
+  }, []);
 
   const filteredCommunities =
     activeCategory === "All"
       ? communities
       : communities.filter((c) => c.category === activeCategory);
 
-  const handleJoin = (community: Community) => {
+  const handleJoin = async (community: Community) => {
+    // 1. Optimistic update
     setJoined((prev) => new Set(prev).add(community.id));
+
+    // 2. Open the link
     window.open(community.joinLink, "_blank", "noopener,noreferrer");
+
+    // 3. Persist to Supabase
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { error } = await supabase.from("community_joins").upsert(
+        {
+          user_id: user.id,
+          community_id: community.id,
+          joined_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "user_id,community_id",
+          ignoreDuplicates: true, // don't overwrite existing rows
+        }
+      );
+
+      if (error) {
+        console.error("Error saving community join:", error.message);
+        // Roll back optimistic update if it failed
+        setJoined((prev) => {
+          const next = new Set(prev);
+          next.delete(community.id);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error("Failed to save community join:", err);
+      // Roll back
+      setJoined((prev) => {
+        const next = new Set(prev);
+        next.delete(community.id);
+        return next;
+      });
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
-      {/* Scrollable content with safe padding for sidebar on desktop */}
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 xl:px-10">
         <div className="max-w-5xl mx-auto">
 
@@ -168,14 +253,12 @@ const CommunityTab: React.FC = () => {
             </h1>
             <p className="mt-2 text-sm sm:text-base lg:text-lg text-slate-500 max-w-xl leading-relaxed">
               Join communities of learners who share your interests. Click{" "}
-              <span>Get Started</span> to
-              jump into the conversation.
+              <span>Get Started</span> to jump into the conversation.
             </p>
           </div>
 
           {/* ── Category Filter ── */}
           <div className="mb-6 sm:mb-8">
-            {/* Horizontally scrollable on mobile, wraps on larger screens */}
             <div className="flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0 scrollbar-none">
               {categories.map((cat) => (
                 <button
@@ -210,7 +293,10 @@ const CommunityTab: React.FC = () => {
                 >
                   {/* Top gradient accent bar */}
                   <div
-                    className={`h-1.5 w-full bg-gradient-to-r ${community.gradient.replace("/10", "")} opacity-80`}
+                    className={`h-1.5 w-full bg-gradient-to-r ${community.gradient.replace(
+                      "/10",
+                      ""
+                    )} opacity-80`}
                   />
 
                   {/* Card Body */}
@@ -227,7 +313,10 @@ const CommunityTab: React.FC = () => {
                             className="w-5 h-5 object-contain"
                           />
                         ) : Icon ? (
-                          <Icon className={`w-5 h-5 ${community.color}`} strokeWidth={2} />
+                          <Icon
+                            className={`w-5 h-5 ${community.color}`}
+                            strokeWidth={2}
+                          />
                         ) : null}
                       </div>
                       {community.new && (
@@ -254,7 +343,9 @@ const CommunityTab: React.FC = () => {
                         <span className="font-semibold text-slate-600">
                           {formatMembers(community.members)}
                         </span>
-                        <span className="text-slate-400 hidden xs:inline">members</span>
+                        <span className="text-slate-400 hidden xs:inline">
+                          members
+                        </span>
                       </div>
 
                       {isJoined ? (
@@ -270,10 +361,12 @@ const CommunityTab: React.FC = () => {
                       ) : (
                         <button
                           onClick={() => handleJoin(community)}
+                          disabled={loadingJoins}
                           className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2
                             rounded-xl text-xs sm:text-sm font-semibold flex-shrink-0
                             bg-blue-600 text-white hover:bg-blue-700 active:scale-95
-                            shadow-sm shadow-blue-600/20 transition-all duration-200 group"
+                            shadow-sm shadow-blue-600/20 transition-all duration-200 group
+                            disabled:opacity-50 disabled:cursor-wait"
                         >
                           Get Started
                           <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -290,10 +383,11 @@ const CommunityTab: React.FC = () => {
           {filteredCommunities.length === 0 && (
             <div className="text-center py-16 sm:py-20 text-slate-400">
               <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 opacity-30" />
-              <p className="font-semibold text-sm sm:text-base">No communities in this category yet.</p>
+              <p className="font-semibold text-sm sm:text-base">
+                No communities in this category yet.
+              </p>
             </div>
           )}
-
         </div>
       </div>
     </div>
