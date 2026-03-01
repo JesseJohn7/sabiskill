@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Star,
-  Zap,
   ArrowLeft,
   Users,
   BookOpen,
@@ -23,7 +22,8 @@ export const ALL_COURSES = [
   {
     id: "web-dev",
     title: "Complete Web Development",
-    description: "HTML, CSS, JavaScript & beyond — build real-world projects from scratch.",
+    description:
+      "HTML, CSS, JavaScript & beyond — build real-world projects from scratch.",
     longDescription:
       "This comprehensive course takes you from absolute beginner to confident web developer. You'll master HTML structure, CSS styling, responsive design, and modern JavaScript — then build real-world projects including a personal portfolio, a landing page, and a dynamic web app.",
     thumbnail: "https://i.ytimg.com/vi/HGTJBPNC-Gw/maxresdefault.jpg",
@@ -50,7 +50,8 @@ export const ALL_COURSES = [
   {
     id: "ui-ux",
     title: "UI/UX Design Fundamentals",
-    description: "Learn the principles of great design and build beautiful user experiences.",
+    description:
+      "Learn the principles of great design and build beautiful user experiences.",
     longDescription:
       "Discover the art and science behind great digital products. Learn how to conduct user research, create wireframes and prototypes, and apply proven design principles to build interfaces people love. No prior design experience required.",
     thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/maxresdefault.jpg",
@@ -176,33 +177,114 @@ export const ALL_COURSES = [
 ];
 
 // Sample reviews per course
-const COURSE_REVIEWS: Record<string, { name: string; rating: number; date: string; comment: string }[]> = {
+const COURSE_REVIEWS: Record<
+  string,
+  { name: string; rating: number; date: string; comment: string }[]
+> = {
   "web-dev": [
-    { name: "Alex T.", rating: 5, date: "Jan 2025", comment: "Best web dev course I've taken. The projects really helped it click." },
-    { name: "Mia R.", rating: 5, date: "Dec 2024", comment: "Sarah explains everything so clearly. Worth every minute." },
-    { name: "Carlos M.", rating: 4, date: "Nov 2024", comment: "Great content, though some sections could be trimmed a bit." },
+    {
+      name: "Alex T.",
+      rating: 5,
+      date: "Jan 2025",
+      comment:
+        "Best web dev course I've taken. The projects really helped it click.",
+    },
+    {
+      name: "Mia R.",
+      rating: 5,
+      date: "Dec 2024",
+      comment: "Sarah explains everything so clearly. Worth every minute.",
+    },
+    {
+      name: "Carlos M.",
+      rating: 4,
+      date: "Nov 2024",
+      comment: "Great content, though some sections could be trimmed a bit.",
+    },
   ],
   "ui-ux": [
-    { name: "Nina P.", rating: 5, date: "Jan 2025", comment: "Exactly what I needed to get started with design. Super concise." },
-    { name: "Tom K.", rating: 4, date: "Dec 2024", comment: "Short but dense with useful info. Would love a longer version." },
+    {
+      name: "Nina P.",
+      rating: 5,
+      date: "Jan 2025",
+      comment: "Exactly what I needed to get started with design. Super concise.",
+    },
+    {
+      name: "Tom K.",
+      rating: 4,
+      date: "Dec 2024",
+      comment: "Short but dense with useful info. Would love a longer version.",
+    },
   ],
   javascript: [
-    { name: "Sam W.", rating: 5, date: "Feb 2025", comment: "Finally understood closures! James is an incredible teacher." },
-    { name: "Rina B.", rating: 5, date: "Jan 2025", comment: "The async section alone is worth taking this course." },
-    { name: "Leo H.", rating: 5, date: "Dec 2024", comment: "My JavaScript skills jumped significantly after completing this." },
+    {
+      name: "Sam W.",
+      rating: 5,
+      date: "Feb 2025",
+      comment: "Finally understood closures! James is an incredible teacher.",
+    },
+    {
+      name: "Rina B.",
+      rating: 5,
+      date: "Jan 2025",
+      comment: "The async section alone is worth taking this course.",
+    },
+    {
+      name: "Leo H.",
+      rating: 5,
+      date: "Dec 2024",
+      comment: "My JavaScript skills jumped significantly after completing this.",
+    },
   ],
   crypto: [
-    { name: "Jake F.", rating: 4, date: "Jan 2025", comment: "Good no-nonsense introduction. No hype, just solid info." },
-    { name: "Diane L.", rating: 5, date: "Dec 2024", comment: "Finally understand DeFi thanks to this course." },
+    {
+      name: "Jake F.",
+      rating: 4,
+      date: "Jan 2025",
+      comment: "Good no-nonsense introduction. No hype, just solid info.",
+    },
+    {
+      name: "Diane L.",
+      rating: 5,
+      date: "Dec 2024",
+      comment: "Finally understand DeFi thanks to this course.",
+    },
   ],
   "public-speak": [
-    { name: "Omar S.", rating: 5, date: "Feb 2025", comment: "I gave my first big presentation after this. Felt amazing." },
-    { name: "Chloe M.", rating: 4, date: "Jan 2025", comment: "The breathing techniques alone changed how I approach speaking." },
+    {
+      name: "Omar S.",
+      rating: 5,
+      date: "Feb 2025",
+      comment: "I gave my first big presentation after this. Felt amazing.",
+    },
+    {
+      name: "Chloe M.",
+      rating: 4,
+      date: "Jan 2025",
+      comment:
+        "The breathing techniques alone changed how I approach speaking.",
+    },
   ],
   "personal-dev": [
-    { name: "Yuki A.", rating: 5, date: "Jan 2025", comment: "Practical, science-backed, and genuinely motivating." },
-    { name: "Ben T.", rating: 4, date: "Dec 2024", comment: "Great foundation for anyone wanting to level up their life." },
-    { name: "Fiona G.", rating: 5, date: "Nov 2024", comment: "Changed the way I think about habits and goals completely." },
+    {
+      name: "Yuki A.",
+      rating: 5,
+      date: "Jan 2025",
+      comment: "Practical, science-backed, and genuinely motivating.",
+    },
+    {
+      name: "Ben T.",
+      rating: 4,
+      date: "Dec 2024",
+      comment: "Great foundation for anyone wanting to level up their life.",
+    },
+    {
+      name: "Fiona G.",
+      rating: 5,
+      date: "Nov 2024",
+      comment:
+        "Changed the way I think about habits and goals completely.",
+    },
   ],
 };
 
@@ -213,14 +295,24 @@ const LEVEL_COLORS: Record<string, string> = {
   "All Levels": "bg-blue-100 text-blue-700",
 };
 
-function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
+function StarRating({
+  rating,
+  size = "sm",
+}: {
+  rating: number;
+  size?: "sm" | "lg";
+}) {
   const sz = size === "lg" ? "w-5 h-5" : "w-3.5 h-3.5";
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
         <Star
           key={s}
-          className={`${sz} ${s <= Math.round(rating) ? "text-amber-400 fill-amber-400" : "text-slate-300 fill-slate-300"}`}
+          className={`${sz} ${
+            s <= Math.round(rating)
+              ? "text-amber-400 fill-amber-400"
+              : "text-slate-300 fill-slate-300"
+          }`}
         />
       ))}
     </div>
@@ -277,7 +369,10 @@ function VideoPlayer({ videoId, title, autoPlay = false }: VideoPlayerProps) {
 // ─── Review Form ────────────────────────────────────────────────────────────
 interface ReviewFormProps {
   courseId: string;
-  onSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
+  onSubmit: (
+    courseId: string,
+    review: { name: string; rating: number; comment: string }
+  ) => void;
 }
 function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
   const [name, setName] = useState("");
@@ -315,7 +410,9 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
           >
             <Star
               className={`w-7 h-7 transition-colors ${
-                s <= (hoverRating || rating) ? "text-amber-400 fill-amber-400" : "text-slate-300 fill-slate-300"
+                s <= (hoverRating || rating)
+                  ? "text-amber-400 fill-amber-400"
+                  : "text-slate-300 fill-slate-300"
               }`}
             />
           </button>
@@ -358,7 +455,10 @@ export interface CourseDetailProps {
   reviews: { name: string; rating: number; date: string; comment: string }[];
   onBack: () => void;
   onStart: (courseId: string) => void;
-  onReviewSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
+  onReviewSubmit: (
+    courseId: string,
+    review: { name: string; rating: number; comment: string }
+  ) => void;
   backLabel?: string;
   autoPlayVideo?: boolean;
 }
@@ -406,31 +506,57 @@ export function CourseDetail({
                   <Star className="w-2.5 h-2.5 fill-current" /> {course.tag}
                 </span>
               )}
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">{course.title}</h1>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">{course.longDescription}</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
+                {course.title}
+              </h1>
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                {course.longDescription}
+              </p>
 
               <div className="flex flex-wrap items-center gap-3 text-sm">
                 <div className="flex items-center gap-1.5">
                   <StarRating rating={avgRating} size="sm" />
-                  <span className="font-bold text-amber-400">{avgRating.toFixed(1)}</span>
-                  <span className="text-slate-400">({reviews.length + course.reviewCount} ratings)</span>
+                  <span className="font-bold text-amber-400">
+                    {avgRating.toFixed(1)}
+                  </span>
+                  <span className="text-slate-400">
+                    ({reviews.length + course.reviewCount} ratings)
+                  </span>
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-4 text-xs sm:text-sm text-slate-300">
-                <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {course.students.toLocaleString()} students</span>
-                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {course.duration}</span>
-                <span className="flex items-center gap-1.5"><BookOpen className="w-4 h-4" /> {course.lessons} lessons</span>
-                <span className="flex items-center gap-1.5"><Award className="w-4 h-4" /> {course.level}</span>
+                <span className="flex items-center gap-1.5">
+                  <Users className="w-4 h-4" />{" "}
+                  {course.students.toLocaleString()} students
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4" /> {course.duration}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <BookOpen className="w-4 h-4" /> {course.lessons} lessons
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Award className="w-4 h-4" /> {course.level}
+                </span>
               </div>
 
-              <p className="text-slate-400 text-xs">Instructor: <span className="text-white font-semibold">{course.instructor}</span></p>
+              <p className="text-slate-400 text-xs">
+                Instructor:{" "}
+                <span className="text-white font-semibold">
+                  {course.instructor}
+                </span>
+              </p>
             </div>
 
             {/* Right: Video + CTA card */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-                <VideoPlayer videoId={course.videoId} title={course.title} autoPlay={autoPlayVideo} />
+                <VideoPlayer
+                  videoId={course.videoId}
+                  title={course.title}
+                  autoPlay={autoPlayVideo}
+                />
 
                 <div className="p-5 space-y-4">
                   {isLocked ? (
@@ -457,20 +583,28 @@ export function CourseDetail({
                       onClick={() => onStart(course.id)}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
                     >
-                      <Play className="w-4 h-4 fill-current" /> Continue Learning
+                      <Play className="w-4 h-4 fill-current" /> Continue
+                      Learning
                     </button>
                   ) : (
                     <button
                       onClick={() => onStart(course.id)}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
                     >
-                      <Play className="w-4 h-4 fill-current" /> Start Course — It's Free
+                      <Play className="w-4 h-4 fill-current" /> Start Course —
+                      It's Free
                     </button>
                   )}
 
                   <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 justify-center">
-                    <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-500" /> Full lifetime access</span>
-                    <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-500" /> Certificate of completion</span>
+                    <span className="flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />{" "}
+                      Full lifetime access
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />{" "}
+                      Certificate of completion
+                    </span>
                   </div>
                 </div>
               </div>
@@ -483,7 +617,9 @@ export function CourseDetail({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
         {/* What you'll learn */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-          <h2 className="text-lg font-black text-slate-900">What you'll learn</h2>
+          <h2 className="text-lg font-black text-slate-900">
+            What you'll learn
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {course.topics.map((t, i) => (
               <div key={i} className="flex items-start gap-2.5">
@@ -503,11 +639,19 @@ export function CourseDetail({
             <div className="flex items-center gap-3">
               <BookOpen className="w-5 h-5 text-blue-600" />
               <div className="text-left">
-                <p className="font-black text-slate-900 text-sm sm:text-base">Course Content</p>
-                <p className="text-xs text-slate-500">{course.lessons} lessons · {course.duration} total</p>
+                <p className="font-black text-slate-900 text-sm sm:text-base">
+                  Course Content
+                </p>
+                <p className="text-xs text-slate-500">
+                  {course.lessons} lessons · {course.duration} total
+                </p>
               </div>
             </div>
-            {topicsOpen ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+            {topicsOpen ? (
+              <ChevronUp className="w-5 h-5 text-slate-400" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-slate-400" />
+            )}
           </button>
           {topicsOpen && (
             <div className="border-t border-slate-100 divide-y divide-slate-100">
@@ -518,7 +662,8 @@ export function CourseDetail({
                   </div>
                   <span className="text-sm text-slate-700 flex-1">{t}</span>
                   <span className="text-xs text-slate-400 font-medium">
-                    {Math.floor(Math.random() * 20 + 5)}:{String(Math.floor(Math.random() * 59)).padStart(2, "0")}
+                    {Math.floor(Math.random() * 20 + 5)}:
+                    {String(Math.floor(Math.random() * 59)).padStart(2, "0")}
                   </span>
                 </div>
               ))}
@@ -529,29 +674,40 @@ export function CourseDetail({
         {/* Reviews */}
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-slate-900">Student Reviews</h2>
+            <h2 className="text-lg font-black text-slate-900">
+              Student Reviews
+            </h2>
             <div className="flex items-center gap-2">
               <StarRating rating={avgRating} size="sm" />
-              <span className="font-bold text-slate-800 text-sm">{avgRating.toFixed(1)}</span>
+              <span className="font-bold text-slate-800 text-sm">
+                {avgRating.toFixed(1)}
+              </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {reviews.map((r, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-200 p-5 space-y-2">
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-slate-200 p-5 space-y-2"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-black text-xs">
                       {r.name[0]}
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-slate-800">{r.name}</p>
+                      <p className="font-bold text-sm text-slate-800">
+                        {r.name}
+                      </p>
                       <p className="text-[10px] text-slate-400">{r.date}</p>
                     </div>
                   </div>
                   <StarRating rating={r.rating} size="sm" />
                 </div>
-                <p className="text-sm text-slate-600 leading-relaxed">{r.comment}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {r.comment}
+                </p>
               </div>
             ))}
           </div>
@@ -586,15 +742,21 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
 
-  const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
+  const getStatus = (
+    id: string
+  ): "completed" | "active" | "locked" | "available" => {
     if (completedCourseIds.includes(id)) return "completed";
     if (id === activeCourseId) return "active";
-    // Lock everything else if there's an active (non-completed) course
-    if (activeCourseId && !completedCourseIds.includes(activeCourseId) && id !== activeCourseId) return "locked";
+    if (
+      activeCourseId &&
+      !completedCourseIds.includes(activeCourseId) &&
+      id !== activeCourseId
+    )
+      return "locked";
     return "available";
   };
 
-  // Card thumbnail clicked → open detail, no autoplay
+  // Card thumbnail clicked → open detail, no autoplay, log view
   const handleCardClick = (id: string) => {
     setAutoPlayOnOpen(false);
     setSelectedCourseId(id);
@@ -654,7 +816,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
       <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-            Explore Tracks 
+            Explore Tracks
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
@@ -665,16 +827,17 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
       </div>
 
       {/* Active course notice banner */}
-      {activeCourseId && !completedCourseIds.includes(activeCourseId) &&
+      {activeCourseId &&
+        !completedCourseIds.includes(activeCourseId) &&
         (() => {
           const active = ALL_COURSES.find((c) => c.id === activeCourseId);
           return active ? (
             <div className="max-w-7xl mx-auto mb-5 sm:mb-6">
               <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-                {/* <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" /> */}
                 <p className="text-xs sm:text-sm text-blue-700 font-semibold">
                   You're currently on{" "}
-                  <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
+                  <span className="font-black">{active.title}</span>. Complete
+                  it to unlock other tracks.
                 </p>
                 <button
                   onClick={() => handleCardClick(activeCourseId)}
@@ -702,13 +865,14 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                 key={c.id}
                 onClick={() => handleCardClick(c.id)}
                 className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
-                  ${isLocked
-                    ? "border-slate-200 opacity-60"
-                    : isCompleted
-                    ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
-                    : isActive
-                    ? "border-blue-300 hover:shadow-xl ring-2 ring-blue-400 ring-offset-1"
-                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
+                  ${
+                    isLocked
+                      ? "border-slate-200 opacity-60"
+                      : isCompleted
+                      ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
+                      : isActive
+                      ? "border-blue-300 hover:shadow-xl ring-2 ring-blue-400 ring-offset-1"
+                      : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
                   }`}
               >
                 {/* Thumbnail */}
@@ -717,11 +881,12 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     <img
                       src={c.thumbnail}
                       alt={c.title}
-                      className={`w-full h-full object-cover transition-transform duration-500 ${!isLocked ? "group-hover:scale-105" : ""}`}
+                      className={`w-full h-full object-cover transition-transform duration-500 ${
+                        !isLocked ? "group-hover:scale-105" : ""
+                      }`}
                     />
                   </div>
 
-                  {/* Play overlay on hover (non-locked, non-completed) */}
                   {!isLocked && (
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
                       <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
@@ -730,15 +895,15 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
-                  {/* Locked overlay */}
                   {isLocked && (
                     <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
                       <Lock className="w-6 h-6 text-white" />
-                      <span className="text-white text-[10px] font-bold text-center px-2">Finish active track first</span>
+                      <span className="text-white text-[10px] font-bold text-center px-2">
+                        Finish active track first
+                      </span>
                     </div>
                   )}
 
-                  {/* Completed overlay */}
                   {isCompleted && (
                     <div className="absolute inset-0 bg-emerald-900/20 flex items-center justify-center">
                       <div className="bg-white rounded-full p-1.5 shadow-lg">
@@ -747,7 +912,6 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
-                  {/* Active badge */}
                   {isActive && (
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
                       <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />
@@ -755,7 +919,6 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
-                  {/* Tag badge */}
                   {c.tag && !isLocked && !isCompleted && !isActive && (
                     <div className="absolute top-2 left-2 bg-amber-400 text-amber-900 text-[9px] font-black uppercase px-2 py-1 rounded-full shadow flex items-center gap-1">
                       <Star className="w-2.5 h-2.5 fill-current" />
@@ -763,15 +926,26 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     </div>
                   )}
 
-                  {/* Progress badge top-right */}
                   <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
-                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`}></div>
-                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">{progress}%</span>
+                    <div
+                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
+                        isCompleted
+                          ? "bg-emerald-500"
+                          : isActive
+                          ? "bg-blue-500"
+                          : "bg-slate-300"
+                      }`}
+                    ></div>
+                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">
+                      {progress}%
+                    </span>
                   </div>
 
                   <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
                     <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                    <span className="text-[10px] sm:text-xs font-semibold text-white">{c.lessons} lessons</span>
+                    <span className="text-[10px] sm:text-xs font-semibold text-white">
+                      {c.lessons} lessons
+                    </span>
                   </div>
                 </div>
 
@@ -785,12 +959,20 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                     >
                       {c.level}
                     </span>
-                    <h3 className="font-black text-sm sm:text-base text-slate-800 line-clamp-1">{c.title}</h3>
-                    <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-2 leading-relaxed">{c.description}</p>
+                    <h3 className="font-black text-sm sm:text-base text-slate-800 line-clamp-1">
+                      {c.title}
+                    </h3>
+                    <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                      {c.description}
+                    </p>
                     <div className="flex items-center gap-1.5 pt-0.5">
                       <StarRating rating={c.rating} size="sm" />
-                      <span className="text-[10px] font-bold text-amber-500">{c.rating}</span>
-                      <span className="text-[10px] text-slate-400">({c.reviewCount.toLocaleString()})</span>
+                      <span className="text-[10px] font-bold text-amber-500">
+                        {c.rating}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        ({c.reviewCount.toLocaleString()})
+                      </span>
                     </div>
                   </div>
 
@@ -798,13 +980,25 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-[10px] sm:text-xs">
                       <span className="text-slate-600 font-semibold">
-                        {isCompleted ? "Completed" : isActive ? "In progress" : "Not started"}
+                        {isCompleted
+                          ? "Completed"
+                          : isActive
+                          ? "In progress"
+                          : "Not started"}
                       </span>
-                      <span className="text-slate-500 font-bold">{progress}% complete</span>
+                      <span className="text-slate-500 font-bold">
+                        {progress}% complete
+                      </span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                       <div
-                        className={`h-full rounded-full transition-all duration-500 ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`}
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          isCompleted
+                            ? "bg-emerald-500"
+                            : isActive
+                            ? "bg-blue-500"
+                            : "bg-slate-300"
+                        }`}
                         style={{ width: `${progress}%` }}
                       />
                     </div>
@@ -813,31 +1007,44 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                   <div className="mt-auto pt-1">
                     {isLocked ? (
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleCardClick(c.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCardClick(c.id);
+                        }}
                         className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"
                       >
                         <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
                     ) : isCompleted ? (
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleStartFromGrid(c.id);
+                        }}
                         className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
                       </button>
                     ) : isActive ? (
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleStartFromGrid(c.id);
+                        }}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
                       >
                         <Play className="w-3.5 h-3.5 fill-current" /> Continue
                       </button>
                     ) : (
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleStartFromGrid(c.id);
+                        }}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
                       >
-                        <Play className="w-3.5 h-3.5 fill-current" /> Get Started
+                        <Play className="w-3.5 h-3.5 fill-current" /> Get
+                        Started
                       </button>
                     )}
                   </div>
