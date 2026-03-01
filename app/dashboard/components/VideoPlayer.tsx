@@ -22,7 +22,11 @@ interface CourseConfig {
 interface VideoPlayerProps {
   courseId: string;
   onBack: () => void;
-  onComplete?: (courseId: string) => void; // ← NEW: fires when every lesson is done
+  onComplete?: (courseId: string) => void;
+  /** Called every time a lesson is marked done — saves to Supabase via hook */
+  onLessonComplete?: (courseId: string, lessonIndex: number, totalLessons: number) => void;
+  /** 0-based lesson index to resume from (from saved progress) */
+  initialLesson?: number;
 }
 
 declare global {
@@ -31,8 +35,6 @@ declare global {
     onYouTubeIframeAPIReady: () => void;
   }
 }
-
-// ─── All courses ──────────────────────────────────────────────────────────────
 
 const COURSES: Record<string, CourseConfig> = {
   "web-dev": {
@@ -78,7 +80,6 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 37, title: "Animations",            videoId: "HGTJBPNC-Gw", timestamp: 13643, duration: "8:37",  completed: false, emoji: "🎬" },
     ],
   },
-
   "ui-ux": {
     title: "UI/UX Design Fundamentals",
     subtitle: "Full Design Course",
@@ -89,7 +90,6 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 4, title: "Mockup",       videoId: "c9Wg6Cb_YlU", timestamp: 3998, duration: "rest",  completed: false, emoji: "🎨" },
     ],
   },
-
   "javascript": {
     title: "JavaScript Full Course",
     subtitle: "From Beginner to Advanced",
@@ -124,7 +124,6 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 28, title: "Applying RegEx in JavaScript",      videoId: "EfAl9bwzVZk", timestamp: 27186, duration: "rest",    completed: false, emoji: "✅" },
     ],
   },
-
   "crypto": {
     title: "Cryptocurrency & Blockchain",
     subtitle: "Solana Developer Bootcamp",
@@ -142,17 +141,19 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 11, title: "Project 9 | Building a Token Lottery",       videoId: "amAq-WHAFs8", timestamp: 30677, duration: "rest",    completed: false, emoji: "🎰" },
     ],
   },
-
   "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
   "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  courseId,
+  onBack,
+  onComplete,
+  onLessonComplete,
+  initialLesson = 0,
+}) => {
   const course = COURSES[courseId];
 
-  // Coming soon / unknown course
   if (!course || course.playlist.length === 0) {
     return (
       <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
@@ -161,36 +162,35 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
           {course ? course.title : "Course Not Found"}
         </h2>
         <p className="text-slate-500 text-sm">
-          {course
-            ? "This course doesn't have video content yet. Check back soon!"
-            : "We couldn't find that course."}
+          {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
         </p>
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors font-semibold text-slate-700 text-sm"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Back
+        <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors font-semibold text-slate-700 text-sm">
+          <ChevronLeft className="w-4 h-4" /> Back
         </button>
       </div>
     );
   }
 
   // ── State ───────────────────────────────────────────────────────────────────
+  // Pre-mark all lessons before initialLesson as completed so user resumes correctly
   const [playlist, setPlaylist] = useState<Video[]>(() =>
-    course.playlist.map((v) => ({ ...v, completed: false }))
+    course.playlist.map((v, i) => ({ ...v, completed: i < initialLesson }))
   );
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(initialLesson);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // Track whether onComplete has already been called for this session
   const completeFiredRef = useRef(false);
+  // Track which lesson indices have already triggered onLessonComplete to avoid duplicate saves
+  const savedLessonsRef = useRef<Set<number>>(new Set(
+    // Pre-populate with already-completed lessons so we don't re-save them
+    Array.from({ length: initialLesson }, (_, i) => i)
+  ));
 
   const refs = useRef({
-    player:             null as any,
-    interval:           null as ReturnType<typeof setInterval> | null,
-    ytReady:            false,
-    timestamps:         course.playlist.map((v) => v.timestamp),
+    player:      null as any,
+    interval:    null as ReturnType<typeof setInterval> | null,
+    ytReady:     false,
+    timestamps:  course.playlist.map((v) => v.timestamp),
     setPlaylist,
     setCurrentVideoIndex,
     setShowConfetti,
@@ -202,15 +202,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
   const progressPercentage = Math.round((completedCount / playlist.length) * 100);
   const allCompleted       = playlist.every((v) => v.completed);
 
-  // ── Fire onComplete exactly once when allCompleted flips to true ─────────
+  // ── Fire onComplete once when all done ──────────────────────────────────────
   useEffect(() => {
     if (allCompleted && !completeFiredRef.current && onComplete) {
       completeFiredRef.current = true;
-      onComplete(courseId); // → DashboardPage.handleCourseComplete → Supabase
+      onComplete(courseId);
     }
   }, [allCompleted, courseId, onComplete]);
-
-  // ── Pure functions ───────────────────────────────────────────────────────────
 
   function stopPolling() {
     if (refs.current.interval) {
@@ -245,35 +243,48 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
           }
           return video;
         });
-        if (changed && updated.every((v) => v.completed)) {
-          refs.current.setShowConfetti(true);
-          setTimeout(() => refs.current.setShowConfetti(false), 5000);
+
+        if (changed) {
+          // Fire onLessonComplete for each newly completed lesson
+          updated.forEach((video, i) => {
+            if (video.completed && !savedLessonsRef.current.has(i)) {
+              savedLessonsRef.current.add(i);
+              onLessonComplete?.(courseId, i, course.playlist.length);
+            }
+          });
+
+          if (updated.every((v) => v.completed)) {
+            refs.current.setShowConfetti(true);
+            setTimeout(() => refs.current.setShowConfetti(false), 5000);
+          }
         }
         return changed ? updated : prev;
       });
     }, 1000);
   }
 
-  // ── Bootstrap effect ─────────────────────────────────────────────────────────
   useEffect(() => {
     refs.current.timestamps = course.playlist.map((v) => v.timestamp);
-    completeFiredRef.current = false; // reset for new course
+    completeFiredRef.current = false;
+    savedLessonsRef.current = new Set(Array.from({ length: initialLesson }, (_, i) => i));
 
-    setPlaylist(course.playlist.map((v) => ({ ...v, completed: false })));
-    setCurrentVideoIndex(0);
+    setPlaylist(course.playlist.map((v, i) => ({ ...v, completed: i < initialLesson })));
+    setCurrentVideoIndex(initialLesson);
     stopPolling();
+
+    const startTimestamp = course.playlist[initialLesson]?.timestamp ?? 0;
 
     function initPlayer() {
       if (refs.current.player?.loadVideoById) {
         refs.current.player.loadVideoById({
           videoId: course.playlist[0].videoId,
-          startSeconds: 0,
+          startSeconds: startTimestamp,
         });
         startPolling();
       } else {
         refs.current.player = new window.YT.Player("yt-player", {
           videoId: course.playlist[0].videoId,
-          playerVars: { start: 0, autoplay: 1, rel: 0, modestbranding: 1 },
+          playerVars: { start: startTimestamp, autoplay: 1, rel: 0, modestbranding: 1 },
           events: {
             onReady: () => startPolling(),
             onStateChange: (event: any) => {
@@ -298,8 +309,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
     return () => stopPolling();
   }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Handlers ────────────────────────────────────────────────────────────────
-
   const handleVideoSelect = (index: number) => {
     if (index !== 0 && !playlist[index - 1].completed) return;
     refs.current.player?.seekTo(course.playlist[index].timestamp, true);
@@ -310,12 +319,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
     setPlaylist((prev) => {
       const updated = [...prev];
       updated[currentVideoIndex] = { ...updated[currentVideoIndex], completed: true };
+
+      // Save this lesson to Supabase if not already saved
+      if (!savedLessonsRef.current.has(currentVideoIndex)) {
+        savedLessonsRef.current.add(currentVideoIndex);
+        onLessonComplete?.(courseId, currentVideoIndex, course.playlist.length);
+      }
+
       if (updated.every((v) => v.completed)) {
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
       }
       return updated;
     });
+
     const next = currentVideoIndex + 1;
     if (next < course.playlist.length) {
       refs.current.player?.seekTo(course.playlist[next].timestamp, true);
@@ -339,22 +356,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
     }
   };
 
-  const isVideoUnlocked = (index: number) =>
-    index === 0 || playlist[index - 1].completed;
+  const isVideoUnlocked = (index: number) => index === 0 || playlist[index - 1].completed;
 
-  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <div className="bg-slate-50">
       {showConfetti && <Confetti />}
 
       {/* Header */}
       <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-4 sticky top-0 z-10">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Back
+        <button onClick={onBack} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700">
+          <ChevronLeft className="w-4 h-4" /> Back
         </button>
         <div className="flex-1 min-w-0">
           <h1 className="font-bold text-slate-800 truncate">{course.title}</h1>
@@ -362,25 +373,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
         </div>
         <div className="flex items-center gap-2">
           {allCompleted && (
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-              🎉 Completed!
-            </span>
+            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">🎉 Completed!</span>
           )}
           <span className="text-sm font-bold text-blue-600">{progressPercentage}%</span>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
-
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-
-          {/* YouTube Player */}
           <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
             <div id="yt-player" className="w-full h-full" />
           </div>
 
-          {/* Video Info */}
           <div className="mt-4 bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -389,74 +394,43 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
                   {currentVideo.title}
                 </h2>
                 <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {currentVideo.duration}
-                  </span>
-                  <span>
-                    Lesson {currentVideoIndex + 1} of {playlist.length}
-                  </span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{currentVideo.duration}</span>
+                  <span>Lesson {currentVideoIndex + 1} of {playlist.length}</span>
                 </div>
               </div>
 
               {!currentVideo.completed ? (
-                <button
-                  onClick={handleMarkComplete}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shrink-0"
-                >
-                  <Check className="w-4 h-4" />
-                  Mark Complete
+                <button onClick={handleMarkComplete} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shrink-0">
+                  <Check className="w-4 h-4" /> Mark Complete
                 </button>
               ) : (
                 <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium text-sm shrink-0">
-                  <Check className="w-4 h-4" />
-                  Completed
+                  <Check className="w-4 h-4" /> Completed
                 </div>
               )}
             </div>
 
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
-              <span>
-                Lessons auto-complete as you watch — once the video passes a lesson's timestamp, the previous one is marked done automatically
-              </span>
+              <span>Lessons auto-complete as you watch — progress is saved automatically</span>
             </div>
 
             <div className="flex gap-2 mt-4">
-              <button
-                onClick={handlePreviousVideo}
-                disabled={currentVideoIndex === 0}
-                className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Previous
+              <button onClick={handlePreviousVideo} disabled={currentVideoIndex === 0} className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                <ChevronLeft className="w-4 h-4" /> Previous
               </button>
-              <button
-                onClick={handleNextVideo}
-                disabled={
-                  currentVideoIndex === playlist.length - 1 ||
-                  !currentVideo.completed
-                }
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto"
-              >
-                Next Lesson
-                <ArrowRight className="w-4 h-4" />
+              <button onClick={handleNextVideo} disabled={currentVideoIndex === playlist.length - 1 || !currentVideo.completed} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto">
+                Next Lesson <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Completion Card */}
           {allCompleted && (
             <div className="mt-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 text-white text-center shadow-lg">
               <div className="text-4xl mb-3">🎉</div>
               <h3 className="text-xl font-bold mb-2">Congratulations!</h3>
-              <p className="text-blue-100 mb-4">
-                You've completed {course.title} with {playlist.length} lessons!
-              </p>
-              <button
-                onClick={onBack}
-                className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-              >
+              <p className="text-blue-100 mb-4">You've completed {course.title} with {playlist.length} lessons!</p>
+              <button onClick={onBack} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
                 Back to Courses
               </button>
             </div>
@@ -468,14 +442,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div className="p-4 border-b border-slate-100">
               <h3 className="font-bold text-slate-800">Course Content</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                {completedCount} of {playlist.length} lessons completed
-              </p>
+              <p className="text-xs text-slate-500 mt-1">{completedCount} of {playlist.length} lessons completed</p>
               <div className="mt-2 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-600 rounded-full transition-all duration-500"
-                  style={{ width: `${progressPercentage}%` }}
-                />
+                <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }} />
               </div>
             </div>
 
@@ -484,14 +453,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
                 const isUnlocked = isVideoUnlocked(index);
                 const isCurrent  = index === currentVideoIndex;
                 return (
-                  <button
-                    key={video.id}
-                    onClick={() => handleVideoSelect(index)}
-                    disabled={!isUnlocked}
+                  <button key={video.id} onClick={() => handleVideoSelect(index)} disabled={!isUnlocked}
                     className={`w-full p-3 sm:p-4 flex items-start gap-3 border-b border-slate-100 transition-all text-left
                       ${isCurrent  ? "bg-blue-50 border-l-4 border-l-blue-600" : ""}
-                      ${isUnlocked ? "hover:bg-slate-50 cursor-pointer" : "opacity-50 cursor-not-allowed"}
-                    `}
+                      ${isUnlocked ? "hover:bg-slate-50 cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
                   >
                     <div className="shrink-0 w-6 h-6 flex items-center justify-center mt-0.5">
                       {video.completed ? (
@@ -509,23 +474,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ courseId, onBack, onComplete 
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p
-                        className={`text-sm font-medium truncate ${
-                          isCurrent ? "text-blue-700" : "text-slate-700"
-                        }`}
-                      >
-                        {video.emoji && <span className="mr-1">{video.emoji}</span>}
-                        {video.title}
+                      <p className={`text-sm font-medium truncate ${isCurrent ? "text-blue-700" : "text-slate-700"}`}>
+                        {video.emoji && <span className="mr-1">{video.emoji}</span>}{video.title}
                       </p>
                       <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {video.duration}
+                        <Clock className="w-3 h-3" />{video.duration}
                       </p>
-                      {!isUnlocked && (
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          🔒 Complete previous lesson
-                        </p>
-                      )}
+                      {!isUnlocked && <p className="text-xs text-slate-400 mt-0.5">🔒 Complete previous lesson</p>}
                     </div>
                   </button>
                 );
