@@ -9,29 +9,30 @@ import ResourcesTab from "../dashboard/components/ResourcesTab";
 import SettingsTab from "../dashboard/components/SettingsTab";
 import VideoPlayer from "../dashboard/components/VideoPlayer";
 import CommunityTab from "../dashboard/components/CommunityTab";
-import { useCourseProgress } from "../dashboard/components/UseCourseProgress";
+import { useCourseProgress } from "./components/useCourseProgress";
 
 const DashboardPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
-  // ── All course progress now loaded from & saved to Supabase ──
   const {
     activeCourseId,
     completedCourseIds,
+    progressMap,
     selectCourse,
+    saveLessonProgress,
     completeCourse,
     loading,
   } = useCourseProgress();
 
   const handleCourseSelect = async (courseId: string) => {
-    await selectCourse(courseId);   // saves to Supabase
+    await selectCourse(courseId);
     setSelectedCourse(courseId);
   };
 
   const handleCourseComplete = async (courseId: string) => {
-    await completeCourse(courseId); // saves to Supabase
+    await completeCourse(courseId);
     setSelectedCourse(null);
   };
 
@@ -57,6 +58,7 @@ const DashboardPage: React.FC = () => {
             onCourseSelect={handleCourseSelect}
             activeCourseId={activeCourseId}
             completedCourseIds={completedCourseIds}
+            progressMap={progressMap}
           />
         );
       case "explore":
@@ -66,6 +68,7 @@ const DashboardPage: React.FC = () => {
             onCourseSelect={handleCourseSelect}
             activeCourseId={activeCourseId}
             completedCourseIds={completedCourseIds}
+            progressMap={progressMap}
           />
         );
       case "community":
@@ -81,6 +84,7 @@ const DashboardPage: React.FC = () => {
             onCourseSelect={handleCourseSelect}
             activeCourseId={activeCourseId}
             completedCourseIds={completedCourseIds}
+            progressMap={progressMap}
           />
         );
     }
@@ -113,9 +117,10 @@ const DashboardPage: React.FC = () => {
               courseId={selectedCourse}
               onBack={handleBackFromVideo}
               onComplete={handleCourseComplete}
+              onLessonComplete={saveLessonProgress}
+              initialLesson={progressMap[selectedCourse]?.currentLesson ?? 0}
             />
           ) : loading ? (
-            // Brief loading state while Supabase fetches progress
             <div className="flex items-center justify-center min-h-[60vh]">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
