@@ -424,7 +424,7 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
           </span>
         )}
       </div>
-      <input
+      <input 
         type="text"
         placeholder="Your name"
         value={name}
