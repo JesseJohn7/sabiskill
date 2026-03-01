@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import {
   Play,
   Clock,
@@ -728,6 +729,7 @@ interface ExploreTabProps {
   completedCourseIds?: string[];
   onCourseSelect?: (courseId: string) => void;
   onNavigate?: (tab: string) => void;
+  progressMap?: Record<string, CourseProgressDetail>;
 }
 
 const ExploreTab: React.FC<ExploreTabProps> = ({
@@ -735,6 +737,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   completedCourseIds = [],
   onCourseSelect,
   onNavigate,
+  progressMap = {},
 }) => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
@@ -858,7 +861,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
             const isLocked = status === "locked";
             const isCompleted = status === "completed";
             const isActive = status === "active";
-            const progress = isCompleted ? 100 : isActive ? 40 : 0;
+            const progress = isCompleted ? 100 : (progressMap[c.id]?.progressPct ?? 0);
 
             return (
               <div
