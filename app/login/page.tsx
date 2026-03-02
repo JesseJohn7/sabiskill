@@ -24,7 +24,7 @@ export default function LoginPage() {
     if (error) {
       const msg = error.message.toLowerCase();
       if (msg.includes("invalid login credentials") || msg.includes("invalid credentials")) {
-        setError("Hmm, that password doesn't look right. Double-check it and try again! 🔑");
+        setError("Incorrect email or password. Please try again.");
       } else if (msg.includes("email not confirmed")) {
         setError("You haven't confirmed your email yet. Check your inbox for the confirmation link!");
       } else if (msg.includes("user not found") || msg.includes("no user found")) {
@@ -356,12 +356,6 @@ export default function LoginPage() {
                 </svg>
                 <div>
                   <p className="text-red-400 text-sm">{error}</p>
-                  {/* Contextual quick-action links */}
-                  {isWrongPassword && (
-                    <a href="/forgot-password" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
-                      → Reset your password
-                    </a>
-                  )}
                   {isNoAccount && (
                     <a href="/signup" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
                       → Create an account
