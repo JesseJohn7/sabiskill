@@ -379,7 +379,7 @@ export default function LoginPage() {
                     </svg>
                     Logging in...
                   </span>
-                ) : "Log In →"}
+                ) : "Log In "}
               </button>
             </div>
           </form>
