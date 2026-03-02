@@ -32,7 +32,17 @@ export default function SignupPage() {
     });
 
     if (error) {
-      setError(error.message);
+      const msg = error.message.toLowerCase();
+      if (
+        msg.includes("already registered") ||
+        msg.includes("already exists") ||
+        msg.includes("user already") ||
+        error.status === 422
+      ) {
+        setError("Looks like you already have an account with this email. Try logging in instead! 👋");
+      } else {
+        setError(error.message);
+      }
     } else {
       setSuccess(true);
     }
@@ -226,7 +236,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Floating badges */}
             <div className="card-badge absolute -top-5 -right-5 xl:-right-8 rounded-2xl px-4 py-3 float-2">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.15)" }}>
@@ -288,7 +297,6 @@ export default function SignupPage() {
             <p className="text-slate-500 text-sm">Start learning today completely free.</p>
           </div>
 
-          {/* Google Login */}
           <div className="fade-2 mb-5">
             <button
               onClick={handleGoogleLogin}
@@ -336,8 +344,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Password Input with Toggle */}
-           
             <div className="fade-4 relative">
               <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
                 Password
@@ -367,7 +373,15 @@ export default function SignupPage() {
                 <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <p className="text-red-400 text-sm">{error}</p>
+                <div>
+                  <p className="text-red-400 text-sm">{error}</p>
+                  {/* If user exists, show a quick link to login */}
+                  {error.includes("already have an account") && (
+                    <a href="/login" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
+                      → Go to login
+                    </a>
+                  )}
+                </div>
               </div>
             )}
 
@@ -385,7 +399,7 @@ export default function SignupPage() {
                     </svg>
                     Creating account...
                   </span>
-                ) : "Create Account "}
+                ) : "Create Account →"}
               </button>
             </div>
           </form>
