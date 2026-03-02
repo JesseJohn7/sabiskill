@@ -22,7 +22,18 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError(error.message);
+      const msg = error.message.toLowerCase();
+      if (msg.includes("invalid login credentials") || msg.includes("invalid credentials")) {
+        setError("Hmm, that password doesn't look right. Double-check it and try again! 🔑");
+      } else if (msg.includes("email not confirmed")) {
+        setError("You haven't confirmed your email yet. Check your inbox for the confirmation link!");
+      } else if (msg.includes("user not found") || msg.includes("no user found")) {
+        setError("We couldn't find an account with that email. Want to sign up instead?");
+      } else if (msg.includes("too many requests")) {
+        setError("Too many failed attempts. Please wait a few minutes before trying again.");
+      } else {
+        setError(error.message);
+      }
     } else {
       router.push("/dashboard");
     }
@@ -39,6 +50,10 @@ export default function LoginPage() {
     if (error) setError(error.message);
     setLoading(false);
   };
+
+  // Helper to detect what kind of error it is for the hint link
+  const isWrongPassword = error?.includes("doesn't look right");
+  const isNoAccount = error?.includes("couldn't find an account");
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] flex flex-col lg:flex-row">
@@ -139,7 +154,6 @@ export default function LoginPage() {
         className="hidden lg:flex lg:w-[52%] xl:w-[55%] relative overflow-hidden flex-col"
         style={{ background: "linear-gradient(145deg, #0d1627 0%, #090d1a 50%, #0a0a0f 100%)" }}
       >
-        {/* Background orbs */}
         <div className="absolute top-[-120px] left-[-80px] w-[500px] h-[500px] rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 65%)" }} />
         <div className="absolute bottom-[-80px] right-[-60px] w-[400px] h-[400px] rounded-full pointer-events-none"
@@ -147,18 +161,15 @@ export default function LoginPage() {
         <div className="absolute top-[45%] right-[5%] w-[250px] h-[250px] rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 65%)" }} />
 
-        {/* Logo */}
         <div className="relative z-10 p-10 xl:p-14">
           <a href="/" className="text-2xl font-bold text-white tracking-tight">
             Sabi<span className="text-blue-400">skill</span>
           </a>
         </div>
 
-        {/* Illustration */}
         <div className="relative z-10 flex-1 flex items-center justify-center px-10 xl:px-16 pb-10">
           <div className="relative w-full max-w-md">
 
-            {/* Main mockup */}
             <div className="glass rounded-3xl p-5 xl:p-6 float-1">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
@@ -168,7 +179,6 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-3">
-                {/* Featured course */}
                 <div className="rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(37,99,235,0.3), rgba(139,92,246,0.3))", border: "1px solid rgba(96,165,250,0.2)" }}>
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-3">
@@ -194,7 +204,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Two small cards */}
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { icon: "🎨", title: "UI/UX Design", lessons: "14 lessons", color: "rgba(236,72,153,0.15)", border: "rgba(236,72,153,0.2)" },
@@ -210,7 +219,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Floating badges */}
             <div className="card-badge absolute -top-5 -right-5 xl:-right-8 rounded-2xl px-4 py-3 float-2">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.15)" }}>
@@ -247,7 +255,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom tagline */}
         <div className="relative z-10 px-10 xl:px-14 pb-10">
           <h2 className="text-3xl xl:text-4xl font-bold text-white leading-tight">
             Welcome back.<br />
@@ -263,20 +270,17 @@ export default function LoginPage() {
 
         <div className="w-full max-w-[400px] relative z-10">
 
-          {/* Mobile logo */}
           <div className="lg:hidden text-center mb-7">
             <a href="/" className="text-2xl font-bold text-white tracking-tight">
               Sabi<span className="text-blue-400">skill</span>
             </a>
           </div>
 
-          {/* Heading */}
           <div className="fade-1 mb-7">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1.5">Welcome back</h2>
             <p className="text-slate-500 text-sm">Sign in to continue your learning journey.</p>
           </div>
 
-          {/* Google */}
           <div className="fade-2 mb-5">
             <button
               onClick={handleGoogleLogin}
@@ -293,18 +297,16 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Divider */}
           <div className="fade-2 relative flex items-center gap-3 mb-5">
             <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
             <span className="text-slate-600 text-xs">or with email</span>
             <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
           </div>
 
-          {/* Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="fade-3">
               <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">Email</label>
-              <input 
+              <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -321,7 +323,6 @@ export default function LoginPage() {
                   Forgot password?
                 </a>
               </div>
-              {/* Password field with toggle */}
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -353,7 +354,20 @@ export default function LoginPage() {
                 <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <p className="text-red-400 text-sm">{error}</p>
+                <div>
+                  <p className="text-red-400 text-sm">{error}</p>
+                  {/* Contextual quick-action links */}
+                  {isWrongPassword && (
+                    <a href="/forgot-password" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
+                      → Reset your password
+                    </a>
+                  )}
+                  {isNoAccount && (
+                    <a href="/signup" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
+                      → Create an account
+                    </a>
+                  )}
+                </div>
               </div>
             )}
 
@@ -371,7 +385,7 @@ export default function LoginPage() {
                     </svg>
                     Logging in...
                   </span>
-                ) : "Log In "}
+                ) : "Log In →"}
               </button>
             </div>
           </form>
