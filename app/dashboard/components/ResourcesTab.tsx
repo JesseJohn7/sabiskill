@@ -41,7 +41,7 @@ const resources = [
     description:
       "An intense 8-week bootcamp where you build real apps in teams, get mentored by industry pros, and get connected to job opportunities at global companies.",
     url: "https://hng.tech/internship",
-    logo: "https://images.hng.tech/logo.svg",
+    logo: "https://images.hng.tech/",
     logoAlt: "HNG Internship logo",
     accent: "#f97316",
     bgGradient: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
