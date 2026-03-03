@@ -21,7 +21,7 @@ const resources = [
   },
   {
     name: "freeCodeCamp",
-    tagline: "Learn to code — for free. Build projects. Earn certifications.",
+    tagline: "Learn to code for free. Build projects. Earn certifications.",
     description:
       "A non-profit community with thousands of hours of curriculum, hands-on projects, and industry-recognized certifications in web dev, data science, and more.",
     url: "https://www.freecodecamp.org",
