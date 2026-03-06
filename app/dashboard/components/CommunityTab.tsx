@@ -132,7 +132,7 @@ const communities: Community[] = [
   },
 ];
 
-const categories = [
+/* const categories = [
   "All",
   "Technology",
   "Design",
@@ -140,7 +140,7 @@ const categories = [
   "Languages",
   "Arts",
   "General",
-];
+]; */
 
 function formatMembers(n: number) {
   return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();
