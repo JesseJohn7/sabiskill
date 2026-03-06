@@ -258,7 +258,7 @@ const CommunityTab: React.FC = () => {
           </div>
 
           {/* ── Category Filter ── */}
-          <div className="mb-6 sm:mb-8">
+         {/*  <div className="mb-6 sm:mb-8">
             <div className="flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0 scrollbar-none">
               {categories.map((cat) => (
                 <button
@@ -276,7 +276,7 @@ const CommunityTab: React.FC = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* ── Cards Grid ── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
