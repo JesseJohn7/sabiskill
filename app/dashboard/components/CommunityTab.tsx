@@ -90,7 +90,7 @@ const communities: Community[] = [
   category: "Web3",
   icon: () => (
     <img
-      src="https://www.web3afrika.com/logo.png"
+      src="/web3Africa.png"
       alt="Web3 Afrika"
       className="w-6 h-6 object-contain"
     />
@@ -99,7 +99,7 @@ const communities: Community[] = [
   gradient: "from-green-500/10 to-emerald-500/10",
   joinLink: "https://discord.com/invite/YMJ49PDTym",
 },
-  {
+  /* {
     id: "music",
     name: "Music Makers",
     description:
@@ -135,7 +135,7 @@ const communities: Community[] = [
     color: "text-slate-600",
     gradient: "from-slate-400/10 to-gray-400/10",
     joinLink: "https://discord.gg/your-general-link",
-  },
+  }, */
 ];
 
 /* const categories = [
