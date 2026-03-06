@@ -167,14 +167,14 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect, onNotification
 
       <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
         {/* Notification Bell — clicks navigate to Settings */}
-        <button
+       {/*  <button
           onClick={onNotificationClick}
           className="p-2 sm:p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl relative transition-colors"
           aria-label="Notifications"
         >
           <Bell className="w-5 h-5" />
           <span className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
-        </button>
+        </button> */}
 
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl border border-slate-200 flex items-center justify-center">

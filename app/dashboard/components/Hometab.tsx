@@ -209,7 +209,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     <svg
                       className="absolute -bottom-1 left-0 w-full h-2 sm:h-3"
                       viewBox="0 0 200 10"
-                      preserveAspectRatio="none"
+                      preserveAspectRatio="none" 
                     >
                       <path
                         d="M0,5 Q50,0 100,5 T200,5"
