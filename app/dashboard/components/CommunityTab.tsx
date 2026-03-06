@@ -82,17 +82,23 @@ const communities: Community[] = [
     joinLink: "https://shecodeafrica.org/community",
   },
   {
-    id: "literature",
-    name: "Book Club",
-    description:
-      "Monthly reads, author spotlights, literary analysis, and a safe space for every kind of reader.",
-    members: 1892,
-    category: "Arts",
-    icon: BookOpen,
-    color: "text-amber-600",
-    gradient: "from-amber-500/10 to-yellow-500/10",
-    joinLink: "https://discord.gg/your-books-link",
-  },
+  id: "web3afrika",
+  name: "Web3 Afrika",
+  description:
+    "Africa's leading Web3 community — connecting builders, founders, and innovators across the continent driving the blockchain revolution.",
+  members: 0,
+  category: "Web3",
+  icon: () => (
+    <img
+      src="https://www.web3afrika.com/logo.png"
+      alt="Web3 Afrika"
+      className="w-6 h-6 object-contain"
+    />
+  ),
+  color: "text-green-600",
+  gradient: "from-green-500/10 to-emerald-500/10",
+  joinLink: "https://discord.com/invite/YMJ49PDTym",
+},
   {
     id: "music",
     name: "Music Makers",
