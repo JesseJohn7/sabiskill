@@ -37,6 +37,7 @@ declare global {
 }
 
 const COURSES: Record<string, CourseConfig> = {
+
   "web-dev": {
     title: "Complete Web Development",
     subtitle: "HTML & CSS Full Course",
@@ -80,6 +81,7 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 37, title: "Animations",            videoId: "HGTJBPNC-Gw", timestamp: 13643, duration: "8:37",  completed: false, emoji: "🎬" },
     ],
   },
+
   "ui-ux": {
     title: "UI/UX Design Fundamentals",
     subtitle: "Full Design Course",
@@ -90,6 +92,7 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 4, title: "Mockup",       videoId: "c9Wg6Cb_YlU", timestamp: 3998, duration: "rest",  completed: false, emoji: "🎨" },
     ],
   },
+
   "javascript": {
     title: "JavaScript Full Course",
     subtitle: "From Beginner to Advanced",
@@ -124,6 +127,40 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 28, title: "Applying RegEx in JavaScript",      videoId: "EfAl9bwzVZk", timestamp: 27186, duration: "rest",    completed: false, emoji: "✅" },
     ],
   },
+
+  // ─── React JS — Dave Gray 9-hour Complete Tutorial (24 lessons) ──────────
+  "react-js": {
+    title: "React JS Full Course",
+    subtitle: "Dave Gray — Complete 9-Hour Tutorial",
+    playlist: [
+      { id: 1,  title: "Intro",                              videoId: "CgkZ7MvWUAA", timestamp: 0,     duration: "2:00",  completed: false, emoji: "👋" },
+      { id: 2,  title: "Ch 1 — Start Here",                  videoId: "CgkZ7MvWUAA", timestamp: 120,   duration: "18:00", completed: false, emoji: "🚀" },
+      { id: 3,  title: "Ch 2 — App & JSX",                   videoId: "CgkZ7MvWUAA", timestamp: 1200,  duration: "22:00", completed: false, emoji: "⚛️" },
+      { id: 4,  title: "Ch 3 — Functional Components",       videoId: "CgkZ7MvWUAA", timestamp: 2520,  duration: "20:00", completed: false, emoji: "🧩" },
+      { id: 5,  title: "Ch 4 — Applying CSS Styles",         videoId: "CgkZ7MvWUAA", timestamp: 3720,  duration: "18:00", completed: false, emoji: "🎨" },
+      { id: 6,  title: "Ch 5 — Click Events",                videoId: "CgkZ7MvWUAA", timestamp: 4800,  duration: "20:00", completed: false, emoji: "🖱️" },
+      { id: 7,  title: "Ch 6 — useState Hook",               videoId: "CgkZ7MvWUAA", timestamp: 6000,  duration: "24:00", completed: false, emoji: "🪝" },
+      { id: 8,  title: "Ch 7 — Lists & Keys",                videoId: "CgkZ7MvWUAA", timestamp: 7440,  duration: "18:00", completed: false, emoji: "📋" },
+      { id: 9,  title: "Ch 8 — Props & Prop Drilling",       videoId: "CgkZ7MvWUAA", timestamp: 8520,  duration: "22:00", completed: false, emoji: "📦" },
+      { id: 10, title: "Ch 9 — Controlled Component Inputs", videoId: "CgkZ7MvWUAA", timestamp: 9840,  duration: "20:00", completed: false, emoji: "✏️" },
+      { id: 11, title: "Ch 10 — Project Challenge",          videoId: "CgkZ7MvWUAA", timestamp: 11040, duration: "25:00", completed: false, emoji: "🏆" },
+      { id: 12, title: "Ch 11 — useEffect Hook",             videoId: "CgkZ7MvWUAA", timestamp: 12540, duration: "24:00", completed: false, emoji: "⚡" },
+      { id: 13, title: "Ch 12 — JSON Server",                videoId: "CgkZ7MvWUAA", timestamp: 13980, duration: "18:00", completed: false, emoji: "🗄️" },
+      { id: 14, title: "Ch 13 — Fetch API Data",             videoId: "CgkZ7MvWUAA", timestamp: 15060, duration: "22:00", completed: false, emoji: "🌐" },
+      { id: 15, title: "Ch 14 — CRUD Operations",            videoId: "CgkZ7MvWUAA", timestamp: 16380, duration: "26:00", completed: false, emoji: "🔨" },
+      { id: 16, title: "Ch 15 — Fetch Data Challenge",       videoId: "CgkZ7MvWUAA", timestamp: 17940, duration: "20:00", completed: false, emoji: "💪" },
+      { id: 17, title: "Ch 16 — React Router",               videoId: "CgkZ7MvWUAA", timestamp: 19140, duration: "24:00", completed: false, emoji: "🗺️" },
+      { id: 18, title: "Ch 17 — Router Hooks & Links",       videoId: "CgkZ7MvWUAA", timestamp: 20580, duration: "22:00", completed: false, emoji: "🔗" },
+      { id: 19, title: "Ch 18 — Flexbox Components",         videoId: "CgkZ7MvWUAA", timestamp: 21900, duration: "18:00", completed: false, emoji: "💪" },
+      { id: 20, title: "Ch 19 — Axios API Requests",         videoId: "CgkZ7MvWUAA", timestamp: 22980, duration: "20:00", completed: false, emoji: "📡" },
+      { id: 21, title: "Ch 20 — Custom Hooks",               videoId: "CgkZ7MvWUAA", timestamp: 24180, duration: "22:00", completed: false, emoji: "🪝" },
+      { id: 22, title: "Ch 21 — Context API & useContext",   videoId: "CgkZ7MvWUAA", timestamp: 25500, duration: "24:00", completed: false, emoji: "🌍" },
+      { id: 23, title: "Ch 22 — Easy Peasy Redux",           videoId: "CgkZ7MvWUAA", timestamp: 26940, duration: "26:00", completed: false, emoji: "🔄" },
+      { id: 24, title: "Ch 23 — Build & Deploy",             videoId: "CgkZ7MvWUAA", timestamp: 28500, duration: "20:00", completed: false, emoji: "🚢" },
+    ],
+  },
+  // ─────────────────────────────────────────────────────────────────────────
+
   "crypto": {
     title: "Cryptocurrency & Blockchain",
     subtitle: "Solana Developer Bootcamp",
@@ -141,6 +178,7 @@ const COURSES: Record<string, CourseConfig> = {
       { id: 11, title: "Project 9 | Building a Token Lottery",       videoId: "amAq-WHAFs8", timestamp: 30677, duration: "rest",    completed: false, emoji: "🎰" },
     ],
   },
+
   "public-speak": { title: "Public Speaking Mastery",       subtitle: "Coming Soon", playlist: [] },
   "personal-dev": { title: "Personal Development & Growth", subtitle: "Coming Soon", playlist: [] },
 };
@@ -172,7 +210,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }
 
   // ── State ───────────────────────────────────────────────────────────────────
-  // Pre-mark all lessons before initialLesson as completed so user resumes correctly
   const [playlist, setPlaylist] = useState<Video[]>(() =>
     course.playlist.map((v, i) => ({ ...v, completed: i < initialLesson }))
   );
@@ -180,9 +217,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [showConfetti, setShowConfetti] = useState(false);
 
   const completeFiredRef = useRef(false);
-  // Track which lesson indices have already triggered onLessonComplete to avoid duplicate saves
   const savedLessonsRef = useRef<Set<number>>(new Set(
-    // Pre-populate with already-completed lessons so we don't re-save them
     Array.from({ length: initialLesson }, (_, i) => i)
   ));
 
@@ -245,7 +280,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         });
 
         if (changed) {
-          // Fire onLessonComplete for each newly completed lesson
           updated.forEach((video, i) => {
             if (video.completed && !savedLessonsRef.current.has(i)) {
               savedLessonsRef.current.add(i);
@@ -320,7 +354,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       const updated = [...prev];
       updated[currentVideoIndex] = { ...updated[currentVideoIndex], completed: true };
 
-      // Save this lesson to Supabase if not already saved
       if (!savedLessonsRef.current.has(currentVideoIndex)) {
         savedLessonsRef.current.add(currentVideoIndex);
         onLessonComplete?.(courseId, currentVideoIndex, course.playlist.length);
