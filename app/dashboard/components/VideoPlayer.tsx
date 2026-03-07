@@ -134,8 +134,8 @@ const COURSES: Record<string, CourseConfig> = {
     subtitle: "Dave Gray — Complete 9-Hour Tutorial",
     playlist: [
       { id: 1,  title: "Intro",                              videoId: "CgkZ7MvWUAA", timestamp: 0,     duration: "2:00",  completed: false, emoji: "👋" },
-      { id: 2,  title: "Ch 1 — Start Here",                  videoId: "CgkZ7MvWUAA", timestamp: 120,   duration: "18:00", completed: false, emoji: "🚀" },
-      { id: 3,  title: "Ch 2 — App & JSX",                   videoId: "CgkZ7MvWUAA", timestamp: 1200,  duration: "22:00", completed: false, emoji: "⚛️" },
+      { id: 2,  title: "Start Here",                  videoId: "CgkZ7MvWUAA", timestamp: 120,   duration: "18:00", completed: false, emoji: "🚀" },
+      { id: 3,  title: "App & JSX",                   videoId: "CgkZ7MvWUAA", timestamp: 1200,  duration: "22:00", completed: false, emoji: "⚛️" },
       { id: 4,  title: "Ch 3 — Functional Components",       videoId: "CgkZ7MvWUAA", timestamp: 2520,  duration: "20:00", completed: false, emoji: "🧩" },
       { id: 5,  title: "Ch 4 — Applying CSS Styles",         videoId: "CgkZ7MvWUAA", timestamp: 3720,  duration: "18:00", completed: false, emoji: "🎨" },
       { id: 6,  title: "Ch 5 — Click Events",                videoId: "CgkZ7MvWUAA", timestamp: 4800,  duration: "20:00", completed: false, emoji: "🖱️" },
