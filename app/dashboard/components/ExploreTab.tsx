@@ -20,9 +20,10 @@ import {
 
 // ── Lesson type for playlist courses ──────────────────────────────────────
 export interface Lesson {
-  id: string;       // YouTube video ID
+  id: string;           // YouTube video ID
   title: string;
-  duration: string; // e.g. "45:12"
+  duration: string;     // e.g. "45:12"
+  startSeconds?: number; // for timestamp-based chapters in a single video
 }
 
 // ⚠️ These IDs must match the keys in VideoPlayer's COURSES object exactly
@@ -107,90 +108,74 @@ export const ALL_COURSES = [
     ],
     playlist: null as Lesson[] | null,
   },
-  // ─── React JS — Sheryians Coding School (32-lesson playlist) ──────────────
+  // ─── React JS — Dave Gray 9-hour Complete Tutorial (23 chapters) ─────────
   {
     id: "react-js",
     title: "React JS Full Course",
     description: "Master React from scratch — components, hooks, routing, Redux & real projects.",
     longDescription:
-      "Sheryians Coding School's complete React JS series takes you from zero to job-ready. Starting with the theory of why React exists, you'll build your way through JSX, functional components, props, useState, useEffect, React Router, Context API, and Redux Toolkit — finishing with real-world projects you can add to your portfolio.",
-    thumbnail: "https://i.ytimg.com/vi/j942wKiXFu8/maxresdefault.jpg",
-    videoId: "j942wKiXFu8",
-    lessons: 32,
-    level: "Intermediate",
+      "Dave Gray's complete 9-hour React JS course takes you from zero to confident React developer. Across 23 clearly structured chapters you'll learn JSX, functional components, useState & useEffect hooks, controlled inputs, CRUD with a REST API, React Router, custom hooks, Context API, and Redux — finishing with a full build-and-deploy walkthrough.",
+    thumbnail: "https://i.ytimg.com/vi/CgkZ7MvWUAA/maxresdefault.jpg",
+    videoId: "CgkZ7MvWUAA",
+    lessons: 23,
+    level: "Beginner",
     tag: "New",
-    duration: "22h 10m",
+    duration: "9h 00m",
     students: 34700,
     rating: 4.9,
     reviewCount: 2314,
-    instructor: "Sheryians Coding School",
+    instructor: "Dave Gray",
     topics: [
-      "Introduction to React JS — Theory & History",
-      "Essentials — Everything You Need to Learn",
-      "Setting Up React with Vite & Project Structure",
-      "JSX In Depth — Rules, Expressions & Fragments",
-      "Functional Components & Props",
-      "State with useState Hook",
-      "Conditional Rendering & Ternary Patterns",
-      "Lists & Keys — Rendering Arrays with map()",
-      "Handling Events & Synthetic Events",
-      "useEffect Hook — Side Effects & Cleanup",
-      "Spread Operator, Array & Object Copying",
-      "Import & Export — Modules in React",
-      "React Router DOM — SPA Setup",
-      "NavLink, Active Styles & Dynamic Routes",
-      "Nested Routes & Outlet",
-      "useRef Hook — Accessing DOM Elements",
-      "useMemo & useCallback — Performance",
-      "Custom Hooks — Reusable Logic",
-      "Lifting State Up & Prop Drilling",
-      "Context API — Avoid Prop Drilling",
-      "useContext Hook in Practice",
-      "useReducer Hook — Complex State",
-      "React Portals & Modals",
-      "Error Boundaries",
-      "Lazy Loading & Suspense",
-      "Redux Toolkit — Introduction & Store Setup",
-      "Redux Slices, Actions & Reducers",
-      "useSelector & useDispatch",
-      "Async Redux with createAsyncThunk",
-      "Project: Build a Shopping Cart App",
-      "Project: Full React Dashboard",
-      "Deployment — Vercel & Netlify",
+      "Start Here — React Setup & Overview",
+      "App & JSX — Writing Your First React Code",
+      "Functional Components",
+      "Applying CSS Styles",
+      "Click Events",
+      "useState Hook — Managing State",
+      "Lists & Keys",
+      "Props & Prop Drilling",
+      "Controlled Component Inputs",
+      "Project Challenge",
+      "useEffect Hook",
+      "JSON Server",
+      "Fetch API Data",
+      "CRUD Operations",
+      "Fetch Data Challenge",
+      "React Router",
+      "Router Hooks & Links",
+      "Flexbox Components",
+      "Axios API Requests",
+      "Custom Hooks",
+      "Context API & useContext Hook",
+      "Easy Peasy Redux",
+      "Build & Deploy Your React Apps",
     ],
+    // All lessons are chapters of the same video — startSeconds jumps to the right spot
     playlist: [
-      { id: "j942wKiXFu8",  title: "Introduction to React JS",                    duration: "45:12" },
-      { id: "kVeOpcw4GWY",  title: "Essentials — Everything You Need to Learn",   duration: "1:02:34" },
-      { id: "dGcFZ1floQc",  title: "Setting Up React with Vite",                  duration: "28:47" },
-      { id: "7iobxzd_2wY",  title: "JSX In Depth — Rules & Expressions",          duration: "38:20" },
-      { id: "Ke90Tje7VS0",  title: "Functional Components & Props",               duration: "52:15" },
-      { id: "O6P86uwfdR0",  title: "State with useState Hook",                    duration: "48:30" },
-      { id: "Y6aYx_KKM7A",  title: "Conditional Rendering",                       duration: "33:10" },
-      { id: "dyL99ACQfPs",  title: "Lists & Keys — Rendering Arrays",             duration: "29:55" },
-      { id: "Cr7cGM6MWNI",  title: "Handling Events & Synthetic Events",          duration: "36:40" },
-      { id: "0ZJgIjIuY7U",  title: "useEffect Hook — Side Effects & Cleanup",    duration: "55:22" },
-      { id: "XnI3kpjn0wE",  title: "Spread Operator & Array/Object Copying",     duration: "31:08" },
-      { id: "cRHQNNn7Fgk",  title: "Import & Export — Modules in React",         duration: "27:44" },
-      { id: "saw_yd7OUKE",  title: "React Router DOM — SPA Setup",               duration: "49:18" },
-      { id: "Ul3y1LXxzdU",  title: "NavLink, Active Styles & Dynamic Routes",    duration: "41:05" },
-      { id: "Pbg7mT3CJKM",  title: "Nested Routes & Outlet",                     duration: "35:50" },
-      { id: "t3Tpi-s5B5I",  title: "useRef Hook — Accessing DOM Elements",       duration: "30:12" },
-      { id: "vpE9TVcsPL0",  title: "useMemo & useCallback — Performance",        duration: "43:33" },
-      { id: "6ThXsUwLyPI",  title: "Custom Hooks — Reusable Logic",              duration: "38:47" },
-      { id: "NZrZbzAubzU",  title: "Lifting State Up & Prop Drilling",           duration: "34:29" },
-      { id: "5LrDIWkK_Bc",  title: "Context API — Avoid Prop Drilling",          duration: "46:11" },
-      { id: "lhMKvyLRWo0",  title: "useContext Hook in Practice",                duration: "32:56" },
-      { id: "kK_Kd_f3kw0",  title: "useReducer Hook — Complex State",            duration: "40:14" },
-      { id: "7YhdqIR2Yzo",  title: "React Portals & Modals",                     duration: "28:38" },
-      { id: "wYpCWwD1oz0",  title: "Error Boundaries",                           duration: "25:47" },
-      { id: "A0W9gHE6B_M",  title: "Lazy Loading & Suspense",                   duration: "31:22" },
-      { id: "93ifi4BUIY8",  title: "Redux Toolkit — Introduction & Store Setup", duration: "52:40" },
-      { id: "bbkBuqC1rU4",  title: "Redux Slices, Actions & Reducers",           duration: "48:05" },
-      { id: "3dykawT3_lM",  title: "useSelector & useDispatch",                  duration: "37:19" },
-      { id: "MBVsx5FnBGc",  title: "Async Redux with createAsyncThunk",          duration: "44:58" },
-      { id: "QFaFIcGhPoM",  title: "Project: Shopping Cart App",                 duration: "1:18:33" },
-      { id: "ouncVBiye_s",  title: "Project: Full React Dashboard",              duration: "1:32:11" },
-      { id: "3dz5r-1fFJk",  title: "Deployment — Vercel & Netlify",             duration: "22:45" },
+      { id: "CgkZ7MvWUAA", title: "Intro",                              duration: "2:00",  startSeconds: 0     },
+      { id: "CgkZ7MvWUAA", title: "Ch 1 — Start Here",                  duration: "18:00", startSeconds: 120   },
+      { id: "CgkZ7MvWUAA", title: "Ch 2 — App & JSX",                   duration: "22:00", startSeconds: 1200  },
+      { id: "CgkZ7MvWUAA", title: "Ch 3 — Functional Components",       duration: "20:00", startSeconds: 2520  },
+      { id: "CgkZ7MvWUAA", title: "Ch 4 — Applying CSS Styles",         duration: "18:00", startSeconds: 3720  },
+      { id: "CgkZ7MvWUAA", title: "Ch 5 — Click Events",                duration: "20:00", startSeconds: 4800  },
+      { id: "CgkZ7MvWUAA", title: "Ch 6 — useState Hook",               duration: "24:00", startSeconds: 6000  },
+      { id: "CgkZ7MvWUAA", title: "Ch 7 — Lists & Keys",                duration: "18:00", startSeconds: 7440  },
+      { id: "CgkZ7MvWUAA", title: "Ch 8 — Props & Prop Drilling",       duration: "22:00", startSeconds: 8520  },
+      { id: "CgkZ7MvWUAA", title: "Ch 9 — Controlled Component Inputs", duration: "20:00", startSeconds: 9840  },
+      { id: "CgkZ7MvWUAA", title: "Ch 10 — Project Challenge",          duration: "25:00", startSeconds: 11040 },
+      { id: "CgkZ7MvWUAA", title: "Ch 11 — useEffect Hook",             duration: "24:00", startSeconds: 12540 },
+      { id: "CgkZ7MvWUAA", title: "Ch 12 — JSON Server",                duration: "18:00", startSeconds: 13980 },
+      { id: "CgkZ7MvWUAA", title: "Ch 13 — Fetch API Data",             duration: "22:00", startSeconds: 15060 },
+      { id: "CgkZ7MvWUAA", title: "Ch 14 — CRUD Operations",            duration: "26:00", startSeconds: 16380 },
+      { id: "CgkZ7MvWUAA", title: "Ch 15 — Fetch Data Challenge",       duration: "20:00", startSeconds: 17940 },
+      { id: "CgkZ7MvWUAA", title: "Ch 16 — React Router",               duration: "24:00", startSeconds: 19140 },
+      { id: "CgkZ7MvWUAA", title: "Ch 17 — Router Hooks & Links",       duration: "22:00", startSeconds: 20580 },
+      { id: "CgkZ7MvWUAA", title: "Ch 18 — Flexbox Components",         duration: "18:00", startSeconds: 21900 },
+      { id: "CgkZ7MvWUAA", title: "Ch 19 — Axios API Requests",         duration: "20:00", startSeconds: 22980 },
+      { id: "CgkZ7MvWUAA", title: "Ch 20 — Custom Hooks",               duration: "22:00", startSeconds: 24180 },
+      { id: "CgkZ7MvWUAA", title: "Ch 21 — Context API & useContext",   duration: "24:00", startSeconds: 25500 },
+      { id: "CgkZ7MvWUAA", title: "Ch 22 — Easy Peasy Redux",           duration: "26:00", startSeconds: 26940 },
+      { id: "CgkZ7MvWUAA", title: "Ch 23 — Build & Deploy",             duration: "20:00", startSeconds: 28500 },
     ] as Lesson[],
   },
   // ─────────────────────────────────────────────────────────────────────────
@@ -295,10 +280,10 @@ const COURSE_REVIEWS: Record<
     { name: "Leo H.", rating: 5, date: "Dec 2024", comment: "My JavaScript skills jumped significantly after completing this." },
   ],
   "react-js": [
-    { name: "Aryan S.", rating: 5, date: "Feb 2025", comment: "Best React course I've watched. The Redux Toolkit section alone is worth it." },
-    { name: "Priya M.", rating: 5, date: "Jan 2025", comment: "The Router and Context API lessons are gold. Highly recommend." },
+    { name: "Aryan S.", rating: 5, date: "Feb 2025", comment: "Dave Gray is the best React teacher. Every chapter builds perfectly on the last." },
+    { name: "Priya M.", rating: 5, date: "Jan 2025", comment: "The CRUD and React Router chapters alone are worth it. Crystal clear." },
     { name: "Rohan K.", rating: 4, date: "Jan 2025", comment: "Covered everything I needed to land my first React role." },
-    { name: "Sneha D.", rating: 5, date: "Dec 2024", comment: "Clearest explanation of useEffect I've ever seen. Loved every video." },
+    { name: "Sneha D.", rating: 5, date: "Dec 2024", comment: "9 hours went by so fast. Clearest React course I've found." },
   ],
   crypto: [
     { name: "Jake F.", rating: 4, date: "Jan 2025", comment: "Good no-nonsense introduction. No hype, just solid info." },
@@ -334,9 +319,15 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
 }
 
 // ─── Embedded Video Player ────────────────────────────────────────────────────
-interface VideoPlayerProps { videoId: string; title: string; autoPlay?: boolean; }
-function VideoPlayer({ videoId, title, autoPlay = false }: VideoPlayerProps) {
+interface VideoPlayerProps {
+  videoId: string;
+  title: string;
+  autoPlay?: boolean;
+  startSeconds?: number;
+}
+function VideoPlayer({ videoId, title, autoPlay = false, startSeconds = 0 }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(autoPlay);
+
   if (!playing) {
     return (
       <div className="relative w-full aspect-video bg-slate-900 rounded-t-2xl overflow-hidden group">
@@ -351,10 +342,12 @@ function VideoPlayer({ videoId, title, autoPlay = false }: VideoPlayerProps) {
       </div>
     );
   }
+
+  const startParam = startSeconds && startSeconds > 0 ? `&start=${startSeconds}` : "";
   return (
     <div className="relative w-full aspect-video bg-black rounded-t-2xl overflow-hidden">
       <iframe
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1${startParam}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen className="w-full h-full"
@@ -431,8 +424,11 @@ export function CourseDetail({
   backLabel = "Back to Explore", autoPlayVideo = false,
 }: CourseDetailProps) {
   const [topicsOpen, setTopicsOpen] = useState(false);
-  const [activeVideoId, setActiveVideoId] = useState(course.videoId);
-  const [activeVideoTitle, setActiveVideoTitle] = useState(course.title);
+  const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
+
+  const activeVideoId = activeLesson?.id ?? course.videoId;
+  const activeVideoTitle = activeLesson?.title ?? course.title;
+  const activeStartSeconds = activeLesson?.startSeconds ?? 0;
 
   const isLocked = status === "locked";
   const isCompleted = status === "completed";
@@ -443,8 +439,7 @@ export function CourseDetail({
   React.useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, []);
 
   const handleLessonClick = (lesson: Lesson) => {
-    setActiveVideoId(lesson.id);
-    setActiveVideoTitle(lesson.title);
+    setActiveLesson(lesson);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -485,8 +480,13 @@ export function CourseDetail({
             {/* Right: video + CTA */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
-                <VideoPlayer videoId={activeVideoId} title={activeVideoTitle} autoPlay={autoPlayVideo} />
-                {hasPlaylist && activeVideoId !== course.videoId && (
+                <VideoPlayer
+                  videoId={activeVideoId}
+                  title={activeVideoTitle}
+                  autoPlay={autoPlayVideo || !!activeLesson}
+                  startSeconds={activeStartSeconds}
+                />
+                {activeLesson && (
                   <div className="px-4 py-2 bg-slate-50 border-b border-slate-100">
                     <p className="text-[10px] text-slate-500 font-semibold truncate">Now playing: {activeVideoTitle}</p>
                   </div>
@@ -534,7 +534,7 @@ export function CourseDetail({
           </div>
         </div>
 
-        {/* Course content — playlist if available, else generic collapsible */}
+        {/* Course content */}
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <button onClick={() => setTopicsOpen((p) => !p)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
             <div className="flex items-center gap-3">
@@ -550,27 +550,32 @@ export function CourseDetail({
           {topicsOpen && (
             <div className="border-t border-slate-100 divide-y divide-slate-100">
               {hasPlaylist
-                ? course.playlist!.map((lesson, i) => (
-                    <button
-                      key={lesson.id}
-                      onClick={() => !isLocked && handleLessonClick(lesson)}
-                      disabled={isLocked}
-                      className={`w-full flex items-center gap-4 px-6 py-3 text-left transition-colors
-                        ${isLocked ? "cursor-not-allowed opacity-50" : "hover:bg-blue-50 cursor-pointer"}
-                        ${activeVideoId === lesson.id ? "bg-blue-50 border-l-2 border-blue-500" : ""}`}
-                    >
-                      <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-black
-                        ${activeVideoId === lesson.id ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
-                        {activeVideoId === lesson.id
-                          ? <Play className="w-3 h-3 fill-current" />
-                          : i + 1}
-                      </div>
-                      <span className={`text-sm flex-1 font-medium ${activeVideoId === lesson.id ? "text-blue-700" : "text-slate-700"}`}>
-                        {lesson.title}
-                      </span>
-                      <span className="text-xs text-slate-400 font-medium tabular-nums flex-shrink-0">{lesson.duration}</span>
-                    </button>
-                  ))
+                ? course.playlist!.map((lesson, i) => {
+                    const isThisActive = activeLesson
+                      ? activeLesson.startSeconds === lesson.startSeconds
+                      : false;
+                    return (
+                      <button
+                        key={`${lesson.id}-${lesson.startSeconds ?? i}`}
+                        onClick={() => !isLocked && handleLessonClick(lesson)}
+                        disabled={isLocked}
+                        className={`w-full flex items-center gap-4 px-6 py-3 text-left transition-colors
+                          ${isLocked ? "cursor-not-allowed opacity-50" : "hover:bg-blue-50 cursor-pointer"}
+                          ${isThisActive ? "bg-blue-50 border-l-2 border-blue-500" : ""}`}
+                      >
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-black
+                          ${isThisActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
+                          {isThisActive
+                            ? <Play className="w-3 h-3 fill-current" />
+                            : i + 1}
+                        </div>
+                        <span className={`text-sm flex-1 font-medium ${isThisActive ? "text-blue-700" : "text-slate-700"}`}>
+                          {lesson.title}
+                        </span>
+                        <span className="text-xs text-slate-400 font-medium tabular-nums flex-shrink-0">{lesson.duration}</span>
+                      </button>
+                    );
+                  })
                 : course.topics.map((t, i) => (
                     <div key={i} className="flex items-center gap-4 px-6 py-3">
                       <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
