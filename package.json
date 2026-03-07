@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
-    "@supabase/supabase-js": "^2.97.0",
+    "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/postcss": "^4.1.18",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
