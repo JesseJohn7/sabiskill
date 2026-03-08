@@ -66,6 +66,18 @@ const HNGLogo = () => (
   />
 );
 
+// Frontend Mentor — stylised "FM" bracket mark + wordmark
+const FrontendMentorLogo = () => (
+  <svg viewBox="0 0 152 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-auto">
+    {/* Bracket / chevron mark */}
+    <path d="M4 4L12 12L4 20" stroke="#3F54A3" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M10 12H20" stroke="#3F54A3" strokeWidth="3" strokeLinecap="round"/>
+    {/* Wordmark */}
+    <text x="26" y="17" fontFamily="'Segoe UI', system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#1e2d6e" letterSpacing="-0.2">Frontend</text>
+    <text x="84" y="17" fontFamily="'Segoe UI', system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#3F54A3" letterSpacing="-0.2"> Mentor</text>
+  </svg>
+);
+
 /* ─────────────────────────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────────────────────────── */
@@ -129,6 +141,18 @@ const resources = [
     tag: "Free to Join",
     tagColors: { bg: "#fff7ed", text: "#c2410c" },
     chips: ["3K+ Finalists", "21+ Countries", "Job Placement"],
+  },
+  {
+    name: "Frontend Mentor",
+    url: "https://www.frontendmentor.io",
+    tagline: "Build real projects. Impress employers.",
+    description:
+      "100+ professionally designed challenges that mirror real dev work — from HTML/CSS basics to full-stack apps. Submit, get feedback, grow your portfolio.",
+    Logo: FrontendMentorLogo,
+    accent: "#3F54A3",
+    tag: "Free + Pro",
+    tagColors: { bg: "#eef0fb", text: "#3F54A3" },
+    chips: ["1.1M+ Devs", "100+ Challenges", "AI Feedback"],
   },
 ];
 
