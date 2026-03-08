@@ -330,21 +330,6 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
             <ChevronIcon className="w-4 h-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
           </button>
 
-          {/* Close account */}
-          <button className="w-full flex items-center gap-4 px-5 sm:px-7 py-4 sm:py-5 text-left hover:bg-red-50/60 active:bg-red-50 transition-colors group">
-            <div className="w-10 h-10 rounded-2xl bg-red-50 group-hover:bg-red-100 flex items-center justify-center flex-shrink-0 transition-colors">
-              <CloseAccountIcon className="w-5 h-5 text-red-400 group-hover:text-red-500 transition-colors" />
-            </div>
-           {/*  <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-red-500 group-hover:text-red-600 transition-colors">
-                Close account
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Submit a request to deactivate your account
-              </p>
-            </div> */}
-            <ChevronIcon className="w-4 h-4 text-slate-300 group-hover:text-red-300 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-          </button>
         </div>
 
         {/* Footer */}
@@ -403,12 +388,6 @@ const MailIcon = ({ className }: { className?: string }) => (
 const LogoutIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-  </svg>
-);
-
-const CloseAccountIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
   </svg>
 );
 
