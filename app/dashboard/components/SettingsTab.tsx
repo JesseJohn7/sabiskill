@@ -146,7 +146,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
           <div className="px-5 sm:px-7 pb-6">
             {/* Avatar row — pulled up to overlap the banner */}
             <div className="flex items-end gap-4 -mt-10 sm:-mt-11 mb-5">
-              {/* Avatar wrapper — must be relative for online dot + overlay */}
+              {/* Avatar wrapper */}
               <div className="relative flex-shrink-0 group cursor-pointer">
                 {showPhoto ? (
                   <>
@@ -156,7 +156,6 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
                       onError={() => setImgError(true)}
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl object-cover border-4 border-white shadow-xl"
                     />
-                    {/* Hover overlay for photo */}
                     <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border-4 border-white bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center pointer-events-none">
                       <CameraIcon className="w-6 h-6 text-white drop-shadow" />
                     </div>
@@ -168,7 +167,6 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
                         {initials}
                       </span>
                     </div>
-                    {/* Hover overlay for initials */}
                     <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border-4 border-white bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center pointer-events-none">
                       <CameraIcon className="w-6 h-6 text-white drop-shadow" />
                     </div>
@@ -310,24 +308,24 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
           <button
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="w-full flex items-center gap-4 px-5 sm:px-7 py-4 sm:py-5 text-left hover:bg-slate-50 active:bg-slate-100 transition-colors group disabled:opacity-60"
+            className="w-full flex items-center gap-4 px-5 sm:px-7 py-4 sm:py-5 text-left hover:bg-red-50 active:bg-red-100 transition-colors group disabled:opacity-60"
           >
-            <div className="w-10 h-10 rounded-2xl bg-slate-100 group-hover:bg-slate-200 flex items-center justify-center flex-shrink-0 transition-colors">
+            <div className="w-10 h-10 rounded-2xl bg-red-50 group-hover:bg-red-100 flex items-center justify-center flex-shrink-0 transition-colors">
               {logoutLoading ? (
-                <SpinnerIcon className="text-slate-500" />
+                <SpinnerIcon className="text-red-400" />
               ) : (
-                <LogoutIcon className="w-5 h-5 text-slate-600" />
+                <LogoutIcon className="w-5 h-5 text-red-500" />
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-800">
+              <p className="text-sm font-semibold text-red-600">
                 {logoutLoading ? "Signing out…" : "Sign out"}
               </p>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-red-400 mt-0.5">
                 Log out of your account on this device
               </p>
             </div>
-            <ChevronIcon className="w-4 h-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+            <ChevronIcon className="w-4 h-4 text-red-300 group-hover:text-red-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
           </button>
 
         </div>
