@@ -17,16 +17,16 @@ import {
   ChevronUp,
   Send,
 } from "lucide-react";
+import { CertificateModal } from "./CertificateModal";
 
 // ── Lesson type for playlist courses ──────────────────────────────────────
 export interface Lesson {
-  id: string;           // YouTube video ID
+  id: string;
   title: string;
-  duration: string;     // e.g. "45:12"
-  startSeconds?: number; // for timestamp-based chapters in a single video
+  duration: string;
+  startSeconds?: number;
 }
 
-// ⚠️ These IDs must match the keys in VideoPlayer's COURSES object exactly
 export const ALL_COURSES = [
   {
     id: "web-dev",
@@ -108,7 +108,6 @@ export const ALL_COURSES = [
     ],
     playlist: null as Lesson[] | null,
   },
-  // ─── React JS — Dave Gray 9-hour Complete Tutorial (23 chapters) ─────────
   {
     id: "react-js",
     title: "React JS Full Course",
@@ -177,7 +176,6 @@ export const ALL_COURSES = [
       { id: "CgkZ7MvWUAA", title: "Ch 23 — Build & Deploy",             duration: "20:00", startSeconds: 28500 },
     ] as Lesson[],
   },
-  // ─────────────────────────────────────────────────────────────────────────
   {
     id: "crypto",
     title: "Cryptocurrency & Blockchain",
@@ -204,7 +202,6 @@ export const ALL_COURSES = [
     ],
     playlist: null as Lesson[] | null,
   },
-  // ─── Solidity & Web3 Development ─────────────────────────────────────────
   {
     id: "solidity-web3",
     title: "Solidity & Web3 Development",
@@ -239,7 +236,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "Conditionals & Loops",       duration: "11:26", startSeconds: 3076  },
       { id: "jcgfQEbptdo", title: "Full Contract",              duration: "23:30", startSeconds: 3762  },
       { id: "jcgfQEbptdo", title: "Inheritance",                duration: "13:01", startSeconds: 5172  },
-      // — Real Estate App —
       { id: "jcgfQEbptdo", title: "RE: Overview",               duration: "4:39",  startSeconds: 5953  },
       { id: "jcgfQEbptdo", title: "RE: Create Project",         duration: "9:28",  startSeconds: 6232  },
       { id: "jcgfQEbptdo", title: "RE: Escrow Contract",        duration: "22:04", startSeconds: 6800  },
@@ -253,7 +249,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "RE: Search Bar",             duration: "4:29",  startSeconds: 12323 },
       { id: "jcgfQEbptdo", title: "RE: List Properties",        duration: "11:56", startSeconds: 12592 },
       { id: "jcgfQEbptdo", title: "RE: Buy Property",           duration: "32:16", startSeconds: 13308 },
-      // — Amazon Clone —
       { id: "jcgfQEbptdo", title: "AZ: Overview",               duration: "2:14",  startSeconds: 15244 },
       { id: "jcgfQEbptdo", title: "AZ: Project Setup",          duration: "6:26",  startSeconds: 15378 },
       { id: "jcgfQEbptdo", title: "AZ: Create Contract",        duration: "20:35", startSeconds: 15764 },
@@ -265,7 +260,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "AZ: List Products UI",       duration: "21:44", startSeconds: 22254 },
       { id: "jcgfQEbptdo", title: "AZ: Product Details",        duration: "10:51", startSeconds: 23558 },
       { id: "jcgfQEbptdo", title: "AZ: Buy Products UI",        duration: "6:51",  startSeconds: 24209 },
-      // — Discord Clone —
       { id: "jcgfQEbptdo", title: "DC: Overview",               duration: "2:22",  startSeconds: 24627 },
       { id: "jcgfQEbptdo", title: "DC: Setup",                  duration: "2:54",  startSeconds: 24769 },
       { id: "jcgfQEbptdo", title: "DC: Contracts",              duration: "24:19", startSeconds: 24943 },
@@ -277,7 +271,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "DC: Navbar",                 duration: "26:33", startSeconds: 29131 },
       { id: "jcgfQEbptdo", title: "DC: Channels",               duration: "15:07", startSeconds: 30724 },
       { id: "jcgfQEbptdo", title: "DC: Chatting",               duration: "27:20", startSeconds: 31631 },
-      // — Ticketmaster Clone —
       { id: "jcgfQEbptdo", title: "TM: Project Overview",       duration: "3:06",  startSeconds: 33271 },
       { id: "jcgfQEbptdo", title: "TM: Project Setup",          duration: "2:45",  startSeconds: 33457 },
       { id: "jcgfQEbptdo", title: "TM: Create Smart Contract",  duration: "4:33",  startSeconds: 33622 },
@@ -291,7 +284,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "TM: Buy Tickets UI",         duration: "rest",  startSeconds: 41255 },
     ] as Lesson[],
   },
-  // ─────────────────────────────────────────────────────────────────────────
   {
     id: "public-speak",
     title: "Public Speaking Mastery",
@@ -347,7 +339,6 @@ export const ALL_COURSES = [
   },
 ];
 
-// Sample reviews per course
 const COURSE_REVIEWS: Record<
   string,
   { name: string; rating: number; date: string; comment: string }[]
@@ -410,7 +401,6 @@ function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg
   );
 }
 
-// ─── Embedded Video Player ────────────────────────────────────────────────────
 interface VideoPlayerProps {
   videoId: string;
   title: string;
@@ -419,7 +409,6 @@ interface VideoPlayerProps {
 }
 function VideoPlayer({ videoId, title, autoPlay = false, startSeconds = 0 }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(autoPlay);
-
   if (!playing) {
     return (
       <div className="relative w-full aspect-video bg-slate-900 rounded-t-2xl overflow-hidden group">
@@ -434,7 +423,6 @@ function VideoPlayer({ videoId, title, autoPlay = false, startSeconds = 0 }: Vid
       </div>
     );
   }
-
   const startParam = startSeconds && startSeconds > 0 ? `&start=${startSeconds}` : "";
   return (
     <div className="relative w-full aspect-video bg-black rounded-t-2xl overflow-hidden">
@@ -448,7 +436,6 @@ function VideoPlayer({ videoId, title, autoPlay = false, startSeconds = 0 }: Vid
   );
 }
 
-// ─── Review Form ──────────────────────────────────────────────────────────────
 interface ReviewFormProps {
   courseId: string;
   onSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
@@ -506,13 +493,14 @@ export interface CourseDetailProps {
   reviews: { name: string; rating: number; date: string; comment: string }[];
   onBack: () => void;
   onStart: (courseId: string) => void;
+  onGetCertificate?: (course: (typeof ALL_COURSES)[0]) => void; // ← NEW
   onReviewSubmit: (courseId: string, review: { name: string; rating: number; comment: string }) => void;
   backLabel?: string;
   autoPlayVideo?: boolean;
 }
 
 export function CourseDetail({
-  course, status, reviews, onBack, onStart, onReviewSubmit,
+  course, status, reviews, onBack, onStart, onGetCertificate, onReviewSubmit,
   backLabel = "Back to Explore", autoPlayVideo = false,
 }: CourseDetailProps) {
   const [topicsOpen, setTopicsOpen] = useState(false);
@@ -537,14 +525,12 @@ export function CourseDetail({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Hero */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           <button onClick={onBack} className="flex items-center gap-2 text-slate-300 hover:text-white text-sm font-semibold mb-6 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />{backLabel}
           </button>
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-            {/* Left info */}
             <div className="lg:col-span-3 space-y-4">
               {course.tag && (
                 <span className="inline-flex items-center gap-1 bg-amber-400 text-amber-900 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
@@ -569,7 +555,6 @@ export function CourseDetail({
               <p className="text-slate-400 text-xs">Instructor: <span className="text-white font-semibold">{course.instructor}</span></p>
             </div>
 
-            {/* Right: video + CTA */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
                 <VideoPlayer
@@ -583,7 +568,7 @@ export function CourseDetail({
                     <p className="text-[10px] text-slate-500 font-semibold truncate">Now playing: {activeVideoTitle}</p>
                   </div>
                 )}
-                <div className="p-5 space-y-4">
+                <div className="p-5 space-y-3">
                   {isLocked ? (
                     <>
                       <button disabled className="w-full bg-slate-100 text-slate-400 font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed">
@@ -592,9 +577,18 @@ export function CourseDetail({
                       <p className="text-xs text-center text-slate-500">Finish your active track to unlock this course.</p>
                     </>
                   ) : isCompleted ? (
-                    <button onClick={() => onStart(course.id)} className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
-                      <CheckCircle2 className="w-4 h-4" /> Review Course
-                    </button>
+                    <div className="space-y-2">
+                      <button onClick={() => onStart(course.id)} className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
+                        <CheckCircle2 className="w-4 h-4" /> Review Course
+                      </button>
+                      {/* ── GET CERTIFICATE BUTTON ── */}
+                      <button
+                        onClick={() => onGetCertificate?.(course)}
+                        className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-black py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-amber-400/25"
+                      >
+                        <Award className="w-4 h-4" /> Get My Certificate
+                      </button>
+                    </div>
                   ) : (
                     <button onClick={() => onStart(course.id)} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg">
                       <Play className="w-4 h-4 fill-current" /> {isActive ? "Continue Learning" : "Start Course — It's Free"}
@@ -611,9 +605,7 @@ export function CourseDetail({
         </div>
       </div>
 
-      {/* Body */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-        {/* What you'll learn */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
           <h2 className="text-lg font-black text-slate-900">What you'll learn</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -626,7 +618,6 @@ export function CourseDetail({
           </div>
         </div>
 
-        {/* Course content */}
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <button onClick={() => setTopicsOpen((p) => !p)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
             <div className="flex items-center gap-3">
@@ -638,14 +629,11 @@ export function CourseDetail({
             </div>
             {topicsOpen ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
           </button>
-
           {topicsOpen && (
             <div className="border-t border-slate-100 divide-y divide-slate-100">
               {hasPlaylist
                 ? course.playlist!.map((lesson, i) => {
-                    const isThisActive = activeLesson
-                      ? activeLesson.startSeconds === lesson.startSeconds
-                      : false;
+                    const isThisActive = activeLesson ? activeLesson.startSeconds === lesson.startSeconds : false;
                     return (
                       <button
                         key={`${lesson.id}-${lesson.startSeconds ?? i}`}
@@ -657,13 +645,9 @@ export function CourseDetail({
                       >
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-black
                           ${isThisActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
-                          {isThisActive
-                            ? <Play className="w-3 h-3 fill-current" />
-                            : i + 1}
+                          {isThisActive ? <Play className="w-3 h-3 fill-current" /> : i + 1}
                         </div>
-                        <span className={`text-sm flex-1 font-medium ${isThisActive ? "text-blue-700" : "text-slate-700"}`}>
-                          {lesson.title}
-                        </span>
+                        <span className={`text-sm flex-1 font-medium ${isThisActive ? "text-blue-700" : "text-slate-700"}`}>{lesson.title}</span>
                         <span className="text-xs text-slate-400 font-medium tabular-nums flex-shrink-0">{lesson.duration}</span>
                       </button>
                     );
@@ -684,7 +668,6 @@ export function CourseDetail({
           )}
         </div>
 
-        {/* Reviews */}
         <div className="space-y-5">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-black text-slate-900">Student Reviews</h2>
@@ -738,6 +721,8 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
   const [extraReviews, setExtraReviews] = useState<Record<string, { name: string; rating: number; date: string; comment: string }[]>>({});
+  // ── NEW: certificate state ─────────────────────────────────────────────
+  const [certCourse, setCertCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
 
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
     if (completedCourseIds.includes(id)) return "completed";
@@ -766,12 +751,25 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
     const baseReviews = COURSE_REVIEWS[selectedCourseId] || [];
     const userReviews = extraReviews[selectedCourseId] || [];
     return (
-      <CourseDetail
-        course={course} status={getStatus(selectedCourseId)}
-        reviews={[...userReviews, ...baseReviews]}
-        onBack={() => setSelectedCourseId(null)} onStart={handleStartFromDetail}
-        onReviewSubmit={handleReviewSubmit} backLabel="Back to Explore" autoPlayVideo={autoPlayOnOpen}
-      />
+      <>
+        <CourseDetail
+          course={course}
+          status={getStatus(selectedCourseId)}
+          reviews={[...userReviews, ...baseReviews]}
+          onBack={() => setSelectedCourseId(null)}
+          onStart={handleStartFromDetail}
+          onGetCertificate={(c) => setCertCourse(c)}
+          onReviewSubmit={handleReviewSubmit}
+          backLabel="Back to Explore"
+          autoPlayVideo={autoPlayOnOpen}
+        />
+        <CertificateModal
+          isOpen={!!certCourse}
+          onClose={() => setCertCourse(null)}
+          courseTitle={certCourse?.title ?? ""}
+          instructor={certCourse?.instructor ?? ""}
+        />
+      </>
     );
   }
 
@@ -883,17 +881,26 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                       <div className={`h-full rounded-full transition-all duration-500 ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`} style={{ width: `${progress}%` }} />
                     </div>
                   </div>
-                  <div className="mt-auto pt-1">
+                  <div className="mt-auto pt-1 space-y-1.5">
                     {isLocked ? (
                       <button onClick={(e) => { e.stopPropagation(); handleCardClick(c.id); }}
                         className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors">
                         <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
                     ) : isCompleted ? (
-                      <button onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
-                        className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
-                      </button>
+                      <>
+                        <button onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                          className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
+                        </button>
+                        {/* ── GET CERTIFICATE BUTTON ON CARD ── */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setCertCourse(c); }}
+                          className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-amber-400/25"
+                        >
+                          <Award className="w-3.5 h-3.5" /> Get Certificate
+                        </button>
+                      </>
                     ) : (
                       <button onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs">
@@ -907,6 +914,14 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
           })}
         </div>
       </div>
+
+      {/* ── Certificate Modal ── */}
+      <CertificateModal
+        isOpen={!!certCourse}
+        onClose={() => setCertCourse(null)}
+        courseTitle={certCourse?.title ?? ""}
+        instructor={certCourse?.instructor ?? ""}
+      />
     </div>
   );
 };
