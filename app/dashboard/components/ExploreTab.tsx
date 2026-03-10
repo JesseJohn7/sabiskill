@@ -17,7 +17,7 @@ import {
   ChevronUp,
   Send,
 } from "lucide-react";
-import { CertificateModal } from "./CertificateModal";
+import { CertificateModal } from "./Certificatemodal";
 
 // ── Lesson type for playlist courses ──────────────────────────────────────
 export interface Lesson {
