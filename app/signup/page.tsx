@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "../lib/supabase/client";
+import { validateEmail } from "../utils/validateEmail";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -13,36 +14,66 @@ export default function SignupPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // ── Turns Supabase's confusing error codes into plain English ──
+  function getSignupErrorMessage(error: { message: string; status?: number; code?: string }): string {
+    const msg = error.message?.toLowerCase() || "";
+    const code = error.code || "";
+
+    if (
+      msg.includes("over_email_send_rate_limit") ||
+      msg.includes("email rate limit") ||
+      code === "over_email_send_rate_limit"
+    ) {
+      return "Too many attempts — please wait a few minutes before trying again.";
+    }
+    if (
+      msg.includes("already registered") ||
+      msg.includes("already exists") ||
+      msg.includes("user already") ||
+      error.status === 422
+    ) {
+      return "An account with this email already exists. Try logging in instead!";
+    }
+    if (msg.includes("password should be") || msg.includes("password is too short")) {
+      return "Your password is too weak — use at least 6 characters with a mix of letters and numbers.";
+    }
+    if (msg.includes("unable to validate email") || msg.includes("invalid email")) {
+      return "That email address doesn't look right. Please double-check and try again.";
+    }
+    if (msg.includes("network") || msg.includes("fetch")) {
+      return "Connection problem — please check your internet and try again.";
+    }
+    // Fallback: something friendly instead of Supabase's raw error
+    return "Something went wrong. Please try again.";
+  }
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
+    // ── Step 1: Validate email CLIENT-SIDE first (no Supabase call yet) ──
+    const emailError = validateEmail(email);
+    if (emailError) {
+      setError(emailError);
+      return; // Stop here — don't waste an email send
+    }
+
+    // ── Step 2: Check password length before calling Supabase ──
     if (password.length < 6) {
       setError("Password must be at least 6 characters.");
-      setLoading(false);
       return;
     }
 
+    setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(), // trim spaces the user may have accidentally typed
       password,
-      options: { data: { full_name: fullName } },
+      options: { data: { full_name: fullName.trim() } },
     });
 
     if (error) {
-      const msg = error.message.toLowerCase();
-      if (
-        msg.includes("already registered") ||
-        msg.includes("already exists") ||
-        msg.includes("user already") ||
-        error.status === 422
-      ) {
-        setError("Looks like you already have an account with this email. Try logging in instead! 👋");
-      } else {
-        setError(error.message);
-      }
+      setError(getSignupErrorMessage(error));
     } else {
       setSuccess(true);
     }
@@ -56,7 +87,7 @@ export default function SignupPage() {
       provider: "google",
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
-    if (error) setError(error.message);
+    if (error) setError("Could not connect to Google. Please try again.");
     setLoading(false);
   };
 
@@ -188,7 +219,6 @@ export default function SignupPage() {
 
         <div className="relative z-10 flex-1 flex items-center justify-center px-10 xl:px-16 pb-10">
           <div className="relative w-full max-w-md">
-
             <div className="glass rounded-3xl p-5 xl:p-6 float-1">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
@@ -196,7 +226,6 @@ export default function SignupPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
                 <div className="flex-1 mx-3 h-5 rounded-md" style={{ background: "rgba(255,255,255,0.06)" }} />
               </div>
-
               <div className="space-y-3">
                 <div className="rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(37,99,235,0.3), rgba(139,92,246,0.3))", border: "1px solid rgba(96,165,250,0.2)" }}>
                   <div className="p-4">
@@ -221,7 +250,6 @@ export default function SignupPage() {
                     </div>
                   </div>
                 </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   {[{ icon: "🎨", title: "UI/UX Design", lessons: "14 lessons", color: "rgba(236,72,153,0.15)", border: "rgba(236,72,153,0.2)" },
                     { icon: "📈", title: "Crypto & Web3", lessons: "8 lessons", color: "rgba(52,211,153,0.15)", border: "rgba(52,211,153,0.2)" }]
@@ -325,7 +353,7 @@ export default function SignupPage() {
               <input
                 type="text"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => { setFullName(e.target.value); setError(null); }}
                 placeholder="John Doe"
                 required
                 className="input-dark px-4 py-3.5 rounded-xl text-sm"
@@ -337,7 +365,7 @@ export default function SignupPage() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setError(null); }}
                 placeholder="you@example.com"
                 required
                 className="input-dark px-4 py-3.5 rounded-xl text-sm"
@@ -345,14 +373,12 @@ export default function SignupPage() {
             </div>
 
             <div className="fade-4 relative">
-              <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
-                Password
-              </label>
+              <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); setError(null); }}
                   placeholder="Min. 6 characters"
                   required
                   className="input-dark px-4 py-3.5 pr-10 rounded-xl text-sm"
@@ -375,8 +401,7 @@ export default function SignupPage() {
                 </svg>
                 <div>
                   <p className="text-red-400 text-sm">{error}</p>
-                  {/* If user exists, show a quick link to login */}
-                  {error.includes("already have an account") && (
+                  {error.includes("already exists") && (
                     <a href="/login" className="inline-block mt-1.5 text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors">
                       → Go to login
                     </a>
@@ -399,7 +424,7 @@ export default function SignupPage() {
                     </svg>
                     Creating account...
                   </span>
-                ) : "Create Account "}
+                ) : "Create Account"}
               </button>
             </div>
           </form>
