@@ -13,7 +13,7 @@ import {
 import { ALL_COURSES, CourseDetail } from "./ExploreTab";
 import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
-import { CertificateModal } from "./CertificateModal";
+import { CertificateModal } from "./Certi";
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
