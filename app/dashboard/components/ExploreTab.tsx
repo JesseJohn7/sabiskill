@@ -312,7 +312,7 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "TM: Buy Tickets UI",         duration: "rest",  startSeconds: 41255 },
     ] as Lesson[],
   },
-  {
+  /* {
     id: "public-speak",
     title: "Public Speaking Mastery",
     description: "Overcome fear and speak confidently in front of any audience.",
@@ -364,7 +364,7 @@ export const ALL_COURSES = [
       "Resilience & Stress Management",
     ],
     playlist: null as Lesson[] | null,
-  },
+  }, */
 ];
 
 const COURSE_REVIEWS: Record<
