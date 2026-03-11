@@ -171,6 +171,26 @@ const COURSES: Record<string, CourseConfig> = {
     { id: 83, title: "Course Wrap-up & What's Next",            videoId: "ygXn5nV5qFc", timestamp: 19273,  duration: "rest",  completed: false, emoji: "🎓" },
   ],
 },
+"digital-marketing": {
+  title: "Digital Marketing Fundamentals",
+  subtitle: "The Complete Marketing Master Plan",
+  playlist: [
+    { id: 1,  title: "Why Digital Marketing Is Simpler Than It Seems", videoId: "VIDEO_ID_HERE", timestamp: 0,    duration: "0:50",  completed: false, emoji: "💡" },
+    { id: 2,  title: "Digital Marketing vs Traditional Marketing",      videoId: "VIDEO_ID_HERE", timestamp: 50,   duration: "2:24",  completed: false, emoji: "📺" },
+    { id: 3,  title: "Strategy vs Tactics — Marketing Master Plan",    videoId: "VIDEO_ID_HERE", timestamp: 194,  duration: "0:32",  completed: false, emoji: "🗺️" },
+    { id: 4,  title: "Step 1: Model — Building a Profitable Business",  videoId: "VIDEO_ID_HERE", timestamp: 226,  duration: "0:42",  completed: false, emoji: "🏗️" },
+    { id: 5,  title: "Step 2: Market — Defining Your Ideal Customer",   videoId: "VIDEO_ID_HERE", timestamp: 260,  duration: "0:55",  completed: false, emoji: "🎯" },
+    { id: 6,  title: "Step 3: Message — Speaking to Your Audience",    videoId: "VIDEO_ID_HERE", timestamp: 302,  duration: "0:35",  completed: false, emoji: "📢" },
+    { id: 7,  title: "Step 4: Media — Choosing the Right Platforms",   videoId: "VIDEO_ID_HERE", timestamp: 322,  duration: "1:20",  completed: false, emoji: "📱" },
+    { id: 8,  title: "Step 5: Machine — Building a Marketing Funnel",  videoId: "VIDEO_ID_HERE", timestamp: 357,  duration: "1:03",  completed: false, emoji: "⚙️" },
+    { id: 9,  title: "Tactics Explained — How to Play the Game",       videoId: "VIDEO_ID_HERE", timestamp: 437,  duration: "0:43",  completed: false, emoji: "🎮" },
+    { id: 10, title: "Organic Marketing vs Paid Marketing",            videoId: "VIDEO_ID_HERE", timestamp: 480,  duration: "1:46",  completed: false, emoji: "💰" },
+    { id: 11, title: "Direct Response vs Brand Awareness Marketing",   videoId: "VIDEO_ID_HERE", timestamp: 586,  duration: "2:32",  completed: false, emoji: "📣" },
+    { id: 12, title: "Search Marketing vs Discovery Marketing",        videoId: "VIDEO_ID_HERE", timestamp: 738,  duration: "2:10",  completed: false, emoji: "🔍" },
+    { id: 13, title: "Marketing Products vs Marketing Services",       videoId: "VIDEO_ID_HERE", timestamp: 868,  duration: "2:46",  completed: false, emoji: "📦" },
+    { id: 14, title: "B2B Marketing vs B2C Marketing",                 videoId: "VIDEO_ID_HERE", timestamp: 1034, duration: "rest",  completed: false, emoji: "🤝" },
+  ],
+},
 
   "ui-ux": {
     title: "UI/UX Design Fundamentals",
