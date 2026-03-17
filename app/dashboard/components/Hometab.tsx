@@ -15,6 +15,7 @@ import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
 import { CertificateModal } from "./Certificatemodal";
 import { CourseQuiz, hasPassedQuiz } from "../components/CourseQuiz";
+import { LearningStreak, recordStreakActivity } from "../components/Learningstreak";
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -37,6 +38,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
     Record<string, { name: string; rating: number; date: string; comment: string }[]>
   >({});
   const [firstName, setFirstName] = useState<string>("there");
+  const [userId, setUserId] = useState<string>("");
 
   // ── Quiz state ─────────────────────────────────────────────────────────
   // quizCourse  — which course is being quizzed right now
@@ -53,6 +55,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
+        setUserId(user.id);
         const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
         if (fullName) {
           setFirstName(fullName.split(" ")[0]);
@@ -79,6 +82,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
   const handleStartFromGrid = (courseId: string) => {
     const status = getStatus(courseId);
     if (status === "locked") return;
+    // Record a streak day whenever the user resumes their active course
+    if (status === "active" && userId) recordStreakActivity(userId);
     setAutoPlayOnOpen(true);
     setDetailCourseId(courseId);
   };
@@ -184,6 +189,9 @@ const HomeTab: React.FC<HomeTabProps> = ({
           </p>
         </div>
       </div>
+
+      {/* ── Learning Streak ── */}
+      <LearningStreak userId={userId} />
 
       {/* Active course warning banner */}
       {activeCourseId && !completedCourseIds.includes(activeCourseId) && (() => {
