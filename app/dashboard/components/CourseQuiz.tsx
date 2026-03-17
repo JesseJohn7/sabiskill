@@ -34,26 +34,57 @@ function saveLockout(courseId: string) {
   } catch {}
 }
 
-/** localStorage key for a passed course */
-function passKey(courseId: string) {
+// ─── Quiz pass persistence (Supabase + localStorage cache) ───────────────────
+// localStorage = fast cache for instant UI, never the source of truth.
+// Supabase user_quiz_passes table = permanent record per user per course.
+
+function passLocalKey(courseId: string) {
   return `sabiskill_quiz_passed_${courseId}`;
 }
 
-/** Returns true if this course quiz has already been passed */
+/** Instant sync check from localStorage cache */
 export function hasPassedQuiz(courseId: string): boolean {
-  try {
-    return localStorage.getItem(passKey(courseId)) === "1";
-  } catch {
-    return false;
-  }
+  try { return localStorage.getItem(passLocalKey(courseId)) === "1"; }
+  catch { return false; }
 }
 
-/** Saves a pass — called once when the student passes */
-function savePass(courseId: string) {
+function writePassCache(courseId: string) {
+  try { localStorage.setItem(passLocalKey(courseId), "1"); } catch {}
+}
+
+/** Check Supabase for a pass — call on mount for cross-device accuracy */
+async function checkPassFromSupabase(courseId: string): Promise<boolean> {
   try {
-    localStorage.setItem(passKey(courseId), "1");
+    const { createClient } = await import("@/app/lib/supabase/client");
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return false;
+    const { data } = await supabase
+      .from("user_quiz_passes")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("course_id", courseId)
+      .maybeSingle();
+    if (data) { writePassCache(courseId); return true; }
+    return false;
+  } catch { return false; }
+}
+
+/** Save a pass to Supabase + cache instantly */
+async function savePass(courseId: string) {
+  writePassCache(courseId);
+  try {
+    const { createClient } = await import("@/app/lib/supabase/client");
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await supabase.from("user_quiz_passes").upsert(
+      { user_id: user.id, course_id: courseId },
+      { onConflict: "user_id,course_id" }
+    );
   } catch {}
 }
+
 
 /** Formats ms into mm:ss */
 function formatCountdown(ms: number): string {
@@ -306,10 +337,11 @@ async function fetchQuestion(
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 600,
+        temperature: 1,
         messages: [{ role: "user", content: seededPrompt + hint }],
       }),
     });
@@ -370,11 +402,21 @@ function ProgressDots({ total, current, answers }: {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }: CourseQuizProps) {
 
-  // If already passed, skip the quiz entirely and call onPassed immediately
-  const [alreadyPassed] = useState(() => hasPassedQuiz(courseId));
+  // Check pass state: localStorage first (instant), then Supabase (accurate)
+  const [alreadyPassed, setAlreadyPassed] = useState(() => hasPassedQuiz(courseId));
+
+  useEffect(() => {
+    if (!isOpen) return;
+    // If cache says passed, fire immediately
+    if (hasPassedQuiz(courseId)) { setAlreadyPassed(true); return; }
+    // Otherwise check Supabase in case they passed on another device
+    checkPassFromSupabase(courseId).then((passed) => {
+      if (passed) setAlreadyPassed(true);
+    });
+  }, [isOpen, courseId]);
+
   useEffect(() => {
     if (isOpen && alreadyPassed) {
-      // Tiny delay so parent state settles before the cert modal opens
       const t = setTimeout(() => onPassed(), 50);
       return () => clearTimeout(t);
     }
@@ -492,7 +534,7 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
       setResult({ passed: score >= PASS_THRESHOLD, score, total: TOTAL, weakTopics });
       // Persist the outcome
       if (score >= PASS_THRESHOLD) {
-        savePass(courseIdRef.current);
+        savePass(courseIdRef.current); // async — runs in background, no await needed
       } else {
         // If failed, record the timestamp so the 1-hour lockout starts
         saveLockout(courseIdRef.current);
