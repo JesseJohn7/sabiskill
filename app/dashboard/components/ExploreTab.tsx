@@ -18,7 +18,7 @@ import {
   Send,
 } from "lucide-react";
 import { CertificateModal } from "./Certificatemodal";
-import { CourseQuiz } from "../components/CourseQuiz";
+import { CourseQuiz, hasPassedQuiz } from "../components/CourseQuiz";
 
 // ── Lesson type for playlist courses ──────────────────────────────────────
 export interface Lesson {
@@ -908,7 +908,13 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
           reviews={[...userReviews, ...baseReviews]}
           onBack={() => setSelectedCourseId(null)}
           onStart={handleStartFromDetail}
-          onGetCertificate={(c) => setQuizCourse(c)}
+          onGetCertificate={(c) => {
+            if (hasPassedQuiz(c.id)) {
+              setCertCourse(c);
+            } else {
+              setQuizCourse(c);
+            }
+          }}
           onReviewSubmit={handleReviewSubmit}
           backLabel="Back to Explore"
           autoPlayVideo={autoPlayOnOpen}
@@ -1119,7 +1125,11 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setQuizCourse(c);
+                            if (hasPassedQuiz(c.id)) {
+                              setCertCourse(c);
+                            } else {
+                              setQuizCourse(c);
+                            }
                           }}
                           className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-amber-400/25"
                         >
