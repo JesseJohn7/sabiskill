@@ -15,7 +15,7 @@ import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
 import { CertificateModal } from "./Certificatemodal";
 import { CourseQuiz, hasPassedQuiz } from "../components/CourseQuiz";
-import { LearningStreak, recordStreakActivity } from "../components/Learningstreak";
+import { StreakCard, StreakBar, recordStreakActivity } from "../components/Learningstreak";
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -177,21 +177,27 @@ const HomeTab: React.FC<HomeTabProps> = ({
   return (
     <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header */}
-      <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-            Hello, {firstName}
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
-            {activeCourseId && !completedCourseIds.includes(activeCourseId)
-              ? "You have an active course — finish it to unlock more tracks."
-              : "Continue mastering your next skill today"}
-          </p>
+      <div className="max-w-5xl mx-auto mb-4 sm:mb-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
+              Hello, {firstName} 👋
+            </h1>
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
+              {activeCourseId && !completedCourseIds.includes(activeCourseId)
+                ? "You have an active course — finish it to unlock more tracks."
+                : "Continue mastering your next skill today"}
+            </p>
+          </div>
+          {/* Streak badge — always visible in the header */}
+          <div className="flex-shrink-0 mt-0.5">
+            <StreakBar userId={userId} />
+          </div>
         </div>
       </div>
 
-      {/* ── Learning Streak ── */}
-      <LearningStreak userId={userId} />
+      {/* ── Full streak card ── */}
+      <StreakCard userId={userId} />
 
       {/* Active course warning banner */}
       {activeCourseId && !completedCourseIds.includes(activeCourseId) && (() => {
