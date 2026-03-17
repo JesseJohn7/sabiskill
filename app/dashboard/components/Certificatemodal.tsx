@@ -37,15 +37,23 @@ interface CertificateModalProps {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+/**
+ * Formats a date string into a human-readable date.
+ * Accepts ISO timestamps ("2024-11-03T14:22:00Z"), plain date strings
+ * ("2024-11-03"), or any format parseable by the Date constructor.
+ *
+ * IMPORTANT: This no longer falls back to "today" — callers must always
+ * supply the real completion date stored in the database.
+ */
 function formatDate(d?: string) {
-  return (
-    d ||
-    new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  );
+  if (!d) return "—";
+  const parsed = new Date(d);
+  if (isNaN(parsed.getTime())) return d; // return as-is if unparseable
+  return parsed.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 function nameFromEmail(email: string) {
@@ -226,7 +234,10 @@ export function CertificateModal({
     setCertUnlocked(true);
   }
 
+  // completionDate comes from the DB (ISO string or plain date).
+  // formatDate handles both formats and does NOT fall back to today.
   const dateStr = formatDate(completionDate);
+
   const shareText = `🎓 I just completed "${courseTitle}" on Sabiskill! Check it out 👇`;
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : "https://sabiskill.com";
