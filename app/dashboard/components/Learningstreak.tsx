@@ -1,51 +1,50 @@
 "use client";
 
-/**
- * LearningStreak.tsx
- * ─────────────────────────────────────────────────────────────────────────────
- * Duolingo-style streak tracker. Always visible. Shows 0 when no streak yet.
- *
- * PLACEMENT:
- *   Render <StreakBar userId={userId} /> inside the header row in HomeTab,
- *   right next to the "Hello, {firstName}" text — it will sit inline on desktop
- *   and stack below the greeting on mobile.
- *
- * TRIGGERING:
- *   Call recordStreakActivity(userId) whenever the user clicks Continue on
- *   their active course (already done in handleStartFromGrid).
- * ─────────────────────────────────────────────────────────────────────────────
- */
+import React, { useEffect, useState } from "react";
 
-import React, { useEffect, useState, useRef } from "react";
-
-// ─── Storage ──────────────────────────────────────────────────────────────────
+// ─── Storage types ────────────────────────────────────────────────────────────
 interface StreakData {
   count: number;
-  lastDate: string;  // "YYYY-MM-DD"
+  lastDate: string;   // "YYYY-MM-DD"
   longest: number;
   totalDays: number;
+  // Set of all dates the user was active, stored as "YYYY-MM-DD"
+  activeDates: string[];
 }
 
 function streakKey(userId: string) {
   return `sabiskill_streak_${userId}`;
 }
 
-function todayUTC(): string {
-  return new Date().toISOString().slice(0, 10);
+function toDateStr(d: Date): string {
+  // Local calendar date, not UTC, so the day matches what the user sees
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function todayStr(): string {
+  return toDateStr(new Date());
 }
 
 function daysBetween(a: string, b: string): number {
-  return Math.round(
-    (new Date(b).getTime() - new Date(a).getTime()) / 86400000
-  );
+  const aMs = new Date(a + "T00:00:00").getTime();
+  const bMs = new Date(b + "T00:00:00").getTime();
+  return Math.round((bMs - aMs) / 86400000);
 }
 
 function loadStreak(userId: string): StreakData {
   try {
     const raw = localStorage.getItem(streakKey(userId));
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // Back-fill activeDates if missing (old data)
+      if (!parsed.activeDates) parsed.activeDates = parsed.lastDate ? [parsed.lastDate] : [];
+      return parsed;
+    }
   } catch {}
-  return { count: 0, lastDate: "", longest: 0, totalDays: 0 };
+  return { count: 0, lastDate: "", longest: 0, totalDays: 0, activeDates: [] };
 }
 
 function saveStreakData(userId: string, data: StreakData) {
@@ -57,343 +56,367 @@ function saveStreakData(userId: string, data: StreakData) {
 /** Call when user clicks Continue on their active course */
 export function recordStreakActivity(userId: string) {
   if (!userId) return;
-  const today = todayUTC();
+  const today = todayStr();
   const data = loadStreak(userId);
-  if (data.lastDate === today) return; // already counted today
+
+  if (data.lastDate === today) return; // already recorded today
 
   const gap = data.lastDate ? daysBetween(data.lastDate, today) : 1;
-  const newCount = gap === 1 ? data.count + 1 : 1;
+  const newCount = gap === 1 ? data.count + 1 : 1; // consecutive = +1, gap = reset to 1
+
+  // Keep activeDates capped at last 30 days to avoid bloat
+  const newDates = [...(data.activeDates || []), today].slice(-30);
+
   saveStreakData(userId, {
     count: newCount,
     lastDate: today,
     longest: Math.max(data.longest, newCount),
     totalDays: data.totalDays + 1,
+    activeDates: newDates,
   });
+
+  // Notify same-tab listeners (storage events only fire cross-tab)
+  window.dispatchEvent(new Event("sabiskill-streak-update"));
 }
 
-// ─── Visual helpers ───────────────────────────────────────────────────────────
-function getStreakLevel(n: number) {
-  if (n >= 30) return { bg: "from-amber-400 to-orange-500", badge: "from-amber-300 to-orange-400", text: "text-amber-900", label: "Legendary" };
-  if (n >= 14) return { bg: "from-orange-400 to-red-500",   badge: "from-orange-300 to-red-400",   text: "text-orange-900", label: "On Fire" };
-  if (n >= 7)  return { bg: "from-orange-300 to-amber-500", badge: "from-orange-200 to-amber-400", text: "text-orange-900", label: "Hot" };
-  if (n >= 3)  return { bg: "from-blue-400 to-blue-600",    badge: "from-blue-300 to-blue-500",    text: "text-blue-900",   label: "Building" };
-  if (n >= 1)  return { bg: "from-emerald-400 to-teal-500", badge: "from-emerald-300 to-teal-400", text: "text-emerald-900",label: "Started" };
-  return       { bg: "from-slate-300 to-slate-400",          badge: "from-slate-200 to-slate-300",  text: "text-slate-600",  label: "Start a streak!" };
+// ─── Build the 7-day week starting from today going back ──────────────────────
+/**
+ * Returns 7 entries ordered Mon → Sun of the CURRENT week
+ * that contains today. Each entry is:
+ *   status: "done" | "today" | "future" | "missed"
+ *   label: "Mon" | "Tue" etc.
+ *   isToday: boolean
+ */
+interface DayEntry {
+  dateStr: string;
+  label: string;
+  status: "done" | "today" | "future" | "missed";
+  isToday: boolean;
 }
 
-// Last 7 days: which ones had activity?
-function buildWeek(lastDate: string, count: number): boolean[] {
-  const today = todayUTC();
+const FULL_DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const SHORT_DAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
+
+function buildWeek(activeDates: string[]): DayEntry[] {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayDow = today.getDay(); // 0=Sun, 1=Mon, ...6=Sat
+  const todayDateStr = toDateStr(today);
+
+  const activeSet = new Set(activeDates);
+
+  // Build Mon (dow=1) to Sun (dow=0 mapped to 7) for the current week
+  // We want: Mon=0 ... Sat=5 Sun=6
+  const mondayOffset = (todayDow === 0 ? -6 : 1 - todayDow); // days from today back to Monday
+  const monday = new Date(today);
+  monday.setDate(today.getDate() + mondayOffset);
+
   return Array.from({ length: 7 }, (_, i) => {
-    const daysAgo = 6 - i; // i=0 → 6 days ago, i=6 → today
-    if (!lastDate || count === 0) return false;
-    const gapFromLast = daysBetween(lastDate, today);
-    // This day was active if it falls within [today - count + 1 ... today]
-    // AND it's not after lastDate
-    return daysAgo >= 0 && daysAgo < count && gapFromLast <= daysAgo + (gapFromLast > 0 ? gapFromLast : 0);
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dateStr = toDateStr(d);
+    const dow = d.getDay();
+    const label = FULL_DAY_LABELS[dow];
+    const isToday = dateStr === todayDateStr;
+    const isPast = d < today;
+    const isFuture = d > today;
+
+    let status: DayEntry["status"];
+    if (isToday) {
+      status = activeSet.has(dateStr) ? "done" : "today";
+    } else if (isFuture) {
+      status = "future";
+    } else {
+      // past day
+      status = activeSet.has(dateStr) ? "done" : "missed";
+    }
+
+    return { dateStr, label, status, isToday };
   });
 }
 
-// Simpler, more reliable week builder
-function buildWeekDots(lastDate: string, count: number): boolean[] {
-  if (!lastDate || count === 0) return Array(7).fill(false);
-  const today = todayUTC();
-  const gapToToday = daysBetween(lastDate, today);
-
-  // If gap > 1, streak is broken — show 0 active dots for recent days
-  // (the streak is already reset to 1 by recordStreakActivity)
-  return Array.from({ length: 7 }, (_, i) => {
-    const daysAgo = 6 - i;
-    // A dot is active if:
-    // - It corresponds to lastDate or earlier within the streak window
-    // - The day is within [lastDate - (count-1) .. lastDate]
-    const dayOffset = daysAgo - gapToToday; // positive = before lastDate
-    return dayOffset >= 0 && dayOffset < count;
-  });
+// ─── Level config ─────────────────────────────────────────────────────────────
+function getLevel(count: number) {
+  if (count >= 30) return { label: "Legendary 👑", color: "#f59e0b" };
+  if (count >= 14) return { label: "On Fire 🔥",   color: "#ef4444" };
+  if (count >= 7)  return { label: "Hot Streak ⚡", color: "#f97316" };
+  if (count >= 3)  return { label: "Building 📈",  color: "#3b82f6" };
+  if (count >= 1)  return { label: "Started 🌱",   color: "#10b981" };
+  return             { label: "No streak yet",      color: "#64748b" };
 }
 
-// Day labels aligned to real weekdays
-function getDayLabels(): string[] {
-  const dow = new Date().getDay(); // 0=Sun
-  const short = ["S","M","T","W","T","F","S"];
-  return Array.from({ length: 7 }, (_, i) => {
-    return short[(dow - (6 - i) + 7) % 7];
-  });
-}
-
-// ─── StreakBar — compact inline badge (for header) ────────────────────────────
-interface StreakBarProps {
-  userId: string;
-  /** compact mode for mobile header */
-  compact?: boolean;
-}
-
-export function StreakBar({ userId, compact = false }: StreakBarProps) {
+// ─── StreakBar (compact badge for header) ─────────────────────────────────────
+export function StreakBar({ userId }: { userId: string }) {
   const [data, setData] = useState<StreakData | null>(null);
-  const [popped, setPopped] = useState(false);
 
-  useEffect(() => {
-    if (!userId) return;
-    setData(loadStreak(userId));
-  }, [userId]);
+  const reload = () => { if (userId) setData(loadStreak(userId)); };
 
-  // Reload when localStorage changes (after recordStreakActivity)
+  useEffect(() => { reload(); }, [userId]);
   useEffect(() => {
-    if (!userId) return;
-    const handler = () => setData(loadStreak(userId));
-    window.addEventListener("storage", handler);
-    return () => window.removeEventListener("storage", handler);
+    window.addEventListener("sabiskill-streak-update", reload);
+    window.addEventListener("storage", reload);
+    return () => {
+      window.removeEventListener("sabiskill-streak-update", reload);
+      window.removeEventListener("storage", reload);
+    };
   }, [userId]);
 
   if (!userId || data === null) return null;
 
-  const level = getStreakLevel(data.count);
   const isActive = data.count > 0;
+  const todayDone = data.activeDates?.includes(todayStr());
 
   return (
     <>
       <style>{`
-        @keyframes streak-pop {
-          0%   { transform: scale(0.85); opacity: 0; }
-          65%  { transform: scale(1.08); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes flame-bob {
-          0%, 100% { transform: translateY(0) rotate(-4deg) scale(1); }
-          50%       { transform: translateY(-3px) rotate(4deg) scale(1.1); }
-        }
-        @keyframes count-bounce {
-          0%, 100% { transform: scale(1); }
-          40%       { transform: scale(1.25); }
-        }
-        .streak-badge   { animation: streak-pop 0.4s cubic-bezier(.34,1.56,.64,1) both; }
-        .flame-anim     { animation: flame-bob ${isActive ? "1.6s" : "3s"} ease-in-out infinite; display: inline-block; }
-        .count-anim     { animation: count-bounce 0.5s ease both; }
+        @keyframes sb-pop { 0%{transform:scale(.8);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+        @keyframes sb-flame { 0%,100%{transform:rotate(-5deg) scale(1)} 50%{transform:rotate(5deg) scale(1.15)} }
+        .sb-wrap  { animation: sb-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
+        .sb-flame { animation: sb-flame ${isActive ? "1.8s" : "4s"} ease-in-out infinite; display:inline-block; }
       `}</style>
-
-      <div className={`streak-badge inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r ${level.bg} shadow-md cursor-default select-none`}>
-        <span className="flame-anim text-lg sm:text-xl leading-none">
-          {isActive ? "🔥" : "💤"}
+      <div className="sb-wrap flex items-center gap-1.5 bg-white border border-slate-200 rounded-full px-3 py-1.5 shadow-sm select-none cursor-default">
+        <span className="sb-flame text-base sm:text-lg leading-none">
+          {todayDone ? "🔥" : isActive ? "🔥" : "💤"}
         </span>
-        <span className={`count-anim text-base sm:text-lg font-black tabular-nums leading-none ${level.text}`}>
+        <span className={`text-sm sm:text-base font-black tabular-nums leading-none ${isActive ? "text-orange-500" : "text-slate-400"}`}>
           {data.count}
         </span>
-        {!compact && (
-          <span className={`text-[10px] sm:text-xs font-bold leading-none ${level.text} opacity-80`}>
-            day{data.count !== 1 ? "s" : ""}
-          </span>
-        )}
+        <span className="hidden sm:inline text-[11px] font-semibold text-slate-400 leading-none">
+          day streak
+        </span>
       </div>
     </>
   );
 }
 
-// ─── StreakCard — full card (for home page) ───────────────────────────────────
-interface StreakCardProps {
-  userId: string;
-}
-
-export function StreakCard({ userId }: StreakCardProps) {
+// ─── StreakCard (full card for home page) ─────────────────────────────────────
+export function StreakCard({ userId }: { userId: string }) {
   const [data, setData] = useState<StreakData | null>(null);
   const [mounted, setMounted] = useState(false);
 
+  const reload = () => { if (userId) setData(loadStreak(userId)); };
+
   useEffect(() => {
-    if (!userId) return;
-    setData(loadStreak(userId));
-    const t = setTimeout(() => setMounted(true), 80);
+    reload();
+    const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, [userId]);
 
   useEffect(() => {
-    if (!userId) return;
-    const handler = () => setData(loadStreak(userId));
-    window.addEventListener("storage", handler);
-    return () => window.removeEventListener("storage", handler);
+    window.addEventListener("sabiskill-streak-update", reload);
+    window.addEventListener("storage", reload);
+    return () => {
+      window.removeEventListener("sabiskill-streak-update", reload);
+      window.removeEventListener("storage", reload);
+    };
   }, [userId]);
 
   if (!userId || data === null) return null;
 
-  const level = getStreakLevel(data.count);
-  const dots = buildWeekDots(data.lastDate, data.count);
-  const labels = getDayLabels();
+  const level = getLevel(data.count);
+  const week = buildWeek(data.activeDates || []);
   const isActive = data.count > 0;
+  const todayDone = data.activeDates?.includes(todayStr());
 
-  // Next milestone
+  // Progress to next milestone
   const MILESTONES = [3, 7, 14, 30, 60, 100];
-  const nextMilestone = MILESTONES.find((m) => m > data.count) ?? 100;
-  const prevMilestone = [...MILESTONES].reverse().find((m) => m <= data.count) ?? 0;
-  const progressPct = Math.min(
-    100,
-    Math.round(((data.count - prevMilestone) / (nextMilestone - prevMilestone)) * 100)
-  );
+  const nextMs = MILESTONES.find((m) => m > data.count) ?? 100;
+  const prevMs = [...MILESTONES].reverse().find((m) => m <= data.count) ?? 0;
+  const pct = prevMs === nextMs ? 100 : Math.min(100, Math.round(((data.count - prevMs) / (nextMs - prevMs)) * 100));
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&display=swap');
-        .sc-root * { font-family: 'Sora', sans-serif; }
-        @keyframes sc-in {
-          from { opacity:0; transform:translateY(14px) scale(.97); }
-          to   { opacity:1; transform:translateY(0) scale(1); }
-        }
-        @keyframes sc-flame {
-          0%, 100% { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 6px rgba(251,146,60,0)); }
-          50%       { transform: scale(1.18) rotate(5deg); filter: drop-shadow(0 0 12px rgba(251,146,60,.6)); }
-        }
-        @keyframes sc-dot-pop {
-          0%   { transform: scale(0); opacity: 0; }
-          70%  { transform: scale(1.3); }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes sc-shimmer {
-          0%   { transform: translateX(-100%); }
-          100% { transform: translateX(300%); }
-        }
-        @keyframes sc-pulse-ring {
-          0%   { transform: scale(1); opacity: .6; }
-          100% { transform: scale(2.2); opacity: 0; }
-        }
-        .sc-card    { animation: sc-in .45s cubic-bezier(.22,1,.36,1) both; }
-        .sc-flame   { animation: sc-flame ${isActive ? "1.8s" : "4s"} ease-in-out infinite; display:inline-block; line-height:1; }
-        .sc-dot-active { animation: sc-dot-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
-        .sc-shimmer { animation: sc-shimmer 1.8s ease both; }
-        .sc-pulse   { animation: sc-pulse-ring 1.3s ease-out infinite; }
+        .sc2 * { font-family:'Sora',sans-serif; }
+        @keyframes sc2-in    { from{opacity:0;transform:translateY(12px) scale(.97)} to{opacity:1;transform:none} }
+        @keyframes sc2-flame { 0%,100%{transform:scale(1) rotate(-6deg);filter:drop-shadow(0 0 4px rgba(251,146,60,0))} 50%{transform:scale(1.2) rotate(6deg);filter:drop-shadow(0 0 14px rgba(251,146,60,.7))} }
+        @keyframes sc2-pop   { 0%{transform:scale(0);opacity:0} 65%{transform:scale(1.3)} 100%{transform:scale(1);opacity:1} }
+        @keyframes sc2-shimmer { 0%{transform:translateX(-120%)} 100%{transform:translateX(400%)} }
+        @keyframes sc2-pulse { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(2.4);opacity:0} }
+        @keyframes sc2-today-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.5)} 50%{box-shadow:0 0 0 6px rgba(59,130,246,0)} }
+        .sc2-card   { animation: sc2-in .45s cubic-bezier(.22,1,.36,1) both; }
+        .sc2-flame  { animation: sc2-flame ${isActive ? "1.9s" : "5s"} ease-in-out infinite; display:inline-block; line-height:1; }
+        .sc2-pop    { animation: sc2-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
+        .sc2-shimmer{ animation: sc2-shimmer 2.2s ease-in-out infinite; }
+        .sc2-pulse  { animation: sc2-pulse 1.4s ease-out infinite; }
+        .sc2-today  { animation: sc2-today-pulse 2s ease-in-out infinite; }
       `}</style>
 
-      <div className={`sc-root max-w-7xl mx-auto mb-4 sm:mb-5 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-        <div className={`sc-card relative overflow-hidden rounded-2xl sm:rounded-3xl`}
+      <div className={`sc2 max-w-7xl mx-auto mb-4 sm:mb-5 transition-all duration-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
+        <div
+          className="sc2-card relative overflow-hidden rounded-2xl sm:rounded-3xl"
           style={{
-            background: "linear-gradient(135deg, #0f172a 0%, #1a1035 55%, #0f172a 100%)",
-            boxShadow: `0 0 0 1px rgba(255,255,255,.07), 0 12px 40px -8px ${isActive ? "rgba(251,146,60,.3)" : "rgba(0,0,0,.3)"}`,
+            background: "linear-gradient(135deg,#0c1220 0%,#141b2d 60%,#0c1220 100%)",
+            boxShadow: `0 0 0 1px rgba(255,255,255,.06), 0 16px 48px -12px ${isActive ? "rgba(59,130,246,.25)" : "rgba(0,0,0,.4)"}`,
           }}
         >
-          {/* Subtle grid texture */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
-            style={{ backgroundImage: "radial-gradient(circle,#fff 1px,transparent 1px)", backgroundSize: "18px 18px" }} />
+          {/* Background dot texture */}
+          <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+            style={{ backgroundImage:"radial-gradient(circle,#fff 1px,transparent 1px)", backgroundSize:"20px 20px" }} />
 
-          {/* Glow blob */}
+          {/* Active glow */}
           {isActive && (
-            <div className="absolute -top-4 -right-4 w-32 h-32 sm:w-40 sm:h-40 rounded-full pointer-events-none blur-3xl opacity-25"
-              style={{ background: "radial-gradient(circle, #fb923c, transparent 70%)" }} />
+            <div className="absolute -top-6 left-10 w-40 h-40 rounded-full blur-3xl opacity-20 pointer-events-none"
+              style={{ background:"radial-gradient(circle,#3b82f6,transparent 70%)" }} />
           )}
 
-          <div className="relative z-10 flex items-center gap-0 sm:gap-0">
+          {/* ── Top row: flame + count + label + best ── */}
+          <div className="relative z-10 flex items-center px-4 sm:px-6 pt-4 sm:pt-5 pb-3 gap-4 sm:gap-5">
 
-            {/* ── Left: big flame + count ── */}
-            <div className="flex flex-col items-center justify-center px-4 sm:px-6 py-4 sm:py-5 min-w-[80px] sm:min-w-[100px]">
-              {/* Pulse ring on active */}
-              {isActive && (
-                <div className="relative flex items-center justify-center mb-1">
-                  <div className="sc-pulse absolute w-8 h-8 rounded-full border-2 border-orange-400/50" />
-                  <span className="sc-flame text-3xl sm:text-4xl">{isActive ? "🔥" : "💤"}</span>
-                </div>
-              )}
-              {!isActive && <span className="sc-flame text-3xl sm:text-4xl mb-1">💤</span>}
-
+            {/* Flame + count */}
+            <div className="flex flex-col items-center flex-shrink-0">
+              <div className="relative flex items-center justify-center">
+                {isActive && <div className="sc2-pulse absolute w-9 h-9 rounded-full border-2 border-blue-400/40" />}
+                <span className="sc2-flame text-3xl sm:text-4xl">{isActive ? "🔥" : "💤"}</span>
+              </div>
               <span
-                className="text-3xl sm:text-4xl font-black tabular-nums leading-none"
-                style={{
-                  color: isActive ? "#fb923c" : "#94a3b8",
-                  textShadow: isActive ? "0 0 24px rgba(251,146,60,.5)" : "none",
-                }}
+                className="text-2xl sm:text-3xl font-black tabular-nums mt-0.5 leading-none"
+                style={{ color: isActive ? "#fb923c" : "#64748b", textShadow: isActive ? "0 0 20px rgba(251,146,60,.4)" : "none" }}
               >
                 {data.count}
               </span>
-              <span className="text-[9px] sm:text-[10px] text-white/30 font-bold uppercase tracking-widest mt-0.5">
+              <span className="text-[9px] text-white/25 font-bold uppercase tracking-widest mt-0.5">
                 {data.count === 1 ? "day" : "days"}
               </span>
             </div>
 
-            {/* Divider */}
-            <div className="w-px h-16 sm:h-20 bg-white/8 flex-shrink-0" />
+            {/* Vertical divider */}
+            <div className="w-px h-14 bg-white/8 flex-shrink-0" />
 
-            {/* ── Center: label + week dots + progress ── */}
-            <div className="flex-1 px-4 sm:px-5 py-3 sm:py-4 space-y-2 sm:space-y-3 min-w-0">
+            {/* Label + sub */}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm sm:text-base font-black leading-tight" style={{ color: level.color }}>
+                {level.label}
+              </p>
+              <p className="text-[10px] sm:text-xs text-white/30 font-medium mt-0.5 leading-snug">
+                {isActive
+                  ? todayDone
+                    ? `Today's session logged ✓`
+                    : `Continue a course to keep your streak alive`
+                  : `Complete a course today to start your streak`}
+              </p>
+            </div>
 
-              {/* Label row */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={`text-sm sm:text-base font-black bg-gradient-to-r ${level.bg} bg-clip-text text-transparent`}>
-                  {level.label}
-                </span>
-                {!isActive && (
-                  <span className="text-[10px] sm:text-xs text-white/35 font-medium">
-                    Continue a course to start your streak
-                  </span>
-                )}
-                {isActive && data.totalDays > 1 && (
-                  <span className="text-[10px] sm:text-xs text-white/30 font-semibold">
-                    {data.totalDays} total days
-                  </span>
-                )}
-              </div>
+            {/* Best streak — hidden on tiny mobile */}
+            <div className="hidden xs:flex sm:flex flex-col items-center gap-0.5 flex-shrink-0 bg-white/5 rounded-2xl px-3 py-2">
+              <span className="text-xl">🏆</span>
+              <span className="text-base sm:text-lg font-black text-white tabular-nums">{data.longest}</span>
+              <span className="text-[8px] sm:text-[9px] text-white/25 font-bold uppercase tracking-widest">best</span>
+            </div>
+          </div>
 
-              {/* Week dots */}
-              <div className="flex items-end gap-1 sm:gap-1.5">
-                {dots.map((active, i) => (
-                  <div key={i} className="flex flex-col items-center gap-0.5 sm:gap-1">
+          {/* ── Week row ── */}
+          <div className="relative z-10 px-4 sm:px-6 pb-2 sm:pb-3">
+            <div className="flex items-end justify-between gap-1 sm:gap-2">
+              {week.map((day, i) => {
+                const isDone    = day.status === "done";
+                const isToday   = day.status === "today";
+                const isFuture  = day.status === "future";
+                const isMissed  = day.status === "missed";
+
+                return (
+                  <div key={day.dateStr} className="flex flex-col items-center gap-1 sm:gap-1.5 flex-1">
+
+                    {/* The day circle / icon */}
                     <div
-                      className={`relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all ${active ? "sc-dot-active" : ""}`}
+                      className={`
+                        relative flex items-center justify-center
+                        w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl
+                        transition-all duration-300
+                        ${isDone    ? "sc2-pop" : ""}
+                        ${isToday && !todayDone ? "sc2-today" : ""}
+                      `}
                       style={{
-                        animationDelay: `${i * 0.05 + 0.1}s`,
-                        background: active
-                          ? `linear-gradient(135deg, #fb923c, #ef4444)`
-                          : "rgba(255,255,255,.06)",
-                        boxShadow: active ? "0 2px 10px rgba(251,146,60,.4)" : "none",
+                        animationDelay: isDone ? `${i * 0.06}s` : "0s",
+                        // Done = fire gradient orange
+                        background: isDone
+                          ? "linear-gradient(135deg,#fb923c,#ef4444)"
+                          : isToday && !todayDone
+                            // Today not yet done = blue pulsing
+                            ? "rgba(59,130,246,.18)"
+                            : isToday && todayDone
+                              ? "linear-gradient(135deg,#fb923c,#ef4444)"
+                              : isFuture
+                                ? "rgba(255,255,255,.04)"
+                                : "rgba(255,255,255,.05)", // missed
+                        boxShadow: isDone
+                          ? "0 2px 12px rgba(251,146,60,.35)"
+                          : isToday && !todayDone
+                            ? "0 0 0 2px rgba(59,130,246,.5)"
+                            : isToday && todayDone
+                              ? "0 2px 12px rgba(251,146,60,.35)"
+                              : "none",
                       }}
                     >
-                      {active ? (
-                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow" fill="none" viewBox="0 0 16 16">
-                          <path d="M3 8.5l3.5 3.5 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      {(isDone || (isToday && todayDone)) ? (
+                        // 🔥 fire emoji for completed days
+                        <span className="sc2-flame text-base sm:text-lg leading-none"
+                          style={{ animationDuration: `${1.6 + i * 0.15}s` }}>
+                          🔥
+                        </span>
+                      ) : isToday && !todayDone ? (
+                        // Blue dot for today (in progress)
+                        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-blue-400" />
+                      ) : isMissed ? (
+                        // Small grey X for missed
+                        <svg className="w-3 h-3 text-white/20" fill="none" viewBox="0 0 12 12">
+                          <path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                         </svg>
                       ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                        // Empty future day
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
                       )}
                     </div>
-                    <span className="text-[8px] sm:text-[9px] font-bold text-white/25">{labels[i]}</span>
+
+                    {/* Day label */}
+                    <span
+                      className="text-[8px] sm:text-[10px] font-bold leading-none"
+                      style={{
+                        color: isToday
+                          ? "#60a5fa"               // blue for today
+                          : isDone
+                            ? "rgba(251,146,60,.7)" // orange for done
+                            : "rgba(255,255,255,.2)", // dim for future/missed
+                      }}
+                    >
+                      {day.label.slice(0, 3)}
+                    </span>
                   </div>
-                ))}
-              </div>
-
-              {/* Progress to next milestone */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[9px] sm:text-[10px] text-white/25 font-semibold">
-                    {data.count} / {nextMilestone} days to next milestone
-                  </span>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-white/40">{progressPct}%</span>
-                </div>
-                <div className="relative w-full h-1.5 sm:h-2 bg-white/8 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-1000"
-                    style={{
-                      width: `${progressPct}%`,
-                      background: isActive
-                        ? "linear-gradient(90deg, #fb923c, #ef4444)"
-                        : "rgba(255,255,255,.15)",
-                    }}
-                  >
-                    {/* Shimmer on the bar */}
-                    {isActive && progressPct > 5 && (
-                      <div className="sc-shimmer absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                    )}
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
-
-            {/* ── Right: best streak (hidden on small mobile) ── */}
-            <div className="hidden sm:flex flex-col items-center justify-center px-5 py-4 gap-1 border-l border-white/8 min-w-[72px]">
-              <span className="text-lg">🏆</span>
-              <span className="text-xl font-black text-white tabular-nums">{data.longest}</span>
-              <span className="text-[9px] text-white/25 font-bold uppercase tracking-wide">best</span>
-            </div>
-
           </div>
+
+          {/* ── Progress bar ── */}
+          <div className="relative z-10 px-4 sm:px-6 pb-4 sm:pb-5 pt-1 space-y-1.5">
+            <div className="flex justify-between items-center">
+              <span className="text-[9px] sm:text-[10px] text-white/20 font-semibold">
+                {data.count} / {nextMs} days → next milestone
+              </span>
+              <span className="text-[9px] sm:text-[10px] font-bold text-white/30">{pct}%</span>
+            </div>
+            <div className="relative w-full h-1.5 sm:h-2 bg-white/6 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-1000 relative overflow-hidden"
+                style={{
+                  width: `${pct}%`,
+                  background: isActive
+                    ? "linear-gradient(90deg,#3b82f6,#60a5fa)"
+                    : "rgba(255,255,255,.1)",
+                }}
+              >
+                {isActive && pct > 8 && (
+                  <div className="sc2-shimmer absolute inset-y-0 w-10 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                )}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </>
   );
 }
 
-// Default export = StreakCard (what HomeTab uses)
 export default StreakCard;
