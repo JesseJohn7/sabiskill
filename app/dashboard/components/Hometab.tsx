@@ -14,6 +14,7 @@ import { ALL_COURSES, CourseDetail } from "./ExploreTab";
 import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
 import { CertificateModal } from "./Certificatemodal";
+import { CourseQuiz } from "../components/CourseQuiz"; // ← quiz lives in /components
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -37,9 +38,13 @@ const HomeTab: React.FC<HomeTabProps> = ({
   >({});
   const [firstName, setFirstName] = useState<string>("there");
 
-  // Certificate state
-  // certCourse   — which course to show a certificate for
-  // justCompleted — true only when course JUST finished (shows popup first)
+  // ── Quiz state ─────────────────────────────────────────────────────────
+  // quizCourse  — which course is being quizzed right now
+  const [quizCourse, setQuizCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
+
+  // ── Certificate state ──────────────────────────────────────────────────
+  // certCourse    — which course to show a certificate for (set AFTER quiz passes)
+  // justCompleted — true only when the course JUST finished (shows confetti popup)
   const [certCourse, setCertCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
   const [justCompleted, setJustCompleted] = useState(false);
 
@@ -87,16 +92,22 @@ const HomeTab: React.FC<HomeTabProps> = ({
     setExtraReviews((prev) => ({ ...prev, [courseId]: [{ ...review, date: "Just now" }, ...(prev[courseId] || [])] }));
   };
 
-  /** Open certificate from "Get Certificate" button — no popup needed */
+  /**
+   * "Get Certificate" pressed on an already-completed course.
+   * Opens the QUIZ first. Certificate only unlocks after passing.
+   */
   function openCertificate(course: (typeof ALL_COURSES)[0]) {
-    setCertCourse(course);
     setJustCompleted(false);
+    setQuizCourse(course); // quiz → on pass → cert
   }
 
-  /** Open certificate right after completing a course — shows popup first */
+  /**
+   * Called right after a student finishes a course for the first time.
+   * Also opens quiz first; on pass → cert with confetti popup.
+   */
   function openCertificateJustCompleted(course: (typeof ALL_COURSES)[0]) {
-    setCertCourse(course);
     setJustCompleted(true);
+    setQuizCourse(course);
   }
 
   // ── Course Detail View ─────────────────────────────────────────────────
@@ -116,6 +127,20 @@ const HomeTab: React.FC<HomeTabProps> = ({
           backLabel="Back to Home"
           autoPlayVideo={autoPlayOnOpen}
         />
+
+        {/* Quiz modal — gates the certificate */}
+        <CourseQuiz
+          isOpen={!!quizCourse}
+          courseId={quizCourse?.id ?? ""}
+          courseTitle={quizCourse?.title ?? ""}
+          onClose={() => setQuizCourse(null)}
+          onPassed={() => {
+            setCertCourse(quizCourse);
+            setQuizCourse(null);
+          }}
+        />
+
+        {/* Certificate modal — only opens after quiz pass */}
         <CertificateModal
           isOpen={!!certCourse}
           onClose={() => setCertCourse(null)}
@@ -143,7 +168,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
-              ? "You have an active course finish it to unlock more tracks."
+              ? "You have an active course — finish it to unlock more tracks."
               : "Continue mastering your next skill today"}
           </p>
         </div>
@@ -172,9 +197,9 @@ const HomeTab: React.FC<HomeTabProps> = ({
       {/* Hero Banner */}
       <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
         <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
-          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600" />
           <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37,99,235) 1px, transparent 0)`, backgroundSize: "32px 32px" }}></div>
+            <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37,99,235) 1px, transparent 0)`, backgroundSize: "32px 32px" }} />
           </div>
           <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
             <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 lg:gap-8">
@@ -213,7 +238,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
                   >
                     <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
                 ))}
               </div>
@@ -353,7 +378,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   )}
                   <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
-                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`}></div>
+                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`} />
                     <span className="text-[10px] sm:text-xs font-bold text-slate-700">{progress}%</span>
                   </div>
                   <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
@@ -419,7 +444,19 @@ const HomeTab: React.FC<HomeTabProps> = ({
         </button>
       </div>
 
-      {/* Certificate Modal */}
+      {/* ── Quiz modal (gates the certificate on the main home grid) ── */}
+      <CourseQuiz
+        isOpen={!!quizCourse}
+        courseId={quizCourse?.id ?? ""}
+        courseTitle={quizCourse?.title ?? ""}
+        onClose={() => setQuizCourse(null)}
+        onPassed={() => {
+          setCertCourse(quizCourse);
+          setQuizCourse(null);
+        }}
+      />
+
+      {/* ── Certificate modal (only opens after quiz pass) ── */}
       <CertificateModal
         isOpen={!!certCourse}
         onClose={() => setCertCourse(null)}
