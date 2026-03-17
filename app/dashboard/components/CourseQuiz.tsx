@@ -34,6 +34,27 @@ function saveLockout(courseId: string) {
   } catch {}
 }
 
+/** localStorage key for a passed course */
+function passKey(courseId: string) {
+  return `sabiskill_quiz_passed_${courseId}`;
+}
+
+/** Returns true if this course quiz has already been passed */
+export function hasPassedQuiz(courseId: string): boolean {
+  try {
+    return localStorage.getItem(passKey(courseId)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+/** Saves a pass — called once when the student passes */
+function savePass(courseId: string) {
+  try {
+    localStorage.setItem(passKey(courseId), "1");
+  } catch {}
+}
+
 /** Formats ms into mm:ss */
 function formatCountdown(ms: number): string {
   const totalSec = Math.ceil(ms / 1000);
@@ -349,6 +370,16 @@ function ProgressDots({ total, current, answers }: {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }: CourseQuizProps) {
 
+  // If already passed, skip the quiz entirely and call onPassed immediately
+  const [alreadyPassed] = useState(() => hasPassedQuiz(courseId));
+  useEffect(() => {
+    if (isOpen && alreadyPassed) {
+      // Tiny delay so parent state settles before the cert modal opens
+      const t = setTimeout(() => onPassed(), 50);
+      return () => clearTimeout(t);
+    }
+  }, [isOpen, alreadyPassed, onPassed]);
+
   const [phase, setPhase] = useState<"intro" | "quiz" | "result">("intro");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -459,8 +490,11 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
         .filter(([, v]) => v.c / v.t < 0.6)
         .map(([k]) => k);
       setResult({ passed: score >= PASS_THRESHOLD, score, total: TOTAL, weakTopics });
-      // If failed, record the timestamp so the 1-hour lockout starts
-      if (score < PASS_THRESHOLD) {
+      // Persist the outcome
+      if (score >= PASS_THRESHOLD) {
+        savePass(courseIdRef.current);
+      } else {
+        // If failed, record the timestamp so the 1-hour lockout starts
         saveLockout(courseIdRef.current);
         setLockoutMs(LOCKOUT_MS);
       }
@@ -483,7 +517,7 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
 
   const handleRetry = () => setQuizKey((k) => k + 1);
 
-  if (!isOpen) return null;
+  if (!isOpen || alreadyPassed) return null;
 
   const q = questions[currentIdx];
   const progressPct = Math.round(((currentIdx + (revealed ? 1 : 0)) / TOTAL) * 100);
