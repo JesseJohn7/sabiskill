@@ -14,7 +14,7 @@ import { ALL_COURSES, CourseDetail } from "./ExploreTab";
 import type { CourseProgressDetail } from "../components/UseCourseProgress";
 import { createClient } from "@/app/lib/supabase/client";
 import { CertificateModal } from "./Certificatemodal";
-import { CourseQuiz } from "../components/CourseQuiz"; // ← quiz lives in /components
+import { CourseQuiz, hasPassedQuiz } from "../components/CourseQuiz";
 
 interface HomeTabProps {
   onNavigate?: (tab: string) => void;
@@ -94,20 +94,31 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
   /**
    * "Get Certificate" pressed on an already-completed course.
-   * Opens the QUIZ first. Certificate only unlocks after passing.
+   * If quiz already passed → go straight to cert.
+   * Otherwise → open quiz first.
    */
   function openCertificate(course: (typeof ALL_COURSES)[0]) {
     setJustCompleted(false);
-    setQuizCourse(course); // quiz → on pass → cert
+    if (hasPassedQuiz(course.id)) {
+      // Already passed — skip quiz, open cert directly
+      setCertCourse(course);
+    } else {
+      setQuizCourse(course);
+    }
   }
 
   /**
    * Called right after a student finishes a course for the first time.
-   * Also opens quiz first; on pass → cert with confetti popup.
+   * If quiz already passed → go straight to cert with confetti.
+   * Otherwise → open quiz first.
    */
   function openCertificateJustCompleted(course: (typeof ALL_COURSES)[0]) {
     setJustCompleted(true);
-    setQuizCourse(course);
+    if (hasPassedQuiz(course.id)) {
+      setCertCourse(course);
+    } else {
+      setQuizCourse(course);
+    }
   }
 
   // ── Course Detail View ─────────────────────────────────────────────────
