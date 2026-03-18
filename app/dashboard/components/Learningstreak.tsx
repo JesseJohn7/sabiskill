@@ -339,7 +339,7 @@ export function StreakCard({ userId }: { userId: string }) {
           <div className="relative z-10 flex items-center px-4 sm:px-6 pt-4 sm:pt-5 pb-3 gap-4 sm:gap-5">
 
             {/* Flame + count */}
-            <div className="flex flex-col items-center flex-shrink-0">
+            <div className="flex flex-col items-center shrink-0">
               <div className="relative flex items-center justify-center mb-0.5">
                 {isActive && <div className="sc2-ring absolute w-9 h-9 rounded-full border-2 border-orange-400/40" />}
                 <span className="sc2-flame text-3xl sm:text-4xl">{isActive ? "🔥" : "💤"}</span>
@@ -354,7 +354,7 @@ export function StreakCard({ userId }: { userId: string }) {
             </div>
 
             {/* Divider */}
-            <div className="w-px h-14 bg-slate-200 flex-shrink-0" />
+            <div className="w-px h-14 bg-slate-200 shrink-0" />
 
             {/* Label */}
             <div className="flex-1 min-w-0">
@@ -371,7 +371,7 @@ export function StreakCard({ userId }: { userId: string }) {
             </div>
 
             {/* Best streak */}
-            <div className="flex flex-col items-center gap-0.5 flex-shrink-0 bg-blue-50 border border-blue-100 rounded-2xl px-3 py-2">
+            <div className="flex flex-col items-center gap-0.5 shrink-0 bg-blue-50 border border-blue-100 rounded-2xl px-3 py-2">
               <span className="text-lg sm:text-xl">🏆</span>
               <span className="text-sm sm:text-base font-black text-slate-800 tabular-nums">{data.longest}</span>
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">best</span>
@@ -468,7 +468,7 @@ export function StreakCard({ userId }: { userId: string }) {
                 }}
               >
                 {isActive && pct > 8 && (
-                  <div className="sc2-shim absolute inset-y-0 w-10 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                  <div className="sc2-shim absolute inset-y-0 w-10 bg-linear-to-r from-transparent via-white/50 to-transparent" />
                 )}
               </div>
             </div>

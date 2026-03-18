@@ -109,7 +109,7 @@ const DashboardPage: React.FC = () => {
 
         <main
           className={`${
-            selectedCourse ? "" : "p-8 sm:p-12 max-w-[1400px] mx-auto"
+            selectedCourse ? "" : "p-8 sm:p-12 max-w-350 mx-auto"
           } w-full`}
         >
           {selectedCourse ? (

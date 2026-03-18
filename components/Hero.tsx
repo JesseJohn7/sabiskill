@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-[70px] md:pt-[70px]">
+    <div className="min-h-screen flex items-center justify-center pt-17.5 md:pt-17.5">
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-4 md:py-20">
         {/* Avatars Section */}
         <motion.div 
@@ -42,7 +42,7 @@ const Hero: React.FC = () => {
           <div className="flex -space-x-2">
             {sampleUsers.map((user, index) => (
               <motion.img
-                key={index}
+                key={index} 
                 src={user.image}
                 alt={`User ${index + 1}`}
                 className="w-10 h-10 rounded-full border-2 border-white"
@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
           style={{ opacity: 1, transform: "none" }}
         >
          <Link href="/signup">
-          <button className="w-full font-medium text-base md:text-[16px] whitespace-nowrap leading-[22px] rounded-full px-8 py-4 md:px-[40px] md:py-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-48 md:min-w-40">
+          <button className="w-full font-medium text-base md:text-base whitespace-nowrap leading-5.5 rounded-full px-8 py-4 md:px-10 md:py-3.75 text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-95 cursor-pointer min-w-48 md:min-w-40">
             Start Learning
           </button>
         </Link>

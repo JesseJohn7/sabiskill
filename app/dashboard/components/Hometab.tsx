@@ -69,6 +69,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
     fetchUser();
   }, []);
 
+  const hasStartedCourse = activeCourseId !== null || completedCourseIds.length > 0;
+
   const handleExploreClick = () => { if (onNavigate) onNavigate("explore"); };
 
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
@@ -189,15 +191,33 @@ const HomeTab: React.FC<HomeTabProps> = ({
                 : "Continue mastering your next skill today"}
             </p>
           </div>
-          {/* Streak badge — always visible in the header */}
-          <div className="flex-shrink-0 mt-0.5">
-            <StreakBar userId={userId} />
-          </div>
+          {/* Streak badge — visible only if user has started a course */}
+          {hasStartedCourse && (
+            <div className="shrink-0 mt-0.5">
+              <StreakBar userId={userId} />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ── Full streak card ── */}
-      <StreakCard userId={userId} />
+      {/* ── Full streak card or prompt ── */}
+      {hasStartedCourse ? (
+        <StreakCard userId={userId} />
+      ) : (
+        <div className="max-w-7xl mx-auto mb-4 sm:mb-5">
+          <div className="bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 text-center">
+            <div className="text-4xl mb-3">🚀</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Start Your Learning Streak</h3>
+            <p className="text-gray-600 mb-4">Begin a course to track your daily learning progress and build an impressive streak!</p>
+            <button
+              onClick={handleExploreClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+            >
+              Explore Courses
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Active course warning banner */}
       {activeCourseId && !completedCourseIds.includes(activeCourseId) && (() => {
@@ -210,7 +230,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
               </p>
               <button
                 onClick={() => handleStartFromGrid(activeCourseId)}
-                className="ml-auto flex-shrink-0 flex items-center gap-1 bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+                className="ml-auto shrink-0 flex items-center gap-1 bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Continue <ChevronRight className="w-3 h-3" />
               </button>
@@ -221,8 +241,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
       {/* Hero Banner */}
       <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
-        <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
-          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600" />
+        <div className="relative bg-linear-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
+          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-linear-to-r from-blue-600 via-blue-500 to-blue-600" />
           <div className="absolute inset-0 opacity-[0.03]">
             <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37,99,235) 1px, transparent 0)`, backgroundSize: "32px 32px" }} />
           </div>
@@ -255,7 +275,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                   </button>
                 </div>
               </div>
-              <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 flex-shrink-0">
+              <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 shrink-0">
                 {ALL_COURSES.slice(0, 4).map((c, i) => (
                   <div
                     key={i}
@@ -263,7 +283,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
                   >
                     <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
                   </div>
                 ))}
               </div>
@@ -336,7 +356,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                       {isCompleted && (
                         <button
                           onClick={(e) => { e.stopPropagation(); openCertificate(c); }}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
+                          className="w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
                         >
                           <Award className="w-3.5 h-3.5" /> Get Certificate
                         </button>
@@ -441,7 +461,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); openCertificate(c); }}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
+                          className="w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
                         >
                           <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Get Certificate
                         </button>
