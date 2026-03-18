@@ -2,10 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
 const Hero: React.FC = () => {
   const words = ["Learn","Sabi","Koyi", "Kọ ẹkọ", "ịmụta"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Sample users for avatars
+  const sampleUsers = [
+    { image: "https://picsum.photos/40/40?random=1" },
+    { image: "https://picsum.photos/40/40?random=2" },
+    { image: "https://picsum.photos/40/40?random=3" },
+    { image: "https://picsum.photos/40/40?random=4" },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,6 +32,36 @@ const Hero: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center pt-[70px] md:pt-[70px]">
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-4 md:py-20">
+        {/* Avatars Section */}
+        <motion.div 
+          className="flex items-center justify-center gap-2 mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex -space-x-2">
+            {sampleUsers.map((user, index) => (
+              <motion.img
+                key={index}
+                src={user.image}
+                alt={`User ${index + 1}`}
+                className="w-10 h-10 rounded-full border-2 border-white"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
+              />
+            ))}
+          </div>
+          <motion.span 
+            className="text-white/80 text-sm ml-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.3 }}
+          >
+            170+ users learning
+          </motion.span>
+        </motion.div>
+
         <h1 
           className="font-extrabold text-[2.8rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem] leading-[1.08] text-white/95 tracking-tight"
           style={{ opacity: 1, transform: "none" }}
