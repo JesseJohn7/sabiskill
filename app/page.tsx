@@ -5,7 +5,6 @@ import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonial from "@/components/Testimonial";
 import Footer from "@/components/Footer";
-import WorldMapSection from "@/components/WorldMapSection";
 
 export default function Home() {
   return (
