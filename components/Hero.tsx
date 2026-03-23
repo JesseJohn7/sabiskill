@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
           style={{ opacity: 1, transform: "none" }}
         >
           Come{" "}
-          <span 
+          <span
             className="inline-block relative overflow-hidden align-bottom text-left"
             style={{ width: "auto", transition: "width 0.3s" }}
           >
