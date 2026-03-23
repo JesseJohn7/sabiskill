@@ -368,6 +368,46 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "TM: Buy Tickets UI",         duration: "rest",  startSeconds: 41255 },
     ] as Lesson[],
   },
+  // ── NEW: AI Fundamentals Course ──────────────────────────────────────────
+  {
+    id: "ai-fundamentals",
+    title: "AI Fundamentals",
+    description: "From machine learning & deep learning to LLMs, AI agents & generative AI — understand the full AI landscape.",
+    longDescription:
+      "A clear, structured introduction to modern AI. Starting from the AI family tree, this course walks you through machine learning, deep learning, and generative AI — then dives into how Large Language Models work, what AI agents are, and how agentic AI differs from generative AI. Perfect for anyone who wants to genuinely understand AI, not just use it.",
+    thumbnail: "https://i.ytimg.com/vi/VGFpV3Qj4as/maxresdefault.jpg",
+    videoId: "VGFpV3Qj4as",
+    lessons: 9,
+    level: "Beginner",
+    tag: "New",
+    duration: "1h 00m",
+    students: 0,
+    rating: 4.9,
+    reviewCount: 0,
+    instructor: "AI Explained",
+    topics: [
+      "The AI Family Tree",
+      "Machine Learning",
+      "Deep Learning",
+      "Generative AI",
+      "Traditional AI vs Generative AI",
+      "Large Language Models (LLMs)",
+      "AI Agents & Agentic AI",
+      "AI Agent vs Agentic AI vs Generative AI",
+    ],
+    playlist: [
+      { id: "VGFpV3Qj4as", title: "Introduction",                                    duration: "0:15",  startSeconds: 0    },
+      { id: "VGFpV3Qj4as", title: "AI Family Tree",                                  duration: "2:46",  startSeconds: 16   },
+      { id: "VGFpV3Qj4as", title: "Machine Learning",                                duration: "12:52", startSeconds: 182  },
+      { id: "VGFpV3Qj4as", title: "Deep Learning",                                   duration: "18:23", startSeconds: 955  },
+      { id: "VGFpV3Qj4as", title: "Generative AI",                                   duration: "2:31",  startSeconds: 2058 },
+      { id: "VGFpV3Qj4as", title: "Traditional AI vs Generative AI",                 duration: "4:30",  startSeconds: 2210 },
+      { id: "VGFpV3Qj4as", title: "Large Language Models (LLMs)",                    duration: "11:56", startSeconds: 2361 },
+      { id: "VGFpV3Qj4as", title: "AI Agents and Agentic AI",                        duration: "11:55", startSeconds: 2646 },
+      { id: "VGFpV3Qj4as", title: "AI Agent vs Agentic AI vs Generative AI",         duration: "rest",  startSeconds: 3362 },
+    ] as Lesson[],
+  },
+
   // ── NEW: Cybersecurity for Beginners ─────────────────────────────────────
   {
     id: "cybersecurity",
@@ -627,6 +667,11 @@ const COURSE_REVIEWS: Record<
     { name: "Dev K.", rating: 5, date: "Feb 2025", comment: "Built my first dApp after completing just the first section. Incredible course." },
     { name: "Luca M.", rating: 5, date: "Jan 2025", comment: "The Zillow clone project is worth the entire course alone. So well explained." },
     { name: "Aisha B.", rating: 4, date: "Jan 2025", comment: "Dense but thorough. Needed to pause often but learned a ton about Solidity." },
+  ],
+  "ai-fundamentals": [
+    { name: "Yemi A.", rating: 5, date: "Mar 2025", comment: "Finally a course that explains the difference between LLMs, agents, and generative AI clearly. Loved it." },
+    { name: "Kofi B.", rating: 5, date: "Mar 2025", comment: "The AI family tree section set the foundation perfectly. Everything clicked after that." },
+    { name: "Ngozi E.", rating: 5, date: "Mar 2025", comment: "Concise, accurate and genuinely insightful. The deep learning section is the clearest explanation I've seen." },
   ],
   "cybersecurity": [
     { name: "Chidi N.", rating: 5, date: "Mar 2025", comment: "Incredibly thorough. The Kali Linux hands-on and SQL injection sections are gold for anyone starting out." },
