@@ -11,10 +11,10 @@ const Hero: React.FC = () => {
 
   // Sample users for avatars
   const sampleUsers = [
-    { image: "https://picsum.photos/40/40?random=1" },
-    { image: "https://picsum.photos/40/40?random=2" },
-    { image: "https://picsum.photos/40/40?random=3" },
-    { image: "https://picsum.photos/40/40?random=4" },
+    { image: "/avatar1.jpg" },
+    { image: "/avatar2.jpg" },
+    { image: "/avatar3.jpg" },
+    { image: "/avatar4.jpg" },
   ];
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
                 key={index} 
                 src={user.image}
                 alt={`User ${index + 1}`}
-                className="w-10 h-10 rounded-full border-2 border-white"
+                className="w-10 h-10 rounded-full border-2 border-white object-cover"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.3 }}
@@ -106,9 +106,6 @@ const Hero: React.FC = () => {
             Start Learning
           </button>
         </Link>
-          {/* <button className="w-full sm:w-auto font-medium text-base md:text-[16px] whitespace-nowrap leading-[21.94px] rounded-full px-6 py-3 md:px-[40px] md:py-[15px] text-white bg-[#282c38]/50 hover:bg-white/10 transition-all duration-300 active:scale-[0.97] cursor-pointer min-w-[10rem]">
-            Browse Courses
-          </button> */} 
         </div> 
       </div>
     </div>
