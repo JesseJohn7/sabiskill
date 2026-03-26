@@ -206,7 +206,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
       ) : (
         <div className="max-w-7xl mx-auto mb-4 sm:mb-5">
           <div className="bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 text-center">
-            <div className="text-4xl mb-3">🚀</div>
+            {/* <div className="text-4xl mb-3">🚀</div> */}
             <h3 className="text-xl font-bold text-gray-900 mb-2">Start Your Learning Streak</h3>
             <p className="text-gray-600 mb-4">Begin a course to track your daily learning progress and build an impressive streak!</p>
             <button
