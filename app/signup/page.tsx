@@ -43,7 +43,6 @@ export default function SignupPage() {
     if (msg.includes("network") || msg.includes("fetch")) {
       return "Connection problem — please check your internet and try again.";
     }
-    // Fallback: something friendly instead of Supabase's raw error
     return "Something went wrong. Please try again.";
   }
 
@@ -51,14 +50,12 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
 
-    // ── Step 1: Validate email CLIENT-SIDE first (no Supabase call yet) ──
     const emailError = validateEmail(email);
     if (emailError) {
       setError(emailError);
-      return; // Stop here — don't waste an email send
+      return;
     }
 
-    // ── Step 2: Check password length before calling Supabase ──
     if (password.length < 6) {
       setError("Password must be at least 6 characters.");
       return;
@@ -67,7 +64,7 @@ export default function SignupPage() {
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
-      email: email.trim(), // trim spaces the user may have accidentally typed
+      email: email.trim(),
       password,
       options: { data: { full_name: fullName.trim() } },
     });
@@ -95,14 +92,6 @@ export default function SignupPage() {
     return (
       <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute inset-0 rounded-full bg-blue-500/30 animate-ping" />
-            <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center">
-              <svg className="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-          </div>
           <h2 className="text-3xl font-bold text-white mb-3">Check your inbox</h2>
           <p className="text-slate-400 text-base max-w-sm mx-auto leading-relaxed">
             We sent a confirmation link to{" "}

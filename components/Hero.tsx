@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
           className="flex flex-col sm:flex-row items-center gap-3 mt-4"
           style={{ opacity: 1, transform: "none" }}
         >
-         <Link href="/signup">
+        <Link href="/signup">
           <button className="w-full font-medium text-base md:text-base whitespace-nowrap leading-5.5 rounded-full px-8 py-4 md:px-10 md:py-3.75 text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-95 cursor-pointer min-w-48 md:min-w-40">
             Start Learning
           </button>
