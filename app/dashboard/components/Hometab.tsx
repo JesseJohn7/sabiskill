@@ -205,10 +205,10 @@ const HomeTab: React.FC<HomeTabProps> = ({
         <StreakCard userId={userId} />
       ) : (
         <div className="max-w-7xl mx-auto mb-4 sm:mb-5">
-          <div className="bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 text-center">
+          <div className="bg-linear-to-r from-blue-50 dark:from-slate-800 to-indigo-50 dark:to-slate-800 border border-blue-200 dark:border-slate-700 rounded-2xl p-6 text-center">
             {/* <div className="text-4xl mb-3">🚀</div> */}
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Start Your Learning Streak</h3>
-            <p className="text-gray-600 mb-4">Begin a course to track your daily learning progress and build an impressive streak!</p>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Start Your Learning Streak</h3>
+            <p className="text-gray-600 dark:text-slate-400 mb-4">Begin a course to track your daily learning progress and build an impressive streak!</p>
             <button
               onClick={handleExploreClick}
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
@@ -241,7 +241,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
       {/* Hero Banner */}
       <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
-        <div className="relative bg-linear-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
+        <div className="relative bg-linear-to-br from-blue-50 dark:from-slate-900 via-white dark:via-slate-800 to-blue-50/30 dark:to-slate-900/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 dark:border-slate-700 transition-shadow duration-300">
           <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-linear-to-r from-blue-600 via-blue-500 to-blue-600" />
           <div className="absolute inset-0 opacity-[0.03]">
             <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37,99,235) 1px, transparent 0)`, backgroundSize: "32px 32px" }} />
@@ -253,16 +253,16 @@ const HomeTab: React.FC<HomeTabProps> = ({
                   <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>Get Started</span>
                 </div>
-                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 dark:text-white leading-tight">
                   Master your next{" "}
-                  <span className="text-blue-600 relative inline-block">
+                  <span className="text-blue-600 dark:text-blue-400 relative inline-block">
                     Skill Path
                     <svg className="absolute -bottom-1 left-0 w-full h-2 sm:h-3" viewBox="0 0 200 10" preserveAspectRatio="none">
                       <path d="M0,5 Q50,0 100,5 T200,5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
                     </svg>
                   </span>
                 </h2>
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
                   Curated tutorials in linear learning paths. Start one to unlock your progress.
                 </p>
                 <div className="pt-1 sm:pt-2">
@@ -296,7 +296,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
       {hasRecents && (
         <div className="max-w-7xl mx-auto mb-7 sm:mb-8">
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800">Recently Started</h2>
+            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800 dark:text-white">Recently Started</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {recentCourses.map((c) => {
@@ -307,8 +307,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
                 <div
                   key={c.id}
                   onClick={() => handleCourseCardClick(c.id)}
-                  className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer
-                    ${isActive ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1" : "border-emerald-200 hover:border-emerald-300"}`}
+                  className={`group bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer
+                    ${isActive ? "border-blue-300 dark:border-blue-600 ring-2 ring-blue-400 ring-offset-1 dark:ring-offset-slate-900" : "border-emerald-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-slate-600"}`}
                 >
                   <div className="relative overflow-hidden">
                     <div className="aspect-video">
@@ -335,7 +335,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   </div>
                   <div className="p-4 space-y-3">
-                    <h3 className="font-black text-sm sm:text-base text-slate-800 line-clamp-1">{c.title}</h3>
+                    <h3 className="font-black text-sm sm:text-base text-slate-800 dark:text-white line-clamp-1">{c.title}</h3>
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-[10px] sm:text-xs">
                         <span className="text-slate-600 font-semibold">{isCompleted ? "Completed" : "In progress"}</span>
@@ -373,7 +373,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
       {/* Learning Tracks */}
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">Learning Tracks</h2>
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800 dark:text-white">Learning Tracks</h2>
           <button
             onClick={handleExploreClick}
             className="group hidden sm:flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-semibold text-[10px] sm:text-xs transition-all"
@@ -394,11 +394,11 @@ const HomeTab: React.FC<HomeTabProps> = ({
               <div
                 key={c.id}
                 onClick={() => handleCourseCardClick(c.id)}
-                className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
-                  ${isLocked ? "border-slate-200 opacity-60"
-                    : isActive ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1 hover:shadow-xl"
-                    : isCompleted ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
-                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl"}`}
+                className={`group bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
+                  ${isLocked ? "border-slate-200 dark:border-slate-700 opacity-60"
+                    : isActive ? "border-blue-300 dark:border-blue-600 ring-2 ring-blue-400 ring-offset-1 dark:ring-offset-slate-900 hover:shadow-xl"
+                    : isCompleted ? "border-emerald-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-slate-600 hover:shadow-xl"
+                    : "border-slate-200 dark:border-slate-700 hover:border-blue-200 dark:hover:border-slate-600 hover:shadow-xl"}`}
               >
                 <div className="relative overflow-hidden">
                   <div className="aspect-video">
@@ -433,7 +433,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                 </div>
 
                 <div className="p-4 sm:p-5 space-y-3 sm:space-y-4 flex flex-col flex-1">
-                  <h3 className="font-black text-sm sm:text-base md:text-lg text-slate-800 line-clamp-1">{c.title}</h3>
+                  <h3 className="font-black text-sm sm:text-base md:text-lg text-slate-800 dark:text-white line-clamp-1">{c.title}</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-[10px] sm:text-xs">
                       <span className="text-slate-600 font-semibold">{isCompleted ? "Completed" : isActive ? "In progress" : "Not started"}</span>

@@ -181,11 +181,11 @@ export default function LoginPage() {
         className="hidden lg:flex lg:w-[52%] xl:w-[55%] relative overflow-hidden flex-col"
         style={{ background: "linear-gradient(145deg, #0d1627 0%, #090d1a 50%, #0a0a0f 100%)" }}
       >
-        <div className="absolute top-[-120px] left-[-80px] w-[500px] h-[500px] rounded-full pointer-events-none"
+        <div className="absolute -top-30 -left-20 w-125 h-125 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 65%)" }} />
-        <div className="absolute bottom-[-80px] right-[-60px] w-[400px] h-[400px] rounded-full pointer-events-none"
+        <div className="absolute -bottom-20 -right-15 w-100 h-100 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 65%)" }} />
-        <div className="absolute top-[45%] right-[5%] w-[250px] h-[250px] rounded-full pointer-events-none"
+        <div className="absolute top-[45%] right-[5%] w-62.5 h-62.5 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 65%)" }} />
 
         <div className="relative z-10 p-10 xl:p-14">
@@ -212,7 +212,7 @@ export default function LoginPage() {
                         <div className="text-white font-bold text-base">Complete Web Development</div>
                         <div className="text-slate-400 text-xs mt-1">37 lessons · Beginner to Pro</div>
                       </div>
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(59,130,246,0.2)" }}>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(59,130,246,0.2)" }}>
                         <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                         </svg>
@@ -291,7 +291,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse at 50% 30%, rgba(59,130,246,0.04) 0%, transparent 60%)" }} />
 
-        <div className="w-full max-w-[400px] relative z-10">
+        <div className="w-full max-w-100 relative z-10">
           <div className="lg:hidden text-center mb-7">
             <a href="/" className="text-2xl font-bold text-white tracking-tight">
               Sabi<span className="text-blue-400">skill</span>
@@ -309,7 +309,7 @@ export default function LoginPage() {
               disabled={loading}
               className="google-btn w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-200 disabled:opacity-50"
             >
-              <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -369,7 +369,7 @@ export default function LoginPage() {
             {error && (
               <div className="flex items-start gap-3 p-3.5 rounded-xl"
                 style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)" }}>
-                <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <div>
