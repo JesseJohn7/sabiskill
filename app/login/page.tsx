@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // ── Turns Supabase's confusing error codes into plain English ──
+  //Turns Supabase's confusing error codes into plain English 
   function getLoginErrorMessage(error: { message: string; code?: string }): string {
     const msg = error.message?.toLowerCase() || "";
     const code = error.code || "";

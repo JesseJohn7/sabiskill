@@ -90,8 +90,8 @@ function computeNewStreak(current: StreakData): StreakData {
   const today = todayStr();
   if (current.lastDate === today) return current;
   const gap = current.lastDate ? daysBetween(current.lastDate, today) : 1;
-  // gap > 1 = missed at least one day → reset to 1
-  const newCount = gap === 1 ? current.count + 1 : 1;
+  // gap > 1 = missed at least one day → reset to 0
+  const newCount = gap === 1 ? current.count + 1 : 0;
   const newDates = [...new Set([...(current.activeDates || []), today])].slice(-60);
   return {
     count:       newCount,
