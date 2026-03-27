@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Bell, Search, User, Menu, X } from "lucide-react";
+import { Search, User, Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Course {
   id: string;
@@ -50,6 +51,7 @@ const COURSES: Course[] = [
 ];
 
 const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect, onNotificationClick }) => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Course[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -166,26 +168,13 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect, onNotification
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
-        {/* Notification Bell — clicks navigate to Settings */}
-       {/*  <button
-          onClick={onNotificationClick}
-          className="p-2 sm:p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl relative transition-colors"
-          aria-label="Notifications"
+        <button
+          onClick={() => router.push("/settings")}
+          className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer"
+          aria-label="Go to settings"
         >
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
-        </button> */}
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl border border-slate-200 flex items-center justify-center">
-            <User className="w-5 h-5 text-slate-400" />
-          </div>
-          <div className="hidden sm:block">
-            {/* <p className="text-xs sm:text-sm font-bold text-slate-900 leading-none">
-              Alex Walker
-            </p> */}
-          </div>
-        </div>
+          <User className="w-5 h-5 text-slate-400" />
+        </button>
       </div>
     </header>
   );
