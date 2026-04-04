@@ -166,7 +166,7 @@ const Header: React.FC<Props> = ({ toggleSidebar, onCourseSelect, onNotification
           )}
         </div>
       </div>
-
+      
       <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
         <button
           onClick={() => router.push("/settings")}
