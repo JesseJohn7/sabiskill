@@ -285,9 +285,10 @@ const HowItWorks: React.FC = () => {
         transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
       >
         <a
-          href="/auth/signup"
-          className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-400 active:scale-95 text-white font-bold text-sm px-8 py-4 rounded-full transition-all duration-200 shadow-lg shadow-orange-500/25"
+         href="https://sabiskill.vercel.app/signup"
+          className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 active:scale-95 text-white font-bold text-sm px-8 py-4 rounded-full transition-all duration-200 shadow-lg shadow-blue-500/25"
         >
+        
           Get Started
           <svg
             className="w-4 h-4"
