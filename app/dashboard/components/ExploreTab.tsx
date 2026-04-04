@@ -368,7 +368,6 @@ export const ALL_COURSES = [
       { id: "jcgfQEbptdo", title: "TM: Buy Tickets UI",         duration: "rest",  startSeconds: 41255 },
     ] as Lesson[],
   },
-  // ── NEW: AI Fundamentals Course ──────────────────────────────────────────
   {
     id: "ai-fundamentals",
     title: "AI Fundamentals",
@@ -407,8 +406,6 @@ export const ALL_COURSES = [
       { id: "VGFpV3Qj4as", title: "AI Agent vs Agentic AI vs Generative AI",         duration: "rest",  startSeconds: 3362 },
     ] as Lesson[],
   },
-
-  // ── NEW: Cybersecurity for Beginners ─────────────────────────────────────
   {
     id: "cybersecurity",
     title: "Cybersecurity for Beginners",
@@ -489,8 +486,6 @@ export const ALL_COURSES = [
       { id: "lpa8uy4DyMo", title: "Cybersecurity Interview Questions",         duration: "rest",  startSeconds: 37299  },
     ] as Lesson[],
   },
-
-  // ── NEW: CapCut PC Video Editing Course ──────────────────────────────────
   {
     id: "capcut-video-editing",
     title: "CapCut PC Video Editing",
@@ -569,8 +564,6 @@ export const ALL_COURSES = [
       { id: "EMDrgqepVhM", title: "Final Export",                                 duration: "rest",  startSeconds: 3779 },
     ] as Lesson[],
   },
-
-  // ── NEW: Graphic Design Full Course ──────────────────────────────────────
   {
     id: "graphic-design",
     title: "Graphic Design Full Course",
@@ -633,6 +626,68 @@ export const ALL_COURSES = [
       { id: "e_dv7GBHka8", title: "Landing Page Design in Figma",           duration: "rest",  startSeconds: 29385  },
     ] as Lesson[],
   },
+  // ── NEW: Forex Trading for Beginners ─────────────────────────────────────
+  {
+    id: "forex-trading",
+    title: "Forex Trading for Beginners",
+    description: "Currency pairs, leverage, MetaTrader 5, technical analysis & risk management — a complete starter guide.",
+    longDescription:
+      "A complete, no-fluff introduction to forex trading. Starting from what forex actually is, this course walks you through currency pairs, market liquidity, essential tools, and account setup — then dives into MetaTrader 5, bid/ask/spread, lot sizes, leverage, and margin. You'll learn risk management, technical analysis with TradingView, support & resistance, and how to place real trades with stop-loss and take-profit levels. Wraps up with trading psychology, journaling, common beginner mistakes, and the mindset required for long-term success.",
+    thumbnail: "https://i.ytimg.com/vi/ZwL11tUfeXg/maxresdefault.jpg",
+    videoId: "ZwL11tUfeXg",
+    lessons: 24,
+    level: "Beginner",
+    tag: "New",
+    duration: "50m",
+    students: 0,
+    rating: 4.8,
+    reviewCount: 0,
+    instructor: "Jeffrey",
+    topics: [
+      "What is Forex & Currency Pairs Explained",
+      "Forex Market Liquidity and Trading Hours",
+      "Essential Tools for Forex Trading",
+      "Step-by-Step Account Setup",
+      "Navigating MetaTrader 5",
+      "Bid, Ask and Spread",
+      "Lot Size and Its Impact on Profits",
+      "Forex Leverage and Margin Explained",
+      "Risk Management and Capital Protection",
+      "Profitability: Winning Less but Earning More",
+      "Using TradingView for Market Analysis",
+      "Technical Analysis: Support and Resistance",
+      "Setting Trade Entry, Stop Loss, Take Profit",
+      "How to Place and Manage Trades on MetaTrader 5",
+      "Trading Psychology and Emotional Control",
+      "Trade Journaling and Common Mistakes",
+    ],
+    playlist: [
+      { id: "ZwL11tUfeXg", title: "Introduction to Forex Trading 2026",          duration: "1:24",  startSeconds: 0     },
+      { id: "ZwL11tUfeXg", title: "Jeffrey's Forex Journey and Success",          duration: "0:29",  startSeconds: 84    },
+      { id: "ZwL11tUfeXg", title: "What is Forex and Currency Pairs",             duration: "2:13",  startSeconds: 113   },
+      { id: "ZwL11tUfeXg", title: "Forex Market Liquidity and Trading Hours",     duration: "0:32",  startSeconds: 246   },
+      { id: "ZwL11tUfeXg", title: "Essential Tools for Forex Trading",            duration: "2:08",  startSeconds: 278   },
+      { id: "ZwL11tUfeXg", title: "Step-by-Step Account Setup",                   duration: "4:14",  startSeconds: 406   },
+      { id: "ZwL11tUfeXg", title: "Navigating MetaTrader 5",                      duration: "1:41",  startSeconds: 660   },
+      { id: "ZwL11tUfeXg", title: "Understanding Bid, Ask and Spread",            duration: "4:35",  startSeconds: 761   },
+      { id: "ZwL11tUfeXg", title: "Lot Size and Its Impact on Profits",           duration: "3:47",  startSeconds: 1036  },
+      { id: "ZwL11tUfeXg", title: "Forex Leverage and Margin Explained",          duration: "4:07",  startSeconds: 1263  },
+      { id: "ZwL11tUfeXg", title: "Risk Management and Capital Protection",       duration: "0:58",  startSeconds: 1510  },
+      { id: "ZwL11tUfeXg", title: "Profitability: Winning Less, Earning More",    duration: "1:15",  startSeconds: 1568  },
+      { id: "ZwL11tUfeXg", title: "Strategy Importance and Execution Discipline", duration: "1:26",  startSeconds: 1643  },
+      { id: "ZwL11tUfeXg", title: "Using TradingView for Market Analysis",        duration: "1:19",  startSeconds: 1729  },
+      { id: "ZwL11tUfeXg", title: "Types of Market Analysis in Forex",            duration: "2:13",  startSeconds: 1808  },
+      { id: "ZwL11tUfeXg", title: "Technical Analysis: Support and Resistance",   duration: "2:17",  startSeconds: 1941  },
+      { id: "ZwL11tUfeXg", title: "Trader Types and Timeframes Overview",         duration: "3:00",  startSeconds: 2078  },
+      { id: "ZwL11tUfeXg", title: "Setting Trade Entry, Stop Loss, Take Profit",  duration: "4:55",  startSeconds: 2258  },
+      { id: "ZwL11tUfeXg", title: "How to Place and Manage Trades on MT5",        duration: "3:42",  startSeconds: 2493  },
+      { id: "ZwL11tUfeXg", title: "Trading Psychology and Emotional Control",     duration: "0:56",  startSeconds: 2775  },
+      { id: "ZwL11tUfeXg", title: "Journaling Trades to Improve Performance",     duration: "0:33",  startSeconds: 2831  },
+      { id: "ZwL11tUfeXg", title: "Common Mistakes New Traders Make",             duration: "1:20",  startSeconds: 2864  },
+      { id: "ZwL11tUfeXg", title: "The Real Trading Journey and Mindset",         duration: "0:53",  startSeconds: 2944  },
+      { id: "ZwL11tUfeXg", title: "Patience, Discipline, and Long-Term Success",  duration: "rest",  startSeconds: 2997  },
+    ] as Lesson[],
+  },
 ];
 
 const COURSE_REVIEWS: Record<
@@ -687,6 +742,11 @@ const COURSE_REVIEWS: Record<
     { name: "Temi A.", rating: 5, date: "Mar 2025", comment: "Went from zero to designing real brand identities. The Photoshop and Illustrator sections are gold." },
     { name: "Jade O.", rating: 5, date: "Mar 2025", comment: "The branding and packaging modules are incredibly detailed. Best design course I've found." },
     { name: "Kwame B.", rating: 4, date: "Feb 2025", comment: "Super practical — I landed my first freelance client using the skills from this course." },
+  ],
+  "forex-trading": [
+    { name: "Chukwudi A.", rating: 5, date: "Apr 2025", comment: "Finally understand how lots and leverage actually work. The MT5 walkthrough is gold." },
+    { name: "Fatima B.", rating: 5, date: "Apr 2025", comment: "No fluff — straight to the point. The risk management and psychology sections hit different." },
+    { name: "Emeka O.", rating: 4, date: "Apr 2025", comment: "Great starter course. The TradingView + support/resistance section gave me a solid foundation." },
   ],
   "public-speak": [
     { name: "Omar S.", rating: 5, date: "Feb 2025", comment: "I gave my first big presentation after this. Felt amazing." },
