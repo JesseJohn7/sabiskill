@@ -285,7 +285,7 @@ const HowItWorks: React.FC = () => {
         transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
       >
         <a
-         href="https://sabiskill.vercel.app/signup"
+         href="/signup"
           className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 active:scale-95 text-white font-bold text-sm px-8 py-4 rounded-full transition-all duration-200 shadow-lg shadow-blue-500/25"
         >
         
