@@ -167,7 +167,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             </h1>
             <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
               {activeCourseId && !completedCourseIds.includes(activeCourseId)
-                ? "You have an active course — finish it to unlock more tracks."
+                ? "You have an active course finish it to unlock more tracks."
                 : "Continue mastering your next skill today"}
             </p>
           </div>
