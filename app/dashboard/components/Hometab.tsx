@@ -163,7 +163,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1 min-w-0">
             <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-              Hello, {firstName} 👋
+              Hello, {firstName} 
             </h1>
             <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
               {activeCourseId && !completedCourseIds.includes(activeCourseId)
