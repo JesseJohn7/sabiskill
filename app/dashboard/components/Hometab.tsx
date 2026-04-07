@@ -365,9 +365,12 @@ const HomeTab: React.FC<HomeTabProps> = ({
           {/* Row 1: greeting text + streak bar side-by-side */}
           <div className="flex items-start justify-between gap-2">
             {/* Greeting — wraps freely, no truncation */}
-            <h1 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
-              {greeting},&nbsp;<span className="text-blue-600">{firstName}</span>&nbsp;<span className="font-normal">👋</span>
-            </h1>
+        <h1 className="font-black text-slate-900 leading-tight tracking-tight whitespace-nowrap overflow-hidden text-ellipsis"
+        style={{ fontSize: "clamp(18px, 4vw, 48px)" }}
+        >
+          {greeting}, <span className="text-blue-600">{firstName}</span>{" "}
+          <span className="font-normal">👋</span>
+        </h1>
 
             {/* Streak bar — only shows when user has started, floats right */}
             {hasStartedCourse && userId && (
