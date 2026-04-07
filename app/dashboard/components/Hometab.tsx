@@ -373,7 +373,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
               style={{ fontSize: "clamp(22px, 5.5vw, 44px)" }}
             >
               {greeting},{" "}
-              <span className="text-blue-600">{firstName}</span> 👋
+              <span className="text-blue-600">{firstName}</span> 
             </h1>
             {hasStartedCourse && userId && (
               <div className="flex-shrink-0 pt-1">
