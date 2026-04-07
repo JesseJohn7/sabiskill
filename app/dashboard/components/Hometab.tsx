@@ -715,7 +715,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
               onClick={() => onNavigate?.("explore")}
               className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border border-slate-200 text-slate-700 bg-white font-bold text-sm hover:bg-slate-50 transition-all active:scale-95 sm:hidden"
             >
-              View All {ALL_COURSES.length} Tracks <ChevronRight className="w-4 h-4" />
+              View All Courses <ChevronRight className="w-4 h-4" />
             </button>
           )}
           {/* sm+ view all link */}
@@ -725,7 +725,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                 onClick={() => onNavigate?.("explore")}
                 className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 group"
               >
-                View all {ALL_COURSES.length} tracks
+                View all Courses  
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
