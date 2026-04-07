@@ -369,7 +369,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         style={{ fontSize: "clamp(20px, 5vw, 48px)" }}
         >
           {greeting}, <span className="text-blue-600">{firstName}</span>{" "}
-          <span className="font-normal">👋</span>
+         
         </h1>
 
             {/* Streak bar — only shows when user has started, floats right */}
