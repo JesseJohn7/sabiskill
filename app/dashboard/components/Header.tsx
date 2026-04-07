@@ -15,8 +15,8 @@ interface Props {
   toggleSidebar: () => void;
   onCourseSelect?: (courseId: string) => void;
   onNotificationClick?: () => void;
+  onSettingsClick?: () => void;
 }
-
 const COURSES: Course[] = [
   {
     id: "webdev",
@@ -54,7 +54,8 @@ const Header: React.FC<Props> = ({
   toggleSidebar,
   onCourseSelect,
   onNotificationClick,
-}) => {
+  onSettingsClick, // <-- add this
+}) =>  {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Course[]>([]);
@@ -189,7 +190,7 @@ const Header: React.FC<Props> = ({
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           
           <button
-            onClick={() => router.push("/dashboard/settings")}
+            onClick={onSettingsClick}
             className="w-9 h-9 sm:w-10 sm:h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 transition-colors"
           >
             <User className="w-5 h-5 text-slate-500" />
