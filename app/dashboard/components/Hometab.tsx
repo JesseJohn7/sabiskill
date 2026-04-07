@@ -5,10 +5,14 @@ import {
   Rocket,
   ChevronRight,
   Play,
-  Clock,
   Lock,
   CheckCircle2,
   Award,
+  BookOpen,
+  Zap,
+  TrendingUp,
+  ArrowUpRight,
+  Clock,
 } from "lucide-react";
 import { ALL_COURSES, CourseDetail } from "./ExploreTab";
 import type { CourseProgressDetail } from "../components/UseCourseProgress";
@@ -25,6 +29,195 @@ interface HomeTabProps {
   progressMap?: Record<string, CourseProgressDetail>;
 }
 
+// ── Stat pill ─────────────────────────────────────────────────────────────────
+function StatPill({
+  icon: Icon,
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string | number;
+  sub?: string;
+  accent: string;
+}) {
+  return (
+    <div className="flex items-center gap-3 bg-white border border-slate-100 rounded-2xl px-4 py-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${accent}`}>
+        <Icon className="w-[17px] h-[17px]" strokeWidth={2.2} />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 leading-none mb-0.5">{label}</p>
+        <p className="text-xl font-black text-slate-900 leading-none">{value}</p>
+        {sub && <p className="text-[10px] text-slate-400 font-medium mt-0.5">{sub}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── Course card ───────────────────────────────────────────────────────────────
+function CourseCard({
+  course,
+  status,
+  progressPct,
+  onOpen,
+  onAction,
+  onCertificate,
+}: {
+  course: (typeof ALL_COURSES)[0];
+  status: "completed" | "active" | "locked" | "available";
+  progressPct: number;
+  onOpen: () => void;
+  onAction: (e: React.MouseEvent) => void;
+  onCertificate?: (e: React.MouseEvent) => void;
+}) {
+  const isLocked = status === "locked";
+  const isCompleted = status === "completed";
+  const isActive = status === "active";
+  const totalLessons = course.lessons;
+  const lessonsDone = isCompleted
+    ? totalLessons
+    : Math.round((progressPct / 100) * totalLessons);
+
+  return (
+    <div
+      onClick={onOpen}
+      className={`group relative bg-white rounded-2xl border overflow-hidden cursor-pointer transition-all duration-200 flex flex-col h-full
+        ${isLocked
+          ? "border-slate-100 opacity-55"
+          : isActive
+          ? "border-blue-200 shadow-md shadow-blue-100/50 hover:shadow-xl hover:shadow-blue-100/50 hover:-translate-y-1"
+          : isCompleted
+          ? "border-emerald-100 hover:shadow-xl hover:shadow-emerald-50/80 hover:-translate-y-1"
+          : "border-slate-100 hover:border-slate-200 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1"}`}
+    >
+      {/* Thumbnail */}
+      <div className="relative overflow-hidden bg-slate-100 flex-shrink-0" style={{ aspectRatio: "16/9" }}>
+        <img
+          src={course.thumbnail}
+          alt={course.title}
+          className={`w-full h-full object-cover transition-transform duration-500 ${!isLocked ? "group-hover:scale-105" : ""}`}
+        />
+        {isLocked ? (
+          <div className="absolute inset-0 bg-slate-900/55 backdrop-blur-[1px] flex flex-col items-center justify-center gap-1.5">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <Lock className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-white text-[9px] font-bold text-center px-4 leading-snug">
+              Complete active track first
+            </span>
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-white/95 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
+              <Play className="w-5 h-5 text-blue-600 fill-current ml-0.5" />
+            </div>
+          </div>
+        )}
+        {isActive && (
+          <div className="absolute top-2 left-2 flex items-center gap-1 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Live
+          </div>
+        )}
+        {isCompleted && (
+          <div className="absolute top-2 left-2 flex items-center gap-1 bg-emerald-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md">
+            <CheckCircle2 className="w-2.5 h-2.5" /> Done
+          </div>
+        )}
+        <div className="absolute bottom-2 left-2 bg-slate-900/70 backdrop-blur-sm px-2 py-0.5 rounded-lg flex items-center gap-1">
+          <Clock className="w-2.5 h-2.5 text-slate-300" />
+          <span className="text-[9px] font-semibold text-white">{totalLessons} lessons</span>
+        </div>
+        {!isLocked && (
+          <div className="absolute bottom-2 right-2 bg-slate-900/70 backdrop-blur-sm px-2 py-0.5 rounded-lg">
+            <span className="text-[9px] font-bold text-white">{progressPct}%</span>
+          </div>
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="p-4 sm:p-5 flex flex-col gap-3 flex-1">
+        <div>
+          <h3 className="font-black text-sm sm:text-[15px] text-slate-800 line-clamp-2 leading-snug mb-1">
+            {course.title}
+          </h3>
+          <p className="text-[11px] text-slate-400 font-medium">by {course.instructor}</p>
+        </div>
+
+        {/* Dynamic lesson count — scoped to THIS course only */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-slate-500">
+              {isCompleted
+                ? "All lessons done"
+                : isActive
+                ? `${lessonsDone} of ${totalLessons} lessons`
+                : "Not started"}
+            </span>
+            {!isLocked && (
+              <span
+                className={`text-[11px] font-bold ${
+                  isCompleted ? "text-emerald-600" : isActive ? "text-blue-600" : "text-slate-400"
+                }`}
+              >
+                {lessonsDone}/{totalLessons}
+              </span>
+            )}
+          </div>
+          <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-700 ${
+                isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-200"
+              }`}
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-auto space-y-2 pt-1">
+          {isLocked ? (
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpen(); }}
+              className="w-full bg-slate-50 text-slate-400 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-slate-100 transition-colors"
+            >
+              <Play className="w-3.5 h-3.5" /> Preview
+            </button>
+          ) : isCompleted ? (
+            <>
+              <button
+                onClick={onAction}
+                className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
+              </button>
+              {onCertificate && (
+                <button
+                  onClick={onCertificate}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm shadow-blue-200/60"
+                >
+                  <Award className="w-3.5 h-3.5" /> Get Certificate
+                </button>
+              )}
+            </>
+          ) : (
+            <button
+              onClick={onAction}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-sm shadow-blue-100"
+            >
+              <Play className="w-3.5 h-3.5 fill-current" />
+              {isActive ? "Continue Learning" : "Get Started"}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
 const HomeTab: React.FC<HomeTabProps> = ({
   onNavigate,
   onCourseSelect,
@@ -39,10 +232,17 @@ const HomeTab: React.FC<HomeTabProps> = ({
   >({});
   const [firstName, setFirstName] = useState<string>("there");
   const [userId, setUserId] = useState<string>("");
-
   const [quizCourse, setQuizCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
   const [certCourse, setCertCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
   const [justCompleted, setJustCompleted] = useState(false);
+  const [greeting, setGreeting] = useState("Hello");
+  // Earned certificates fetched from Supabase
+  const [earnedCertCourseIds, setEarnedCertCourseIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const h = new Date().getHours();
+    setGreeting(h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening");
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -58,433 +258,452 @@ const HomeTab: React.FC<HomeTabProps> = ({
           const cleaned = emailPrefix.replace(/[._\-0-9]/g, " ").trim().split(" ")[0];
           setFirstName(cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
         }
+
+        // ── Fetch earned certificates from Supabase ──
+        // Adjust "certificates" table name and column names to match your schema
+        const { data: certs } = await supabase
+          .from("certificates")
+          .select("course_id")
+          .eq("user_id", user.id);
+
+        if (certs) {
+          setEarnedCertCourseIds(certs.map((c: { course_id: string }) => c.course_id));
+        }
       }
     };
     fetchUser();
   }, []);
 
+  // ── Derived stats ──────────────────────────────────────────────────────
   const hasStartedCourse = activeCourseId !== null || completedCourseIds.length > 0;
+  const activeCourse = ALL_COURSES.find((c) => c.id === activeCourseId) ?? null;
+  const activeProgress = activeCourseId ? (progressMap[activeCourseId]?.progressPct ?? 0) : 0;
+  const activeLessonsDone = activeCourse
+    ? Math.round((activeProgress / 100) * activeCourse.lessons)
+    : 0;
 
-  const handleExploreClick = () => { if (onNavigate) onNavigate("explore"); };
+  const totalCompleted = completedCourseIds.length;
+  const completedCourses = ALL_COURSES.filter((c) => completedCourseIds.includes(c.id));
+
+  // Lessons done = completed course lessons + current active lesson progress
+  const completedLessonsCount =
+    completedCourses.reduce((acc, c) => acc + c.lessons, 0) +
+    (activeCourse ? Math.round((activeProgress / 100) * activeCourse.lessons) : 0);
+
+  // Lessons total for the "of X" in the Lessons stat — only courses the user has started
+  const startedCourseLessonsTotal =
+    completedCourses.reduce((acc, c) => acc + c.lessons, 0) +
+    (activeCourse ? activeCourse.lessons : 0);
+
+  // Overall % across the whole platform
+  const allCoursesLessonsTotal = ALL_COURSES.reduce((acc, c) => acc + c.lessons, 0);
+  const overallPct =
+    allCoursesLessonsTotal > 0
+      ? Math.round((completedLessonsCount / allCoursesLessonsTotal) * 100)
+      : 0;
+
+  // Certificates: only actually earned ones from Supabase
+  const earnedCertCount = earnedCertCourseIds.length;
 
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
     if (completedCourseIds.includes(id)) return "completed";
     if (id === activeCourseId) return "active";
-    if (activeCourseId && !completedCourseIds.includes(activeCourseId) && id !== activeCourseId) return "locked";
+    if (activeCourseId && !completedCourseIds.includes(activeCourseId) && id !== activeCourseId)
+      return "locked";
     return "available";
   };
 
-  const handleCourseCardClick = (courseId: string) => { setAutoPlayOnOpen(false); setDetailCourseId(courseId); };
-  const handleStartFromGrid = (courseId: string) => {
-    const status = getStatus(courseId);
-    if (status === "locked") return;
-    if (status === "active" && userId) recordStreakActivity(userId);
+  const handleCourseCardClick = (id: string) => { setAutoPlayOnOpen(false); setDetailCourseId(id); };
+  const handleStartFromGrid = (id: string) => {
+    if (getStatus(id) === "locked") return;
+    if (getStatus(id) === "active" && userId) recordStreakActivity(userId);
     setAutoPlayOnOpen(true);
-    setDetailCourseId(courseId);
+    setDetailCourseId(id);
   };
-  const handleStartFromDetail = (courseId: string) => {
-    const status = getStatus(courseId);
-    if (status === "locked") return;
-    if (onCourseSelect) onCourseSelect(courseId);
+  const handleStartFromDetail = (id: string) => {
+    if (getStatus(id) === "locked") return;
+    if (onCourseSelect) onCourseSelect(id);
     setDetailCourseId(null);
   };
-  const handleReviewSubmit = (courseId: string, review: { name: string; rating: number; comment: string }) => {
-    setExtraReviews((prev) => ({ ...prev, [courseId]: [{ ...review, date: "Just now" }, ...(prev[courseId] || [])] }));
+  const handleReviewSubmit = (id: string, review: { name: string; rating: number; comment: string }) => {
+    setExtraReviews((prev) => ({ ...prev, [id]: [{ ...review, date: "Just now" }, ...(prev[id] || [])] }));
+  };
+  const openCertificate = (course: (typeof ALL_COURSES)[0]) => {
+    setJustCompleted(false);
+    if (hasPassedQuiz(course.id)) { setCertCourse(course); } else { setQuizCourse(course); }
   };
 
-  function openCertificate(course: (typeof ALL_COURSES)[0]) {
-    setJustCompleted(false);
-    if (hasPassedQuiz(course.id)) {
-      setCertCourse(course);
-    } else {
-      setQuizCourse(course);
-    }
-  }
-
-  function openCertificateJustCompleted(course: (typeof ALL_COURSES)[0]) {
-    setJustCompleted(true);
-    if (hasPassedQuiz(course.id)) {
-      setCertCourse(course);
-    } else {
-      setQuizCourse(course);
-    }
-  }
-
-  // ── Course Detail View ─────────────────────────────────────────────────
+  // ── Detail view ────────────────────────────────────────────────────────
   if (detailCourseId) {
     const course = ALL_COURSES.find((c) => c.id === detailCourseId)!;
-    const userReviews = extraReviews[detailCourseId] || [];
     return (
       <>
         <CourseDetail
           course={course}
           status={getStatus(detailCourseId)}
-          reviews={userReviews}
+          reviews={extraReviews[detailCourseId] || []}
           onBack={() => setDetailCourseId(null)}
           onStart={handleStartFromDetail}
-          onGetCertificate={(c) => openCertificate(c)}
+          onGetCertificate={openCertificate}
           onReviewSubmit={handleReviewSubmit}
           backLabel="Back to Home"
           autoPlayVideo={autoPlayOnOpen}
         />
-
         <CourseQuiz
-          isOpen={!!quizCourse}
-          courseId={quizCourse?.id ?? ""}
-          courseTitle={quizCourse?.title ?? ""}
+          isOpen={!!quizCourse} courseId={quizCourse?.id ?? ""} courseTitle={quizCourse?.title ?? ""}
           onClose={() => setQuizCourse(null)}
-          onPassed={() => {
-            setCertCourse(quizCourse);
-            setQuizCourse(null);
-          }}
+          onPassed={() => { setCertCourse(quizCourse); setQuizCourse(null); }}
         />
-
         <CertificateModal
-          isOpen={!!certCourse}
-          onClose={() => setCertCourse(null)}
-          courseTitle={certCourse?.title ?? ""}
-          instructor={certCourse?.instructor ?? ""}
+          isOpen={!!certCourse} onClose={() => setCertCourse(null)}
+          courseTitle={certCourse?.title ?? ""} instructor={certCourse?.instructor ?? ""}
           justCompleted={justCompleted}
         />
       </>
     );
   }
 
-  const recentCourses = [
-    ...ALL_COURSES.filter((c) => c.id === activeCourseId),
-    ...ALL_COURSES.filter((c) => completedCourseIds.includes(c.id)),
-  ];
-  const hasRecents = recentCourses.length > 0;
-
+  // ── Dashboard ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
-      {/* Header */}
-      <div className="max-w-5xl mx-auto mb-4 sm:mb-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
-              Hello, {firstName} 
-            </h1>
-            <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
-              {activeCourseId && !completedCourseIds.includes(activeCourseId)
-                ? "You have an active course finish it to unlock more tracks."
-                : "Continue mastering your next skill today"}
-            </p>
-          </div>
-          {hasStartedCourse && (
-            <div className="shrink-0 mt-0.5">
+    <div className="min-h-screen bg-[#F7F8FA]">
+      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-7 space-y-5 sm:space-y-7">
+
+        {/* ── GREETING — single line, large, responsive ── */}
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-none tracking-tight whitespace-nowrap truncate">
+            {greeting},&nbsp;<span className="text-blue-600">{firstName}</span>&nbsp;<span className="font-normal">👋</span>
+          </h1>
+          {hasStartedCourse && userId && (
+            <div className="flex-shrink-0">
               <StreakBar userId={userId} />
             </div>
           )}
         </div>
-      </div>
 
-      {/* ── Full streak card or prompt ── */}
-      {hasStartedCourse ? (
-        <StreakCard userId={userId} />
-      ) : (
-        <div className="max-w-7xl mx-auto mb-4 sm:mb-5">
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Start Your Learning Streak</h3>
-            <p className="text-gray-600 mb-4">Begin a course to track your daily learning progress and build an impressive streak!</p>
+        {/* Sub-line */}
+        <p className="text-sm sm:text-base text-slate-500 font-medium -mt-3 leading-snug">
+          {activeCourseId && !completedCourseIds.includes(activeCourseId)
+            ? "Complete your active track to unlock more courses."
+            : hasStartedCourse
+            ? "You're making great progress — keep it up!"
+            : "Pick a track and begin your learning journey."}
+        </p>
+
+        {/* ── STREAK CARD ── */}
+        {hasStartedCourse && userId && <StreakCard userId={userId} />}
+
+        {/* ── ACTIVE COURSE ALERT ── */}
+        {activeCourseId && !completedCourseIds.includes(activeCourseId) && activeCourse && (
+          <div className="flex items-center gap-3 bg-blue-600 rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 shadow-lg shadow-blue-200/60">
+            <div className="w-0.5 h-7 bg-white/30 rounded-full flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-[11px] sm:text-sm font-semibold truncate">
+                Active: <span className="font-black">{activeCourse.title}</span>
+              </p>
+              <p className="text-blue-200 text-[10px] font-medium mt-0.5">
+                {activeLessonsDone} of {activeCourse.lessons} lessons · {activeProgress}% done
+              </p>
+            </div>
             <button
-              onClick={handleExploreClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+              onClick={() => handleStartFromGrid(activeCourseId)}
+              className="flex-shrink-0 flex items-center gap-1 bg-white text-blue-700 text-[10px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap"
             >
-              Explore Courses
+              Resume <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Active course warning banner */}
-      {activeCourseId && !completedCourseIds.includes(activeCourseId) && (() => {
-        const active = ALL_COURSES.find((c) => c.id === activeCourseId);
-        return active ? (
-          <div className="max-w-7xl mx-auto mb-5 sm:mb-6">
-            <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-              <p className="text-xs sm:text-sm text-blue-700 font-semibold">
-                You're currently on <span className="font-black">{active.title}</span>. Complete it to unlock other tracks.
-              </p>
-              <button
-                onClick={() => handleStartFromGrid(activeCourseId)}
-                className="ml-auto shrink-0 flex items-center gap-1 bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Continue <ChevronRight className="w-3 h-3" />
-              </button>
+        {/* ── STAT CARDS — fully dynamic from real data ── */}
+        {hasStartedCourse && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+            {/* Overall progress ring */}
+            <div className="col-span-2 lg:col-span-1 relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-4 sm:p-5 shadow-lg shadow-blue-200/60 text-white flex items-center gap-3 sm:gap-4">
+              <svg className="absolute -right-5 -bottom-5 w-28 h-28 opacity-10" viewBox="0 0 96 96">
+                <circle cx="48" cy="48" r="40" fill="none" stroke="white" strokeWidth="16" />
+              </svg>
+              <div className="relative flex-shrink-0">
+                <svg width="48" height="48" style={{ transform: "rotate(-90deg)" }}>
+                  <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="5" />
+                  <circle
+                    cx="24" cy="24" r="18" fill="none" stroke="white" strokeWidth="5"
+                    strokeDasharray={`${(overallPct / 100) * 113.1} 113.1`}
+                    strokeLinecap="round"
+                    style={{ transition: "stroke-dasharray 0.9s ease" }}
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-[9px] font-black">{overallPct}%</span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-blue-200 text-[9px] font-bold uppercase tracking-widest leading-none">Overall</p>
+                <p className="text-2xl sm:text-[26px] font-black leading-none mt-1">
+                  {completedLessonsCount}
+                  <span className="text-blue-300 text-xs sm:text-sm font-semibold">/{allCoursesLessonsTotal}</span>
+                </p>
+                <p className="text-blue-200 text-[10px] font-medium mt-0.5">lessons done</p>
+              </div>
+            </div>
+
+            {/* Completed courses — dynamic count */}
+            <StatPill
+              icon={CheckCircle2}
+              label="Completed"
+              value={totalCompleted}
+              sub={totalCompleted === 1 ? "track finished" : "tracks finished"}
+              accent="bg-emerald-50 text-emerald-600"
+            />
+
+            {/* Certificates — only actually earned (from Supabase) */}
+            <StatPill
+              icon={Award}
+              label="Certificates"
+              value={earnedCertCount}
+              sub={earnedCertCount === 1 ? "earned" : "earned"}
+              accent="bg-violet-50 text-violet-600"
+            />
+
+            {/* Lessons — X of Y where Y = lessons in courses the user has started */}
+            <StatPill
+              icon={BookOpen}
+              label="Lessons"
+              value={completedLessonsCount}
+              sub={
+                startedCourseLessonsTotal > 0
+                  ? `of ${startedCourseLessonsTotal} in started courses`
+                  : "lessons done"
+              }
+              accent="bg-amber-50 text-amber-600"
+            />
+          </div>
+        )}
+
+        {/* ── COMPLETED COURSES SECTION ── */}
+        {completedCourses.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Completed Courses</h2>
+                <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-0.5">
+                  {completedCourses.length} course{completedCourses.length !== 1 ? "s" : ""} finished
+                </p>
+              </div>
+            </div>
+            {/* Mobile: 1 card per scroll; sm+: grid */}
+            <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
+              {completedCourses.map((c) => (
+                <div key={c.id} className="flex-shrink-0 w-[88vw] max-w-sm sm:w-auto sm:max-w-none snap-start">
+                  <CourseCard
+                    course={c}
+                    status="completed"
+                    progressPct={100}
+                    onOpen={() => handleCourseCardClick(c.id)}
+                    onAction={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                    onCertificate={(e) => { e.stopPropagation(); openCertificate(c); }}
+                  />
+                </div>
+              ))}
             </div>
           </div>
-        ) : null;
-      })()}
+        )}
 
-      {/* Hero Banner */}
-      <div className="max-w-7xl mx-auto mb-5 sm:mb-6 md:mb-8">
-        <div className="relative bg-gradient-to-br from-blue-50 via-white to-blue-50/30 rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-blue-100/50 transition-shadow duration-300">
-          <div className="absolute top-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600" />
-          <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, rgb(37,99,235) 1px, transparent 0)`, backgroundSize: "32px 32px" }} />
-          </div>
-          <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
-            <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 lg:gap-8">
-              <div className="flex-1 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-5 w-full">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-blue-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-sm">
-                  <Rocket className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                  <span>Get Started</span>
+        {/* ── CONTINUE LEARNING / HERO ── */}
+        {activeCourse && !completedCourseIds.includes(activeCourse.id) ? (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Continue Learning</h2>
+              <button
+                onClick={() => handleCourseCardClick(activeCourse.id)}
+                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5 group"
+              >
+                View details <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
+
+            <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group/card">
+              <div className="relative w-full sm:w-52 lg:w-72 h-44 sm:h-auto flex-shrink-0 overflow-hidden bg-slate-900">
+                <img
+                  src={activeCourse.thumbnail}
+                  alt={activeCourse.title}
+                  className="absolute inset-0 w-full h-full object-cover opacity-75 group-hover/card:opacity-90 group-hover/card:scale-105 transition-all duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-slate-900/60 via-transparent to-transparent" />
+                <button
+                  onClick={() => handleStartFromGrid(activeCourse.id)}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <div className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/35 border-2 border-white/50 flex items-center justify-center backdrop-blur-sm transition-all hover:scale-110 shadow-2xl">
+                    <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                  </div>
+                </button>
+                <div className="absolute top-3 left-3 flex items-center gap-1 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Active
                 </div>
-                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-slate-900 leading-tight">
-                  Master your next{" "}
-                  <span className="text-blue-600 relative inline-block">
-                    Skill Path
-                    <svg className="absolute -bottom-1 left-0 w-full h-2 sm:h-3" viewBox="0 0 200 10" preserveAspectRatio="none">
-                      <path d="M0,5 Q50,0 100,5 T200,5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3" />
-                    </svg>
-                  </span>
-                </h2>
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium max-w-md lg:max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                  Curated tutorials in linear learning paths. Start one to unlock your progress.
-                </p>
-                <div className="pt-1 sm:pt-2">
+              </div>
+
+              <div className="flex-1 p-4 sm:p-5 lg:p-7 flex flex-col justify-between min-w-0">
+                <div>
+                  <h3 className="text-base sm:text-lg lg:text-xl font-black text-slate-900 leading-tight mb-1">
+                    {activeCourse.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400 font-medium mb-4">
+                    by {activeCourse.instructor}
+                  </p>
+
+                  {/* Lesson progress — this course only */}
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className="text-[11px] sm:text-xs font-semibold text-slate-600">
+                        <span className="font-black text-slate-800">{activeLessonsDone}</span>
+                        {" "}<span className="text-slate-400">of</span>{" "}
+                        <span className="font-black text-slate-800">{activeCourse.lessons}</span>
+                        {" "}<span className="text-slate-400">lessons completed</span>
+                      </span>
+                      <span className="text-xs font-black text-blue-600">{activeProgress}%</span>
+                    </div>
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-700"
+                        style={{ width: `${activeProgress}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                    <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-3 h-3 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Up next</p>
+                      <p className="text-[11px] sm:text-xs font-black text-slate-700">
+                        Lesson {activeLessonsDone + 1} of {activeCourse.lessons}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4">
                   <button
-                    onClick={handleExploreClick}
-                    className="group w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+                    onClick={() => handleStartFromGrid(activeCourse.id)}
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm transition-all hover:-translate-y-0.5 active:scale-95 shadow-md shadow-blue-200/60"
                   >
-                    <span>Find Your First Track</span>
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                    <Play className="w-3.5 h-3.5 fill-current" /> Resume
                   </button>
                 </div>
               </div>
-              <div className="hidden lg:grid grid-cols-2 gap-2.5 sm:gap-3 shrink-0">
+            </div>
+          </div>
+        ) : !hasStartedCourse ? (
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 rounded-2xl p-6 sm:p-8 lg:p-10 text-white shadow-2xl">
+            <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1.5px 1.5px, white 1px, transparent 0)", backgroundSize: "20px 20px" }} />
+            <div className="absolute top-0 right-0 w-56 h-56 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
+              <div className="flex-1 text-center sm:text-left">
+                <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 text-xs font-bold mb-4">
+                  <Rocket className="w-3 h-3" /> Get started
+                </div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black leading-tight mb-3">
+                  Master your next<br /><span className="text-blue-400">Skill Path</span>
+                </h2>
+                <p className="text-slate-300 text-xs sm:text-sm font-medium max-w-sm mb-5 leading-relaxed mx-auto sm:mx-0">
+                  Sequential learning tracks built for focus. Start one to unlock your progress dashboard.
+                </p>
+                <button
+                  onClick={() => onNavigate?.("explore")}
+                  className="inline-flex items-center gap-2 bg-white text-slate-900 font-black px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm hover:bg-blue-50 transition-all active:scale-95 shadow-lg"
+                >
+                  Browse Tracks <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="hidden lg:grid grid-cols-2 gap-2.5 flex-shrink-0">
                 {ALL_COURSES.slice(0, 4).map((c, i) => (
                   <div
-                    key={i}
+                    key={c.id}
                     onClick={() => handleCourseCardClick(c.id)}
-                    className={`relative w-20 h-20 xl:w-24 xl:h-24 rounded-xl overflow-hidden border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
+                    className={`w-20 h-20 rounded-xl overflow-hidden border border-white/20 shadow-lg hover:scale-105 transition-transform cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
                   >
                     <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        ) : null}
 
-      {/* Recently Started */}
-      {hasRecents && (
-        <div className="max-w-7xl mx-auto mb-7 sm:mb-8">
-          <div className="flex items-center gap-2 mb-4 sm:mb-5">
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-slate-800">Recently Started</h2>
+        {/* ── ALL LEARNING TRACKS ── */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Learning Tracks</h2>
+              <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-0.5">{ALL_COURSES.length} tracks available</p>
+            </div>
+            <button
+              onClick={() => onNavigate?.("explore")}
+              className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 border border-slate-200 bg-white hover:bg-slate-50 px-3.5 py-1.5 rounded-xl transition-all group"
+            >
+              View All <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </button>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-            {recentCourses.map((c) => {
-              const isCompleted = completedCourseIds.includes(c.id);
-              const isActive = c.id === activeCourseId;
-              const progress = isCompleted ? 100 : (progressMap[c.id]?.progressPct ?? 0);
+
+          {/*
+            Mobile: horizontal snap scroll — 1 card visible at a time (~88vw each)
+            sm+: 2-col grid | md+: 3-col | lg+: 4-col
+          */}
+          <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
+            {ALL_COURSES.map((c) => {
+              const status = getStatus(c.id);
+              const progressPct = status === "completed" ? 100 : (progressMap[c.id]?.progressPct ?? 0);
               return (
-                <div
-                  key={c.id}
-                  onClick={() => handleCourseCardClick(c.id)}
-                  className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm hover:shadow-xl transition-all overflow-hidden cursor-pointer
-                    ${isActive ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1" : "border-emerald-200 hover:border-emerald-300"}`}
-                >
-                  <div className="relative overflow-hidden">
-                    <div className="aspect-video">
-                      <img src={c.thumbnail} alt={c.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-200 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
-                        <Play className="w-4 h-4 text-blue-600 fill-current ml-0.5" />
-                      </div>
-                    </div>
-                    {isActive && (
-                      <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />In Progress
-                      </div>
-                    )}
-                    {isCompleted && (
-                      <div className="absolute inset-0 bg-emerald-900/20 flex items-end justify-end p-2">
-                        <div className="bg-white rounded-full p-1 shadow"><CheckCircle2 className="w-5 h-5 text-emerald-500" /></div>
-                      </div>
-                    )}
-                    <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-white" />
-                      <span className="text-[10px] font-semibold text-white">{c.lessons} lessons</span>
-                    </div>
-                  </div>
-                  <div className="p-4 space-y-3">
-                    <h3 className="font-black text-sm sm:text-base text-slate-800 line-clamp-1">{c.title}</h3>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                        <span className="text-slate-600 font-semibold">{isCompleted ? "Completed" : "In progress"}</span>
-                        <span className="text-slate-500 font-bold">{progress}% complete</span>
-                      </div>
-                      <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                        <div className={`h-full rounded-full transition-all duration-500 ${isCompleted ? "bg-emerald-500" : "bg-blue-500"}`} style={{ width: `${progress}%` }} />
-                      </div>
-                    </div>
-                    <div className="space-y-1.5">
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
-                        className={`w-full font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs
-                          ${isCompleted ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
-                      >
-                        {isCompleted ? <><CheckCircle2 className="w-3.5 h-3.5" /> Review</> : <><Play className="w-3.5 h-3.5 fill-current" /> Continue</>}
-                      </button>
-                      {isCompleted && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); openCertificate(c); }}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
-                        >
-                          <Award className="w-3.5 h-3.5" /> Get Certificate
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                <div key={c.id} className="flex-shrink-0 w-[88vw] max-w-sm sm:w-auto sm:max-w-none snap-start">
+                  <CourseCard
+                    course={c}
+                    status={status}
+                    progressPct={progressPct}
+                    onOpen={() => handleCourseCardClick(c.id)}
+                    onAction={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
+                    onCertificate={(e) => { e.stopPropagation(); openCertificate(c); }}
+                  />
                 </div>
               );
             })}
           </div>
-        </div>
-      )}
 
-      {/* Learning Tracks */}
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-slate-800">Learning Tracks</h2>
           <button
-            onClick={handleExploreClick}
-            className="group hidden sm:flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-semibold text-[10px] sm:text-xs transition-all"
+            onClick={() => onNavigate?.("explore")}
+            className="sm:hidden w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-600 bg-white font-semibold text-sm hover:bg-slate-50 transition-all"
           >
-            View All <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            View All Tracks <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
-          {ALL_COURSES.map((c) => {
-            const status = getStatus(c.id);
-            const isLocked = status === "locked";
-            const isCompleted = status === "completed";
-            const isActive = status === "active";
-            const progress = isCompleted ? 100 : (progressMap[c.id]?.progressPct ?? 0);
+        {/* ── NO STREAK PROMPT ── */}
+        {!hasStartedCourse && (
+          <div className="bg-white border border-slate-100 rounded-2xl p-5 sm:p-6 text-center shadow-sm">
+            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <TrendingUp className="w-5 h-5 text-amber-500" />
+            </div>
+            <h3 className="text-sm font-black text-slate-900 mb-1">Start Your Learning Streak</h3>
+            <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto mb-4">
+              Begin a course to track daily progress and build momentum.
+            </p>
+            <button
+              onClick={() => onNavigate?.("explore")}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all shadow-sm shadow-blue-200"
+            >
+              Explore Courses <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
 
-            return (
-              <div
-                key={c.id}
-                onClick={() => handleCourseCardClick(c.id)}
-                className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
-                  ${isLocked ? "border-slate-200 opacity-60"
-                    : isActive ? "border-blue-300 ring-2 ring-blue-400 ring-offset-1 hover:shadow-xl"
-                    : isCompleted ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
-                    : "border-slate-200 hover:border-blue-200 hover:shadow-xl"}`}
-              >
-                <div className="relative overflow-hidden">
-                  <div className="aspect-video">
-                    <img src={c.thumbnail} alt={c.title} className={`w-full h-full object-cover transition-transform duration-500 ${!isLocked ? "group-hover:scale-105" : ""}`} />
-                  </div>
-                  {!isLocked && (
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-200 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 shadow-xl">
-                        <Play className="w-4 h-4 text-blue-600 fill-current ml-0.5" />
-                      </div>
-                    </div>
-                  )}
-                  {isLocked && (
-                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
-                      <Lock className="w-6 h-6 text-white" />
-                      <span className="text-white text-[10px] font-bold text-center px-2">Finish active track first</span>
-                    </div>
-                  )}
-                  {isActive && (
-                    <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-1 rounded-full flex items-center gap-1 shadow">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />In Progress
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
-                    <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`} />
-                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">{progress}%</span>
-                  </div>
-                  <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
-                    <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                    <span className="text-[10px] sm:text-xs font-semibold text-white">{c.lessons} lessons</span>
-                  </div>
-                </div>
-
-                <div className="p-4 sm:p-5 space-y-3 sm:space-y-4 flex flex-col flex-1">
-                  <h3 className="font-black text-sm sm:text-base md:text-lg text-slate-800 line-clamp-1">{c.title}</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                      <span className="text-slate-600 font-semibold">{isCompleted ? "Completed" : isActive ? "In progress" : "Not started"}</span>
-                      <span className="text-slate-500 font-bold">{progress}% complete</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                      <div className={`h-full rounded-full transition-all duration-500 ${isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"}`} style={{ width: `${progress}%` }} />
-                    </div>
-                  </div>
-                  <div className="mt-auto space-y-1.5">
-                    {isLocked ? (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleCourseCardClick(c.id); }}
-                        className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"
-                      >
-                        <Play className="w-3.5 h-3.5" /> Preview Course
-                      </button>
-                    ) : isCompleted ? (
-                      <>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
-                          className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Review Course
-                        </button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); openCertificate(c); }}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-black py-2.5 sm:py-3 rounded-xl transition-all text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm shadow-blue-400/25"
-                        >
-                          <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Get Certificate
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleStartFromGrid(c.id); }}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs sm:text-sm"
-                      >
-                        <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" /> {isActive ? "Continue" : "Get Started"}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <button
-          onClick={handleExploreClick}
-          className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-all"
-        >
-          View All Tracks <ChevronRight className="w-4 h-4" />
-        </button>
       </div>
 
-      {/* Quiz modal */}
+      {/* ── MODALS ── */}
       <CourseQuiz
-        isOpen={!!quizCourse}
-        courseId={quizCourse?.id ?? ""}
-        courseTitle={quizCourse?.title ?? ""}
+        isOpen={!!quizCourse} courseId={quizCourse?.id ?? ""} courseTitle={quizCourse?.title ?? ""}
         onClose={() => setQuizCourse(null)}
-        onPassed={() => {
-          setCertCourse(quizCourse);
-          setQuizCourse(null);
-        }}
+        onPassed={() => { setCertCourse(quizCourse); setQuizCourse(null); }}
       />
-
-      {/* Certificate modal */}
       <CertificateModal
-        isOpen={!!certCourse}
-        onClose={() => setCertCourse(null)}
-        courseTitle={certCourse?.title ?? ""}
-        instructor={certCourse?.instructor ?? ""}
+        isOpen={!!certCourse} onClose={() => setCertCourse(null)}
+        courseTitle={certCourse?.title ?? ""} instructor={certCourse?.instructor ?? ""}
         justCompleted={justCompleted}
       />
     </div>
