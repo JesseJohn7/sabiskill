@@ -366,7 +366,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
           <div className="flex items-start justify-between gap-2">
             {/* Greeting — wraps freely, no truncation */}
         <h1 className="font-black text-slate-900 leading-tight tracking-tight whitespace-nowrap overflow-hidden text-ellipsis"
-        style={{ fontSize: "clamp(18px, 4vw, 48px)" }}
+        style={{ fontSize: "clamp(20px, 5vw, 48px)" }}
         >
           {greeting}, <span className="text-blue-600">{firstName}</span>{" "}
           <span className="font-normal">👋</span>
