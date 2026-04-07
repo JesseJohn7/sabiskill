@@ -44,14 +44,14 @@ function StatPill({
   accent: string;
 }) {
   return (
-    <div className="flex items-center gap-3 bg-white border border-slate-100 rounded-2xl px-4 py-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${accent}`}>
-        <Icon className="w-[17px] h-[17px]" strokeWidth={2.2} />
+    <div className="flex items-center gap-2.5 bg-white border border-slate-100 rounded-2xl px-3 py-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${accent}`}>
+        <Icon className="w-4 h-4" strokeWidth={2.2} />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 leading-none mb-0.5">{label}</p>
-        <p className="text-xl font-black text-slate-900 leading-none">{value}</p>
-        {sub && <p className="text-[10px] text-slate-400 font-medium mt-0.5">{sub}</p>}
+        <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 leading-none mb-0.5 truncate">{label}</p>
+        <p className="text-lg font-black text-slate-900 leading-none">{value}</p>
+        {sub && <p className="text-[9px] text-slate-400 font-medium mt-0.5 leading-tight">{sub}</p>}
       </div>
     </div>
   );
@@ -138,18 +138,17 @@ function CourseCard({
       </div>
 
       {/* Body */}
-      <div className="p-4 sm:p-5 flex flex-col gap-3 flex-1">
+      <div className="p-3.5 sm:p-5 flex flex-col gap-2.5 sm:gap-3 flex-1">
         <div>
-          <h3 className="font-black text-sm sm:text-[15px] text-slate-800 line-clamp-2 leading-snug mb-1">
+          <h3 className="font-black text-[13px] sm:text-[15px] text-slate-800 line-clamp-2 leading-snug mb-1">
             {course.title}
           </h3>
-          <p className="text-[11px] text-slate-400 font-medium">by {course.instructor}</p>
+          <p className="text-[10px] text-slate-400 font-medium">by {course.instructor}</p>
         </div>
 
-        {/* Dynamic lesson count — scoped to THIS course only */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-slate-500">
+            <span className="text-[10px] font-semibold text-slate-500">
               {isCompleted
                 ? "All lessons done"
                 : isActive
@@ -158,7 +157,7 @@ function CourseCard({
             </span>
             {!isLocked && (
               <span
-                className={`text-[11px] font-bold ${
+                className={`text-[10px] font-bold ${
                   isCompleted ? "text-emerald-600" : isActive ? "text-blue-600" : "text-slate-400"
                 }`}
               >
@@ -236,7 +235,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
   const [certCourse, setCertCourse] = useState<(typeof ALL_COURSES)[0] | null>(null);
   const [justCompleted, setJustCompleted] = useState(false);
   const [greeting, setGreeting] = useState("Hello");
-  // Earned certificates fetched from Supabase
   const [earnedCertCourseIds, setEarnedCertCourseIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -259,8 +257,6 @@ const HomeTab: React.FC<HomeTabProps> = ({
           setFirstName(cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
         }
 
-        // ── Fetch earned certificates from Supabase ──
-        // Adjust "certificates" table name and column names to match your schema
         const { data: certs } = await supabase
           .from("certificates")
           .select("course_id")
@@ -285,24 +281,20 @@ const HomeTab: React.FC<HomeTabProps> = ({
   const totalCompleted = completedCourseIds.length;
   const completedCourses = ALL_COURSES.filter((c) => completedCourseIds.includes(c.id));
 
-  // Lessons done = completed course lessons + current active lesson progress
   const completedLessonsCount =
     completedCourses.reduce((acc, c) => acc + c.lessons, 0) +
     (activeCourse ? Math.round((activeProgress / 100) * activeCourse.lessons) : 0);
 
-  // Lessons total for the "of X" in the Lessons stat — only courses the user has started
   const startedCourseLessonsTotal =
     completedCourses.reduce((acc, c) => acc + c.lessons, 0) +
     (activeCourse ? activeCourse.lessons : 0);
 
-  // Overall % across the whole platform
   const allCoursesLessonsTotal = ALL_COURSES.reduce((acc, c) => acc + c.lessons, 0);
   const overallPct =
     allCoursesLessonsTotal > 0
       ? Math.round((completedLessonsCount / allCoursesLessonsTotal) * 100)
       : 0;
 
-  // Certificates: only actually earned ones from Supabase
   const earnedCertCount = earnedCertCourseIds.length;
 
   const getStatus = (id: string): "completed" | "active" | "locked" | "available" => {
@@ -366,39 +358,47 @@ const HomeTab: React.FC<HomeTabProps> = ({
   // ── Dashboard ──────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-[#F7F8FA]">
-      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-7 space-y-5 sm:space-y-7">
+      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-4 sm:py-7 space-y-4 sm:space-y-7">
 
-        {/* ── GREETING — single line, large, responsive ── */}
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-none tracking-tight whitespace-nowrap truncate">
-            {greeting},&nbsp;<span className="text-blue-600">{firstName}</span>&nbsp;<span className="font-normal">👋</span>
-          </h1>
-          {hasStartedCourse && userId && (
-            <div className="flex-shrink-0">
-              <StreakBar userId={userId} />
-            </div>
-          )}
+        {/* ── GREETING — stacked on mobile so name never truncates ── */}
+        <div className="space-y-1.5">
+          {/* Row 1: greeting text + streak bar side-by-side */}
+          <div className="flex items-start justify-between gap-2">
+            {/* Greeting — wraps freely, no truncation */}
+            <h1 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+              {greeting},&nbsp;<span className="text-blue-600">{firstName}</span>&nbsp;<span className="font-normal">👋</span>
+            </h1>
+
+            {/* Streak bar — only shows when user has started, floats right */}
+            {hasStartedCourse && userId && (
+              <div className="flex-shrink-0 pt-1">
+                <StreakBar userId={userId} />
+              </div>
+            )}
+          </div>
+
+          {/* Sub-line */}
+          <p className="text-xs sm:text-sm text-slate-500 font-medium leading-snug">
+            {activeCourseId && !completedCourseIds.includes(activeCourseId)
+              ? "Complete your active track to unlock more courses."
+              : hasStartedCourse
+              ? "You're making great progress — keep it up!"
+              : "Pick a track and begin your learning journey."}
+          </p>
         </div>
-
-        {/* Sub-line */}
-        <p className="text-sm sm:text-base text-slate-500 font-medium -mt-3 leading-snug">
-          {activeCourseId && !completedCourseIds.includes(activeCourseId)
-            ? "Complete your active track to unlock more courses."
-            : hasStartedCourse
-            ? "You're making great progress — keep it up!"
-            : "Pick a track and begin your learning journey."}
-        </p>
 
         {/* ── STREAK CARD ── */}
         {hasStartedCourse && userId && <StreakCard userId={userId} />}
 
         {/* ── ACTIVE COURSE ALERT ── */}
         {activeCourseId && !completedCourseIds.includes(activeCourseId) && activeCourse && (
-          <div className="flex items-center gap-3 bg-blue-600 rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 shadow-lg shadow-blue-200/60">
+          <div className="flex items-center gap-3 bg-blue-600 rounded-2xl px-3.5 sm:px-5 py-3 sm:py-3.5 shadow-lg shadow-blue-200/60">
             <div className="w-0.5 h-7 bg-white/30 rounded-full flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-white text-[11px] sm:text-sm font-semibold truncate">
-                Active: <span className="font-black">{activeCourse.title}</span>
+              {/* Course title — clamp to 1 line on mobile */}
+              <p className="text-white text-xs sm:text-sm font-semibold line-clamp-1">
+                <span className="opacity-70">Active: </span>
+                <span className="font-black">{activeCourse.title}</span>
               </p>
               <p className="text-blue-200 text-[10px] font-medium mt-0.5">
                 {activeLessonsDone} of {activeCourse.lessons} lessons · {activeProgress}% done
@@ -413,20 +413,20 @@ const HomeTab: React.FC<HomeTabProps> = ({
           </div>
         )}
 
-        {/* ── STAT CARDS — fully dynamic from real data ── */}
+        {/* ── STAT CARDS ── */}
         {hasStartedCourse && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
-            {/* Overall progress ring */}
-            <div className="col-span-2 lg:col-span-1 relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-4 sm:p-5 shadow-lg shadow-blue-200/60 text-white flex items-center gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {/* Overall progress ring — spans full width on mobile */}
+            <div className="col-span-2 sm:col-span-1 relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-3.5 sm:p-5 shadow-lg shadow-blue-200/60 text-white flex items-center gap-3">
               <svg className="absolute -right-5 -bottom-5 w-28 h-28 opacity-10" viewBox="0 0 96 96">
                 <circle cx="48" cy="48" r="40" fill="none" stroke="white" strokeWidth="16" />
               </svg>
               <div className="relative flex-shrink-0">
-                <svg width="48" height="48" style={{ transform: "rotate(-90deg)" }}>
-                  <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="5" />
+                <svg width="44" height="44" style={{ transform: "rotate(-90deg)" }}>
+                  <circle cx="22" cy="22" r="16" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="4.5" />
                   <circle
-                    cx="24" cy="24" r="18" fill="none" stroke="white" strokeWidth="5"
-                    strokeDasharray={`${(overallPct / 100) * 113.1} 113.1`}
+                    cx="22" cy="22" r="16" fill="none" stroke="white" strokeWidth="4.5"
+                    strokeDasharray={`${(overallPct / 100) * 100.5} 100.5`}
                     strokeLinecap="round"
                     style={{ transition: "stroke-dasharray 0.9s ease" }}
                   />
@@ -435,15 +435,15 @@ const HomeTab: React.FC<HomeTabProps> = ({
               </div>
               <div className="min-w-0">
                 <p className="text-blue-200 text-[9px] font-bold uppercase tracking-widest leading-none">Overall</p>
-                <p className="text-2xl sm:text-[26px] font-black leading-none mt-1">
+                <p className="text-2xl font-black leading-none mt-1">
                   {completedLessonsCount}
-                  <span className="text-blue-300 text-xs sm:text-sm font-semibold">/{allCoursesLessonsTotal}</span>
+                  <span className="text-blue-300 text-xs font-semibold">/{allCoursesLessonsTotal}</span>
                 </p>
                 <p className="text-blue-200 text-[10px] font-medium mt-0.5">lessons done</p>
               </div>
             </div>
 
-            {/* Completed courses — dynamic count */}
+            {/* Completed courses */}
             <StatPill
               icon={CheckCircle2}
               label="Completed"
@@ -452,23 +452,23 @@ const HomeTab: React.FC<HomeTabProps> = ({
               accent="bg-emerald-50 text-emerald-600"
             />
 
-            {/* Certificates — only actually earned (from Supabase) */}
+            {/* Certificates */}
             <StatPill
               icon={Award}
               label="Certificates"
               value={earnedCertCount}
-              sub={earnedCertCount === 1 ? "earned" : "earned"}
+              sub="earned"
               accent="bg-violet-50 text-violet-600"
             />
 
-            {/* Lessons — X of Y where Y = lessons in courses the user has started */}
+            {/* Lessons */}
             <StatPill
               icon={BookOpen}
               label="Lessons"
               value={completedLessonsCount}
               sub={
                 startedCourseLessonsTotal > 0
-                  ? `of ${startedCourseLessonsTotal} in started courses`
+                  ? `of ${startedCourseLessonsTotal} started`
                   : "lessons done"
               }
               accent="bg-amber-50 text-amber-600"
@@ -481,16 +481,15 @@ const HomeTab: React.FC<HomeTabProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Completed Courses</h2>
+                <h2 className="text-sm sm:text-[15px] font-black text-slate-900">Completed Courses</h2>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-0.5">
                   {completedCourses.length} course{completedCourses.length !== 1 ? "s" : ""} finished
                 </p>
               </div>
             </div>
-            {/* Mobile: 1 card per scroll; sm+: grid */}
-            <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
+            <div className="flex gap-3.5 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
               {completedCourses.map((c) => (
-                <div key={c.id} className="flex-shrink-0 w-[88vw] max-w-sm sm:w-auto sm:max-w-none snap-start">
+                <div key={c.id} className="flex-shrink-0 w-[80vw] max-w-[300px] sm:w-auto sm:max-w-none snap-start">
                   <CourseCard
                     course={c}
                     status="completed"
@@ -509,7 +508,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         {activeCourse && !completedCourseIds.includes(activeCourse.id) ? (
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Continue Learning</h2>
+              <h2 className="text-sm sm:text-[15px] font-black text-slate-900">Continue Learning</h2>
               <button
                 onClick={() => handleCourseCardClick(activeCourse.id)}
                 className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5 group"
@@ -518,14 +517,19 @@ const HomeTab: React.FC<HomeTabProps> = ({
               </button>
             </div>
 
+            {/* Mobile: stacked layout; sm+: horizontal */}
             <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group/card">
-              <div className="relative w-full sm:w-52 lg:w-72 h-44 sm:h-auto flex-shrink-0 overflow-hidden bg-slate-900">
+              {/* Thumbnail — 16:9 on mobile, fixed width on sm+ */}
+              <div className="relative w-full sm:w-52 lg:w-72 flex-shrink-0 overflow-hidden bg-slate-900"
+                style={{ aspectRatio: "16/9" }}
+                // Override aspect-ratio on sm+ with inline style fallback
+              >
                 <img
                   src={activeCourse.thumbnail}
                   alt={activeCourse.title}
                   className="absolute inset-0 w-full h-full object-cover opacity-75 group-hover/card:opacity-90 group-hover/card:scale-105 transition-all duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-slate-900/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent sm:bg-gradient-to-r" />
                 <button
                   onClick={() => handleStartFromGrid(activeCourse.id)}
                   className="absolute inset-0 flex items-center justify-center"
@@ -544,18 +548,18 @@ const HomeTab: React.FC<HomeTabProps> = ({
                   <h3 className="text-base sm:text-lg lg:text-xl font-black text-slate-900 leading-tight mb-1">
                     {activeCourse.title}
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 font-medium mb-4">
+                  <p className="text-[11px] sm:text-xs text-slate-400 font-medium mb-3 sm:mb-4">
                     by {activeCourse.instructor}
                   </p>
 
-                  {/* Lesson progress — this course only */}
-                  <div className="mb-4">
+                  {/* Progress */}
+                  <div className="mb-3 sm:mb-4">
                     <div className="flex justify-between items-center mb-1.5">
                       <span className="text-[11px] sm:text-xs font-semibold text-slate-600">
                         <span className="font-black text-slate-800">{activeLessonsDone}</span>
                         {" "}<span className="text-slate-400">of</span>{" "}
                         <span className="font-black text-slate-800">{activeCourse.lessons}</span>
-                        {" "}<span className="text-slate-400">lessons completed</span>
+                        {" "}<span className="text-slate-400">lessons</span>
                       </span>
                       <span className="text-xs font-black text-blue-600">{activeProgress}%</span>
                     </div>
@@ -592,18 +596,18 @@ const HomeTab: React.FC<HomeTabProps> = ({
             </div>
           </div>
         ) : !hasStartedCourse ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 rounded-2xl p-6 sm:p-8 lg:p-10 text-white shadow-2xl">
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 rounded-2xl p-5 sm:p-8 lg:p-10 text-white shadow-2xl">
             <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1.5px 1.5px, white 1px, transparent 0)", backgroundSize: "20px 20px" }} />
             <div className="absolute top-0 right-0 w-56 h-56 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             <div className="relative z-10 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
-              <div className="flex-1 text-center sm:text-left">
-                <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 text-xs font-bold mb-4">
+              <div className="flex-1 text-center sm:text-left w-full">
+                <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 text-xs font-bold mb-3 sm:mb-4">
                   <Rocket className="w-3 h-3" /> Get started
                 </div>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black leading-tight mb-3">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black leading-tight mb-2 sm:mb-3">
                   Master your next<br /><span className="text-blue-400">Skill Path</span>
                 </h2>
-                <p className="text-slate-300 text-xs sm:text-sm font-medium max-w-sm mb-5 leading-relaxed mx-auto sm:mx-0">
+                <p className="text-slate-300 text-xs sm:text-sm font-medium max-w-sm mb-4 sm:mb-5 leading-relaxed mx-auto sm:mx-0">
                   Sequential learning tracks built for focus. Start one to unlock your progress dashboard.
                 </p>
                 <button
@@ -632,7 +636,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         <div>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-[14px] sm:text-[15px] font-black text-slate-900">Learning Tracks</h2>
+              <h2 className="text-sm sm:text-[15px] font-black text-slate-900">Learning Tracks</h2>
               <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-0.5">{ALL_COURSES.length} tracks available</p>
             </div>
             <button
@@ -643,16 +647,13 @@ const HomeTab: React.FC<HomeTabProps> = ({
             </button>
           </div>
 
-          {/*
-            Mobile: horizontal snap scroll — 1 card visible at a time (~88vw each)
-            sm+: 2-col grid | md+: 3-col | lg+: 4-col
-          */}
-          <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
+          {/* Mobile: 80vw cards in horizontal scroll; sm+: grid */}
+          <div className="flex gap-3.5 overflow-x-auto pb-3 snap-x snap-mandatory sm:pb-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:gap-4">
             {ALL_COURSES.map((c) => {
               const status = getStatus(c.id);
               const progressPct = status === "completed" ? 100 : (progressMap[c.id]?.progressPct ?? 0);
               return (
-                <div key={c.id} className="flex-shrink-0 w-[88vw] max-w-sm sm:w-auto sm:max-w-none snap-start">
+                <div key={c.id} className="flex-shrink-0 w-[80vw] max-w-[300px] sm:w-auto sm:max-w-none snap-start">
                   <CourseCard
                     course={c}
                     status={status}
@@ -668,7 +669,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
           <button
             onClick={() => onNavigate?.("explore")}
-            className="sm:hidden w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-600 bg-white font-semibold text-sm hover:bg-slate-50 transition-all"
+            className="sm:hidden w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-600 bg-white font-semibold text-sm hover:bg-slate-50 transition-all active:scale-95"
           >
             View All Tracks <ChevronRight className="w-4 h-4" />
           </button>
@@ -676,7 +677,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
         {/* ── NO STREAK PROMPT ── */}
         {!hasStartedCourse && (
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 sm:p-6 text-center shadow-sm">
+          <div className="bg-white border border-slate-100 rounded-2xl p-4 sm:p-6 text-center shadow-sm">
             <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-3">
               <TrendingUp className="w-5 h-5 text-amber-500" />
             </div>
@@ -686,7 +687,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             </p>
             <button
               onClick={() => onNavigate?.("explore")}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all shadow-sm shadow-blue-200"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all shadow-sm shadow-blue-200 active:scale-95"
             >
               Explore Courses <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
