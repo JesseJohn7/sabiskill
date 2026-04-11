@@ -293,8 +293,8 @@ const CommunityTab: React.FC = () => {
               return (
                 <div
                   key={community.id}
-                  className="relative bg-white rounded-2xl border border-slate-100 shadow-sm
-                    hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden
+                  className="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm
+                    hover:shadow-lg dark:hover:shadow-slate-950/50 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden
                     flex flex-col"
                 >
                   {/* Top gradient accent bar */}
@@ -310,7 +310,7 @@ const CommunityTab: React.FC = () => {
                     {/* Icon + badges row */}
                     <div className="flex items-start justify-between">
                       <div
-                        className={`p-2 rounded-xl bg-gradient-to-br ${community.gradient} border border-white shadow-sm flex items-center justify-center`}
+                        className={`p-2 rounded-xl bg-gradient-to-br ${community.gradient} border border-white dark:border-slate-800 shadow-sm flex items-center justify-center`}
                       >
                         {community.logoSrc ? (
                           <img

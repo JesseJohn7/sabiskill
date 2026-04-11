@@ -878,6 +878,11 @@ const COURSE_REVIEWS: Record<
     { name: "Ben T.", rating: 4, date: "Dec 2024", comment: "Great foundation for anyone wanting to level up their life." },
     { name: "Fiona G.", rating: 5, date: "Nov 2024", comment: "Changed the way I think about habits and goals completely." },
   ],
+  "ai-full-course": [
+  { name: "Emeka A.", rating: 5, date: "Apr 2025", comment: "The reinforcement learning and RNN sections are incredibly thorough. Best free AI course available." },
+  { name: "Ngozi B.", rating: 5, date: "Apr 2025", comment: "The maths for ML section finally made gradient descent click for me. The LLM chatbot demo is a bonus." },
+  { name: "Kofi D.", rating: 4, date: "Apr 2025", comment: "10+ hours of quality content — the transformers and AI clone sections alone are worth it." },
+],
   "node-express": [
   { name: "Chidi O.", rating: 5, date: "Apr 2025", comment: "The MVC breakdown finally made controllers and routes click for me. Best backend intro I've found." },
   { name: "Amara K.", rating: 5, date: "Apr 2025", comment: "Loved how everything was tested in Postman step by step. The bcrypt section is gold." },
