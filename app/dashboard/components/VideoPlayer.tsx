@@ -161,6 +161,25 @@ const COURSES: Record<string, CourseConfig> = {
     { id: 43, title: "Final Commit & Conclusion",                 videoId: "KOutPbKc9UM", timestamp: 8513,  duration: "rest",  completed: false, emoji: "🎓" },
   ],
 },
+
+"ai-full-course": {
+  title: "Artificial Intelligence Full Course 2025",
+  subtitle: "Complete AI Bootcamp — Deep Learning, RL, RNNs, LLMs & Projects",
+  playlist: [
+    { id: 1,  title: "Introduction to AI Full Course 2025",   videoId: "LGCZ-Fhm48c", timestamp: 0,     duration: "3:00",  completed: false, emoji: "🎬" },
+    { id: 2,  title: "Introduction to AI",                    videoId: "LGCZ-Fhm48c", timestamp: 180,   duration: "19:06", completed: false, emoji: "🤖" },
+    { id: 3,  title: "What is Deep Learning",                 videoId: "LGCZ-Fhm48c", timestamp: 1326,  duration: "44:53", completed: false, emoji: "🧠" },
+    { id: 4,  title: "Mathematics for Machine Learning",      videoId: "LGCZ-Fhm48c", timestamp: 4019,  duration: "1:50:24",completed: false, emoji: "📐" },
+    { id: 5,  title: "AI Engineer Roadmap",                   videoId: "LGCZ-Fhm48c", timestamp: 10643, duration: "9:19",  completed: false, emoji: "🗺️" },
+    { id: 6,  title: "Reinforcement Learning",                videoId: "LGCZ-Fhm48c", timestamp: 11202, duration: "3:17:57",completed: false, emoji: "🎮" },
+    { id: 7,  title: "Recurrent Neural Networks (RNN)",       videoId: "LGCZ-Fhm48c", timestamp: 23079, duration: "2:04:15",completed: false, emoji: "🔄" },
+    { id: 8,  title: "Neural Network Tutorial",               videoId: "LGCZ-Fhm48c", timestamp: 30534, duration: "53:08", completed: false, emoji: "🕸️" },
+    { id: 9,  title: "Create LLM Chatbots — Full Demo",       videoId: "LGCZ-Fhm48c", timestamp: 33722, duration: "41:55", completed: false, emoji: "💬" },
+    { id: 10, title: "How to Create an AI Clone",             videoId: "LGCZ-Fhm48c", timestamp: 36237, duration: "10:53", completed: false, emoji: "🪞" },
+    { id: 11, title: "Transformers in AI",                    videoId: "LGCZ-Fhm48c", timestamp: 36890, duration: "7:18",  completed: false, emoji: "⚡" },
+    { id: 12, title: "AI Projects for Beginners",             videoId: "LGCZ-Fhm48c", timestamp: 37328, duration: "rest",  completed: false, emoji: "🛠️" },
+  ],
+},
   "python-ai": {
   title: "Python for AI & Development",
   subtitle: "Complete Python Course — Dave Gray",

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, User, Menu, X } from "lucide-react";
+import { Search, User, Menu, X, Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@/app/lib/ThemeContext";
 
 interface Course {
   id: string;
@@ -57,6 +58,7 @@ const Header: React.FC<Props> = ({
   onSettingsClick, // <-- add this
 }) =>  {
   const router = useRouter();
+  const { isDark, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Course[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -91,7 +93,7 @@ const Header: React.FC<Props> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
+    <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800">
       <div className="h-16 sm:h-18 lg:h-20 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
         
         {/* Left Section */}
@@ -100,7 +102,7 @@ const Header: React.FC<Props> = ({
           {/* Mobile Menu */}
           <button
             onClick={toggleSidebar}
-            className="lg:hidden p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors flex-shrink-0"
+            className="lg:hidden p-2.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors flex-shrink-0"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -108,7 +110,7 @@ const Header: React.FC<Props> = ({
           {/* Search */}
           <div className="relative w-full max-w-full sm:max-w-md lg:max-w-2xl">
             
-            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-slate-500" />
 
             <input
               type="text"
@@ -116,15 +118,15 @@ const Header: React.FC<Props> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => searchQuery && setShowResults(true)}
-              className="w-full pl-10 sm:pl-12 pr-10 py-2.5 sm:py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm sm:text-base font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-blue-600/20 focus:bg-white focus:border-blue-600/40 transition-all outline-none"
+              className="w-full pl-10 sm:pl-12 pr-10 py-2.5 sm:py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm sm:text-base font-medium text-slate-900 dark:text-slate-50 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600/20 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-600/40 transition-all outline-none"
             />
 
             {searchQuery && (
               <button
                 onClick={handleClearSearch}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-200 rounded-full"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full"
               >
-                <X className="w-4 h-4 text-slate-400" />
+                <X className="w-4 h-4 text-slate-400 dark:text-slate-500" />
               </button>
             )}
 
@@ -136,12 +138,12 @@ const Header: React.FC<Props> = ({
                   onClick={() => setShowResults(false)}
                 />
 
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 max-h-[420px] overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50 max-h-[420px] overflow-y-auto">
                   
                   {searchResults.length > 0 ? (
                     <>
-                      <div className="px-4 py-2 bg-slate-50 border-b border-slate-200">
-                        <p className="text-xs font-bold text-slate-600 uppercase tracking-wide">
+                      <div className="px-4 py-2 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                        <p className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                           Courses ({searchResults.length})
                         </p>
                       </div>
@@ -150,7 +152,7 @@ const Header: React.FC<Props> = ({
                         <button
                           key={course.id}
                           onClick={() => handleCourseClick(course.id)}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0 text-left"
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700 last:border-b-0 text-left"
                         >
                           <img
                             src={course.thumbnail}
@@ -159,10 +161,10 @@ const Header: React.FC<Props> = ({
                           />
 
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-slate-900 truncate">
+                            <p className="text-sm font-bold text-slate-900 dark:text-slate-50 truncate">
                               {course.title}
                             </p>
-                            <p className="text-xs text-slate-600">
+                            <p className="text-xs text-slate-600 dark:text-slate-400">
                               {course.lessons} lessons
                             </p>
                           </div>
@@ -171,10 +173,10 @@ const Header: React.FC<Props> = ({
                     </>
                   ) : (
                     <div className="px-4 py-8 text-center">
-                      <p className="text-sm font-medium text-slate-600">
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
                         No courses found
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                         Try another keyword
                       </p>
                     </div>
@@ -190,10 +192,22 @@ const Header: React.FC<Props> = ({
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           
           <button
-            onClick={onSettingsClick}
-            className="w-9 h-9 sm:w-10 sm:h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 transition-colors"
+            onClick={toggleTheme}
+            className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
-            <User className="w-5 h-5 text-slate-500" />
+            {isDark ? (
+              <Sun className="w-5 h-5 text-amber-500" />
+            ) : (
+              <Moon className="w-5 h-5 text-slate-600" />
+            )}
+          </button>
+
+          <button
+            onClick={onSettingsClick}
+            className="w-9 h-9 sm:w-10 sm:h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+          >
+            <User className="w-5 h-5 text-slate-500 dark:text-slate-400" />
           </button>
 
         </div>
