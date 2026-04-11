@@ -385,7 +385,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "Keep going , you're on an active track!"
               : hasStartedCourse
-              ? "Great progress — keep the momentum going."
+              ? "Great progress , keep the momentum going."
               : "Choose a track and start mastering a new skill today."}
           </p>
         </div>
@@ -395,7 +395,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
         {/* ── NO COURSE: HERO BANNER ── */}
         {!hasStartedCourse && (
-          <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-2xl text-white shadow-2xl">
+          <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-2xl text-white shadow-2xl">
             {/* dot grid */}
             <div
               className="absolute inset-0 opacity-[0.06]"
