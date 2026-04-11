@@ -570,19 +570,19 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
 
       {/* Backdrop */}
       <div
-        className="absolute inset-0 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm dark:backdrop-blur"
         style={{ background: "rgba(15,15,20,0.75)" }}
         onClick={phase === "intro" ? onClose : undefined}
       />
 
-      <div className="qz-root qz-modal relative z-10 w-full max-w-[480px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+      <div className="qz-root qz-modal relative z-10 w-full max-w-[480px] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
         style={{ maxHeight: "90vh" }}>
 
         {/* Top accent bar */}
         <div className="h-1 flex-shrink-0" style={{ background: `linear-gradient(90deg, ${accent}, ${cfg.color}, ${accent})` }} />
 
         {/* Header */}
-        <div className="flex items-center gap-3 px-5 py-3.5 border-b border-slate-100 flex-shrink-0">
+        <div className="flex items-center gap-3 px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
             style={{ background: light }}>
             <span>{cfg.emoji}</span>
@@ -591,12 +591,12 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
             <p className="text-[9px] font-bold uppercase tracking-[0.12em] mb-0.5" style={{ color: accent }}>
               Knowledge Check
             </p>
-            <p className="text-sm font-black text-slate-800 truncate leading-tight">{courseTitle}</p>
+            <p className="text-sm font-black text-slate-800 dark:text-slate-100 truncate leading-tight">{courseTitle}</p>
           </div>
           {phase === "intro" && (
             <button onClick={onClose}
-              className="qz-btn w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center flex-shrink-0">
-              <span className="w-4 h-4 text-slate-500"><Icons.X /></span>
+              className="qz-btn w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center flex-shrink-0">
+              <span className="w-4 h-4 text-slate-500 dark:text-slate-400"><Icons.X /></span>
             </button>
           )}
           {phase === "quiz" && (
@@ -680,12 +680,12 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
               {/* Progress */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-[11px] font-bold text-slate-400">
-                    Question {Math.min(currentIdx + 1, TOTAL)}<span className="text-slate-300"> / {TOTAL}</span>
+                  <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500">
+                    Question {Math.min(currentIdx + 1, TOTAL)}<span className="text-slate-300 dark:text-slate-600"> / {TOTAL}</span>
                   </span>
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-[11px] font-bold text-slate-500">{correctCount} correct</span>
+                    <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">{correctCount} correct</span>
                   </div>
                 </div>
                 <ProgressBar value={progress} color={accent} />
@@ -713,16 +713,16 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
                     </div>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm font-bold text-slate-700">Generating your question</p>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Generating your question</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
                       AI is crafting something fresh{"".padEnd(loadingDots, ".")}
                     </p>
                   </div>
                   {/* Skeleton */}
                   <div className="w-full space-y-3 mt-2">
-                    <div className="h-16 rounded-2xl qz-shimmer" />
+                    <div className="h-16 rounded-2xl qz-shimmer dark:opacity-20" />
                     {[1,2,3,4].map(i => (
-                      <div key={i} className="h-12 rounded-xl qz-shimmer" style={{ opacity: 1 - i * 0.15 }} />
+                      <div key={i} className="h-12 rounded-xl qz-shimmer dark:opacity-20" style={{ opacity: 1 - i * 0.15 }} />
                     ))}
                   </div>
                 </div>

@@ -520,15 +520,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   if (!course || course.playlist.length === 0) {
     return (
-      <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
+      <div className="bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center min-h-[60vh] gap-4 p-8">
         <div className="text-5xl">🚧</div>
-        <h2 className="text-xl font-bold text-slate-700">
+        <h2 className="text-xl font-bold text-slate-700 dark:text-slate-200">
           {course ? course.title : "Course Not Found"}
         </h2>
-        <p className="text-slate-500 text-sm">
+        <p className="text-slate-500 dark:text-slate-400 text-sm">
           {course ? "This course doesn't have video content yet. Check back soon!" : "We couldn't find that course."}
         </p>
-        <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors font-semibold text-slate-700 text-sm">
+        <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-semibold text-slate-700 dark:text-slate-200 text-sm">
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
       </div>
@@ -718,23 +718,23 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const isVideoUnlocked = (index: number) => index === 0 || playlist[index - 1].completed;
 
   return (
-    <div className="bg-slate-50">
+    <div className="bg-slate-50 dark:bg-slate-950">
       {showConfetti && <Confetti />}
 
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-4 sticky top-0 z-10">
-        <button onClick={onBack} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700">
+      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex items-center gap-4 sticky top-0 z-10">
+        <button onClick={onBack} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors whitespace-nowrap text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200">
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
         <div className="flex-1 min-w-0">
-          <h1 className="font-bold text-slate-800 truncate">{course.title}</h1>
-          <p className="text-xs text-slate-500">{course.subtitle}</p>
+          <h1 className="font-bold text-slate-800 dark:text-slate-100 truncate">{course.title}</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{course.subtitle}</p>
         </div>
         <div className="flex items-center gap-2">
           {allCompleted && (
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">🎉 Completed!</span>
+            <span className="text-xs bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full font-medium">🎉 Completed!</span>
           )}
-          <span className="text-sm font-bold text-blue-600">{progressPercentage}%</span>
+          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{progressPercentage}%</span>
         </div>
       </div>
 
@@ -745,51 +745,51 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             <div id="yt-player" className="w-full h-full" />
           </div>
 
-          <div className="mt-4 bg-white rounded-xl p-4 shadow-sm border border-slate-200">
+          <div className="mt-4 bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
                   {currentVideo.emoji && <span>{currentVideo.emoji}</span>}
                   {currentVideo.title}
                 </h2>
-                <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
+                <div className="flex items-center gap-3 mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{currentVideo.duration}</span>
                   <span>Lesson {currentVideoIndex + 1} of {playlist.length}</span>
                 </div>
               </div>
 
               {!currentVideo.completed ? (
-                <button onClick={handleMarkComplete} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shrink-0">
+                <button onClick={handleMarkComplete} className="flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg font-medium text-sm transition-colors shrink-0">
                   <Check className="w-4 h-4" /> Mark Complete
                 </button>
               ) : (
-                <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium text-sm shrink-0">
+                <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400 rounded-lg font-medium text-sm shrink-0">
                   <Check className="w-4 h-4" /> Completed
                 </div>
               )}
             </div>
 
-            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2">
               <Play className="w-3 h-3 text-blue-400 shrink-0" />
               <span>Lessons auto-complete as you watch — progress is saved automatically</span>
             </div>
 
             <div className="flex gap-2 mt-4">
-              <button onClick={handlePreviousVideo} disabled={currentVideoIndex === 0} className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              <button onClick={handlePreviousVideo} disabled={currentVideoIndex === 0} className="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                 <ChevronLeft className="w-4 h-4" /> Previous
               </button>
-              <button onClick={handleNextVideo} disabled={currentVideoIndex === playlist.length - 1 || !currentVideo.completed} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto">
+              <button onClick={handleNextVideo} disabled={currentVideoIndex === playlist.length - 1 || !currentVideo.completed} className="flex items-center gap-2 px-4 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto">
                 Next Lesson <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
           {allCompleted && (
-            <div className="mt-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 text-white text-center shadow-lg">
+            <div className="mt-4 bg-gradient-to-br from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-900 rounded-xl p-6 text-white text-center shadow-lg">
               <div className="text-4xl mb-3">🎉</div>
               <h3 className="text-xl font-bold mb-2">Congratulations!</h3>
-              <p className="text-blue-100 mb-4">You've completed {course.title} with {playlist.length} lessons!</p>
-              <button onClick={onBack} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+              <p className="text-blue-100 dark:text-blue-200 mb-4">You've completed {course.title} with {playlist.length} lessons!</p>
+              <button onClick={onBack} className="bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors">
                 Back to Courses
               </button>
             </div>
@@ -798,12 +798,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
         {/* Playlist Sidebar */}
         <div className="w-full lg:w-80 xl:w-96">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="p-4 border-b border-slate-100">
-              <h3 className="font-bold text-slate-800">Course Content</h3>
-              <p className="text-xs text-slate-500 mt-1">{completedCount} of {playlist.length} lessons completed</p>
-              <div className="mt-2 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }} />
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="font-bold text-slate-800 dark:text-slate-100">Course Content</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{completedCount} of {playlist.length} lessons completed</p>
+              <div className="mt-2 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }} />
               </div>
             </div>
 
@@ -813,9 +813,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 const isCurrent  = index === currentVideoIndex;
                 return (
                   <button key={video.id} onClick={() => handleVideoSelect(index)} disabled={!isUnlocked}
-                    className={`w-full p-3 sm:p-4 flex items-start gap-3 border-b border-slate-100 transition-all text-left
-                      ${isCurrent  ? "bg-blue-50 border-l-4 border-l-blue-600" : ""}
-                      ${isUnlocked ? "hover:bg-slate-50 cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
+                    className={`w-full p-3 sm:p-4 flex items-start gap-3 border-b border-slate-100 dark:border-slate-800 transition-all text-left
+                      ${isCurrent  ? "bg-blue-50 dark:bg-blue-950/30 border-l-4 border-l-blue-600" : ""}
+                      ${isUnlocked ? "hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
                   >
                     <div className="shrink-0 w-6 h-6 flex items-center justify-center mt-0.5">
                       {video.completed ? (
@@ -827,19 +827,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                           <Play className="w-3 h-3 text-blue-400 ml-0.5" />
                         </div>
                       ) : (
-                        <div className="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center">
-                          <Lock className="w-3 h-3 text-slate-400" />
+                        <div className="w-6 h-6 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center">
+                          <Lock className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${isCurrent ? "text-blue-700" : "text-slate-700"}`}>
+                      <p className={`text-sm font-medium truncate ${isCurrent ? "text-blue-700 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"}`}>
                         {video.emoji && <span className="mr-1">{video.emoji}</span>}{video.title}
                       </p>
-                      <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 flex items-center gap-1">
                         <Clock className="w-3 h-3" />{video.duration}
                       </p>
-                      {!isUnlocked && <p className="text-xs text-slate-400 mt-0.5">🔒 Complete previous lesson</p>}
+                      {!isUnlocked && <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">🔒 Complete previous lesson</p>}
                     </div>
                   </button>
                 );

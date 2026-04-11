@@ -978,15 +978,15 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
     return (
       <div className="flex flex-col items-center gap-2 py-6 text-center">
         <CheckCircle2 className="w-10 h-10 text-emerald-500" />
-        <p className="font-bold text-slate-800">Thanks for your review!</p>
-        <p className="text-xs text-slate-500">Your feedback helps others decide.</p>
+        <p className="font-bold text-slate-800 dark:text-slate-200">Thanks for your review!</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Your feedback helps others decide.</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <p className="font-bold text-slate-800 text-sm">Leave a Review</p>
+      <p className="font-bold text-slate-800 dark:text-slate-200 text-sm">Leave a Review</p>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((s) => (
           <button
@@ -997,13 +997,13 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
           >
             <Star
               className={`w-7 h-7 transition-colors ${
-                s <= (hoverRating || rating) ? "text-amber-400 fill-amber-400" : "text-slate-300 fill-slate-300"
+                s <= (hoverRating || rating) ? "text-amber-400 fill-amber-400" : "text-slate-300 dark:text-slate-600 fill-slate-300 dark:fill-slate-600"
               }`}
             />
           </button>
         ))}
         {rating > 0 && (
-          <span className="ml-2 text-xs font-semibold text-slate-600">
+          <span className="ml-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
             {["", "Poor", "Fair", "Good", "Very Good", "Excellent"][rating]}
           </span>
         )}
@@ -1013,19 +1013,19 @@ function ReviewForm({ courseId, onSubmit }: ReviewFormProps) {
         placeholder="Your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
       />
       <textarea
         placeholder="Share your experience with this course..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={3}
-        className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+        className="w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent resize-none"
       />
       <button
         onClick={handleSubmit}
         disabled={!name.trim() || !rating || !comment.trim()}
-        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95"
+        className="flex items-center gap-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-200 dark:disabled:bg-slate-700 disabled:text-slate-400 dark:disabled:text-slate-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95"
       >
         <Send className="w-4 h-4" /> Submit Review
       </button>
@@ -1082,8 +1082,8 @@ export function CourseDetail({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           <button
             onClick={onBack}
@@ -1128,7 +1128,7 @@ export function CourseDetail({
             </div>
 
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-2xl">
                 <VideoPlayer
                   videoId={activeVideoId}
                   title={activeVideoTitle}
@@ -1136,8 +1136,8 @@ export function CourseDetail({
                   startSeconds={activeStartSeconds}
                 />
                 {activeLesson && (
-                  <div className="px-4 py-2 bg-slate-50 border-b border-slate-100">
-                    <p className="text-[10px] text-slate-500 font-semibold truncate">
+                  <div className="px-4 py-2 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-800">
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold truncate">
                       Now playing: {activeVideoTitle}
                     </p>
                   </div>
@@ -1147,11 +1147,11 @@ export function CourseDetail({
                     <>
                       <button
                         disabled
-                        className="w-full bg-slate-100 text-slate-400 font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed"
+                        className="w-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed"
                       >
                         <Lock className="w-4 h-4" /> Locked
                       </button>
-                      <p className="text-xs text-center text-slate-500">
+                      <p className="text-xs text-center text-slate-500 dark:text-slate-400">
                         Finish your active track to unlock this course.
                       </p>
                     </>
@@ -1159,13 +1159,13 @@ export function CourseDetail({
                     <div className="space-y-2">
                       <button
                         onClick={() => onStart(course.id)}
-                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95"
+                        className="w-full bg-emerald-500 dark:bg-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95"
                       >
                         <CheckCircle2 className="w-4 h-4" /> Review Course
                       </button>
                       <button
                         onClick={() => onGetCertificate?.(course)}
-                        className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-black py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-amber-400/25"
+                        className="w-full bg-gradient-to-r from-amber-400 to-amber-500 dark:from-amber-600 dark:to-amber-700 hover:from-amber-300 hover:to-amber-400 dark:hover:from-amber-700 dark:hover:to-amber-800 text-slate-900 dark:text-slate-100 font-black py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-amber-400/25 dark:shadow-amber-900/40"
                       >
                         <Award className="w-4 h-4" /> Get My Certificate
                       </button>
@@ -1173,13 +1173,13 @@ export function CourseDetail({
                   ) : (
                     <button
                       onClick={() => onStart(course.id)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+                      className="w-full bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
                     >
                       <Play className="w-4 h-4 fill-current" />
                       {isActive ? "Continue Learning" : "Start Course — It's Free"}
                     </button>
                   )}
-                  <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 justify-center">
+                  <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 dark:text-slate-400 justify-center">
                     <span className="flex items-center gap-1">
                       <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Full lifetime access
                     </span>
@@ -1195,40 +1195,40 @@ export function CourseDetail({
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-          <h2 className="text-lg font-black text-slate-900">What you'll learn</h2>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+          <h2 className="text-lg font-black text-slate-900 dark:text-slate-100">What you'll learn</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {course.topics.map((t, i) => (
               <div key={i} className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-slate-700">{t}</span>
+                <span className="text-sm text-slate-700 dark:text-slate-300">{t}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
           <button
             onClick={() => setTopicsOpen((p) => !p)}
-            className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors"
+            className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <BookOpen className="w-5 h-5 text-blue-600" />
+              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <div className="text-left">
-                <p className="font-black text-slate-900 text-sm sm:text-base">Course Content</p>
-                <p className="text-xs text-slate-500">
+                <p className="font-black text-slate-900 dark:text-slate-100 text-sm sm:text-base">Course Content</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {course.lessons} lessons · {course.duration} total
                 </p>
               </div>
             </div>
             {topicsOpen ? (
-              <ChevronUp className="w-5 h-5 text-slate-400" />
+              <ChevronUp className="w-5 h-5 text-slate-400 dark:text-slate-600" />
             ) : (
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-slate-400 dark:text-slate-600" />
             )}
           </button>
           {topicsOpen && (
-            <div className="border-t border-slate-100 divide-y divide-slate-100">
+            <div className="border-t border-slate-100 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
               {hasPlaylist
                 ? course.playlist!.map((lesson, i) => {
                     const isThisActive = activeLesson
@@ -1240,23 +1240,23 @@ export function CourseDetail({
                         onClick={() => !isLocked && handleLessonClick(lesson)}
                         disabled={isLocked}
                         className={`w-full flex items-center gap-4 px-6 py-3 text-left transition-colors
-                          ${isLocked ? "cursor-not-allowed opacity-50" : "hover:bg-blue-50 cursor-pointer"}
-                          ${isThisActive ? "bg-blue-50 border-l-2 border-blue-500" : ""}`}
+                          ${isLocked ? "cursor-not-allowed opacity-50" : "hover:bg-blue-50 dark:hover:bg-blue-950/30 cursor-pointer"}
+                          ${isThisActive ? "bg-blue-50 dark:bg-blue-950/30 border-l-2 border-blue-500" : ""}`}
                       >
                         <div
                           className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-black
-                          ${isThisActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}
+                          ${isThisActive ? "bg-blue-600 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"}`}
                         >
                           {isThisActive ? <Play className="w-3 h-3 fill-current" /> : i + 1}
                         </div>
                         <span
                           className={`text-sm flex-1 font-medium ${
-                            isThisActive ? "text-blue-700" : "text-slate-700"
+                            isThisActive ? "text-blue-700 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
                           }`}
                         >
                           {lesson.title}
                         </span>
-                        <span className="text-xs text-slate-400 font-medium tabular-nums flex-shrink-0">
+                        <span className="text-xs text-slate-400 dark:text-slate-500 font-medium tabular-nums flex-shrink-0">
                           {lesson.duration}
                         </span>
                       </button>
@@ -1264,11 +1264,11 @@ export function CourseDetail({
                   })
                 : course.topics.map((t, i) => (
                     <div key={i} className="flex items-center gap-4 px-6 py-3">
-                      <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
-                        <Play className="w-3 h-3 text-slate-500 fill-current" />
+                      <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
+                        <Play className="w-3 h-3 text-slate-500 dark:text-slate-400 fill-current" />
                       </div>
-                      <span className="text-sm text-slate-700 flex-1">{t}</span>
-                      <span className="text-xs text-slate-400 font-medium tabular-nums">
+                      <span className="text-sm text-slate-700 dark:text-slate-300 flex-1">{t}</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500 font-medium tabular-nums">
                         {String(Math.floor((i * 37 + 12) % 45) + 5)}:
                         {String(Math.floor((i * 13 + 7) % 59)).padStart(2, "0")}
                       </span>
@@ -1280,32 +1280,32 @@ export function CourseDetail({
 
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-slate-900">Student Reviews</h2>
+            <h2 className="text-lg font-black text-slate-900 dark:text-slate-100">Student Reviews</h2>
             <div className="flex items-center gap-2">
               <StarRating rating={avgRating} size="sm" />
-              <span className="font-bold text-slate-800 text-sm">{avgRating.toFixed(1)}</span>
+              <span className="font-bold text-slate-800 dark:text-slate-200 text-sm">{avgRating.toFixed(1)}</span>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {reviews.map((r, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-200 p-5 space-y-2">
+              <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-black text-xs">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-950/30 flex items-center justify-center text-blue-700 dark:text-blue-400 font-black text-xs">
                       {r.name[0]}
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-slate-800">{r.name}</p>
-                      <p className="text-[10px] text-slate-400">{r.date}</p>
+                      <p className="font-bold text-sm text-slate-800 dark:text-slate-200">{r.name}</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500">{r.date}</p>
                     </div>
                   </div>
                   <StarRating rating={r.rating} size="sm" />
                 </div>
-                <p className="text-sm text-slate-600 leading-relaxed">{r.comment}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{r.comment}</p>
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
             <ReviewForm courseId={course.id} onSubmit={onReviewSubmit} />
           </div>
         </div>
@@ -1419,13 +1419,13 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
 
   // ── Grid view ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-slate-50 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black dark:text-white leading-tight">
             Explore Tracks
           </h1>
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
+          <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "Finish your active course to unlock other tracks."
               : "Pick one track to start — complete it before unlocking the next."}
@@ -1439,14 +1439,14 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
           const active = ALL_COURSES.find((c) => c.id === activeCourseId);
           return active ? (
             <div className="max-w-7xl mx-auto mb-5 sm:mb-6">
-              <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-                <p className="text-xs sm:text-sm text-blue-700 font-semibold">
+              <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-xl px-4 py-3">
+                <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-400 font-semibold">
                   You're currently on <span className="font-black">{active.title}</span>. Complete
                   it to unlock other tracks.
                 </p>
                 <button
                   onClick={() => handleCardClick(activeCourseId)}
-                  className="ml-auto flex-shrink-0 flex items-center gap-1 bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="ml-auto flex-shrink-0 flex items-center gap-1 bg-blue-600 dark:bg-blue-700 text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
                 >
                   Continue <ChevronRight className="w-3 h-3" />
                 </button>

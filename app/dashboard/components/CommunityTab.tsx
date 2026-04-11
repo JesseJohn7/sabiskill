@@ -326,7 +326,7 @@ const CommunityTab: React.FC = () => {
                         ) : null}
                       </div>
                       {community.new && (
-                        <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 px-2 py-0.5 rounded-full">
                           New
                         </span>
                       )}
@@ -334,22 +334,22 @@ const CommunityTab: React.FC = () => {
 
                     {/* Text content */}
                     <div className="flex-1">
-                      <h3 className="font-bold text-slate-900 text-sm sm:text-base mb-1 tracking-tight">
+                      <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base mb-1 tracking-tight">
                         {community.name}
                       </h3>
-                      <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                      <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
                         {community.description}
                       </p>
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-slate-50 gap-2">
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-slate-800 gap-2">
                       <div className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm min-w-0">
-                        <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 flex-shrink-0" />
-                        <span className="font-semibold text-slate-600">
+                        <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                        <span className="font-semibold text-slate-600 dark:text-slate-400">
                           {formatMembers(community.members)}
                         </span>
-                        <span className="text-slate-400 hidden xs:inline">
+                        <span className="text-slate-400 dark:text-slate-500 hidden xs:inline">
                           members
                         </span>
                       </div>
@@ -359,7 +359,7 @@ const CommunityTab: React.FC = () => {
                           disabled
                           className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2
                             rounded-xl text-xs sm:text-sm font-semibold flex-shrink-0
-                            bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-default"
+                            bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 cursor-default"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           Joined
@@ -370,8 +370,8 @@ const CommunityTab: React.FC = () => {
                           disabled={loadingJoins}
                           className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2
                             rounded-xl text-xs sm:text-sm font-semibold flex-shrink-0
-                            bg-blue-600 text-white hover:bg-blue-700 active:scale-95
-                            shadow-sm shadow-blue-600/20 transition-all duration-200 group
+                            bg-blue-600 dark:bg-blue-700 text-white dark:text-slate-100 hover:bg-blue-700 dark:hover:bg-blue-600 active:scale-95
+                            shadow-sm shadow-blue-600/20 dark:shadow-blue-900/40 transition-all duration-200 group
                             disabled:opacity-50 disabled:cursor-wait"
                         >
                           Get Started
@@ -387,8 +387,8 @@ const CommunityTab: React.FC = () => {
 
           {/* ── Empty state ── */}
           {filteredCommunities.length === 0 && (
-            <div className="text-center py-16 sm:py-20 text-slate-400">
-              <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 opacity-30" />
+            <div className="text-center py-16 sm:py-20 text-slate-400 dark:text-slate-500">
+              <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 opacity-30 dark:opacity-20" />
               <p className="font-semibold text-sm sm:text-base">
                 No communities in this category yet.
               </p>
