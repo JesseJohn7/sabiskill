@@ -383,7 +383,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
           </div>
           <p className="text-xs sm:text-sm text-slate-500 font-medium leading-snug">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
-              ? "Keep going — you're on an active track!"
+              ? "Keep going , you're on an active track!"
               : hasStartedCourse
               ? "Great progress — keep the momentum going."
               : "Choose a track and start mastering a new skill today."}
@@ -671,7 +671,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
         )}
 
         {/* ── ALL LEARNING TRACKS (8 shown) ── */}
-        <div>
+        <div>run dev
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-sm sm:text-base font-black text-slate-900">Learning Tracks</h2>
