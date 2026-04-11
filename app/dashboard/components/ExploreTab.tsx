@@ -833,6 +833,11 @@ const COURSE_REVIEWS: Record<
     { name: "Ben T.", rating: 4, date: "Dec 2024", comment: "Great foundation for anyone wanting to level up their life." },
     { name: "Fiona G.", rating: 5, date: "Nov 2024", comment: "Changed the way I think about habits and goals completely." },
   ],
+  "node-express": [
+  { name: "Chidi O.", rating: 5, date: "Apr 2025", comment: "The MVC breakdown finally made controllers and routes click for me. Best backend intro I've found." },
+  { name: "Amara K.", rating: 5, date: "Apr 2025", comment: "Loved how everything was tested in Postman step by step. The bcrypt section is gold." },
+  { name: "Tunde F.", rating: 4, date: "Apr 2025", comment: "Went from knowing zero Node.js to building a full auth API in one sitting. Very well paced." },
+],
 };
 
 const LEVEL_COLORS: Record<string, string> = {
