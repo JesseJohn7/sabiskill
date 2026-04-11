@@ -47,14 +47,14 @@ function StatPill({
   bgAccent: string;
 }) {
   return (
-    <div className={`relative overflow-hidden flex items-center gap-3 ${bgAccent} rounded-2xl px-4 py-3.5 shadow-sm`}>
+    <div className={`relative overflow-hidden flex items-center gap-3 ${bgAccent} dark:bg-slate-800 rounded-2xl px-4 py-3.5 shadow-sm dark:shadow-slate-950/50`}>
       <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${accent}`}>
         <Icon className="w-4.5 h-4.5" strokeWidth={2.2} />
       </div>
       <div className="min-w-0">
-        <p className="text-[9px] font-bold uppercase tracking-widest text-current opacity-60 leading-none mb-0.5">{label}</p>
-        <p className="text-xl font-black leading-none">{value}</p>
-        {sub && <p className="text-[10px] font-medium opacity-60 mt-0.5 leading-tight">{sub}</p>}
+        <p className="text-[9px] font-bold uppercase tracking-widest text-current dark:text-slate-300 opacity-60 leading-none mb-0.5">{label}</p>
+        <p className="text-xl font-black leading-none dark:text-slate-50">{value}</p>
+        {sub && <p className="text-[10px] font-medium dark:text-slate-400 opacity-60 mt-0.5 leading-tight">{sub}</p>}
       </div>
     </div>
   );
@@ -89,18 +89,18 @@ function CourseCard({
   return (
     <div
       onClick={onOpen}
-      className={`group relative bg-white rounded-2xl border overflow-hidden cursor-pointer transition-all duration-200 flex flex-col h-full
+      className={`group relative bg-white dark:bg-slate-900 rounded-2xl border overflow-hidden cursor-pointer transition-all duration-200 flex flex-col h-full
         ${isLocked
-          ? "border-slate-100 opacity-50"
+          ? "border-slate-100 dark:border-slate-800 opacity-50"
           : isActive
-          ? "border-blue-200 shadow-md shadow-blue-100/60 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1"
+          ? "border-blue-200 dark:border-blue-900/40 shadow-md shadow-blue-100/60 dark:shadow-blue-950/40 hover:shadow-xl hover:shadow-blue-100/60 dark:hover:shadow-blue-950/40 hover:-translate-y-1"
           : isCompleted
-          ? "border-emerald-100 hover:shadow-xl hover:shadow-emerald-50 hover:-translate-y-1"
-          : "border-slate-100 hover:border-slate-200 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1"}`}
+          ? "border-emerald-100 dark:border-emerald-900/30 hover:shadow-xl hover:shadow-emerald-50 dark:hover:shadow-emerald-950/30 hover:-translate-y-1"
+          : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-slate-950/40 hover:-translate-y-1"}`}
     >
       {/* Thumbnail */}
       <div
-        className="relative overflow-hidden bg-slate-100 flex-shrink-0"
+        className="relative overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0"
         style={{ aspectRatio: "16/9" }}
       >
         <img
@@ -110,11 +110,11 @@ function CourseCard({
         />
 
         {isLocked ? (
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-              <Lock className="w-4 h-4 text-white" />
+          <div className="absolute inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-[2px] flex flex-col items-center justify-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-white/20 dark:bg-slate-400/20 flex items-center justify-center">
+              <Lock className="w-4 h-4 text-white dark:text-slate-100" />
             </div>
-            <span className="text-white text-[10px] font-bold text-center px-4 leading-snug">
+            <span className="text-white dark:text-slate-100 text-[10px] font-bold text-center px-4 leading-snug">
               Finish active track first
             </span>
           </div>
@@ -128,23 +128,23 @@ function CourseCard({
 
         {/* Badges */}
         {isActive && (
-          <div className="absolute top-2 left-2 flex items-center gap-1 bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md">
+          <div className="absolute top-2 left-2 flex items-center gap-1 bg-blue-600 dark:bg-blue-700 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md dark:shadow-blue-900/50">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Live
           </div>
         )}
         {isCompleted && (
-          <div className="absolute top-2 left-2 flex items-center gap-1 bg-emerald-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md">
+          <div className="absolute top-2 left-2 flex items-center gap-1 bg-emerald-500 dark:bg-emerald-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md dark:shadow-emerald-900/50">
             <CheckCircle2 className="w-2.5 h-2.5" /> Done
           </div>
         )}
 
-        <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-lg flex items-center gap-1">
-          <Clock className="w-2.5 h-2.5 text-white/70" />
-          <span className="text-[9px] font-semibold text-white">{totalLessons} lessons</span>
+        <div className="absolute bottom-2 left-2 bg-black/60 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5 rounded-lg flex items-center gap-1">
+          <Clock className="w-2.5 h-2.5 text-white/70 dark:text-slate-300/70" />
+          <span className="text-[9px] font-semibold text-white dark:text-slate-100">{totalLessons} lessons</span>
         </div>
         {!isLocked && (
-          <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-lg">
-            <span className="text-[9px] font-bold text-white">{progressPct}%</span>
+          <div className="absolute bottom-2 right-2 bg-black/60 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5 rounded-lg">
+            <span className="text-[9px] font-bold text-white dark:text-slate-100">{progressPct}%</span>
           </div>
         )}
       </div>
@@ -152,25 +152,25 @@ function CourseCard({
       {/* Body */}
       <div className={`flex flex-col gap-2.5 flex-1 ${compact ? "p-3" : "p-3.5 sm:p-4"}`}>
         <div>
-          <h3 className={`font-black text-slate-800 line-clamp-2 leading-snug mb-0.5 ${compact ? "text-[12px]" : "text-[13px] sm:text-[14px]"}`}>
+          <h3 className={`font-black text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug mb-0.5 ${compact ? "text-[12px]" : "text-[13px] sm:text-[14px]"}`}>
             {course.title}
           </h3>
-          <p className="text-[10px] text-slate-400 font-medium">by {course.instructor}</p>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">by {course.instructor}</p>
         </div>
 
         {/* Progress bar */}
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-slate-500">
+            <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
               {isCompleted ? "Completed" : isActive ? `${lessonsDone}/${totalLessons} done` : "Not started"}
             </span>
             {!isLocked && (
-              <span className={`text-[10px] font-bold ${isCompleted ? "text-emerald-600" : isActive ? "text-blue-600" : "text-slate-300"}`}>
+              <span className={`text-[10px] font-bold ${isCompleted ? "text-emerald-600 dark:text-emerald-400" : isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-600"}`}>
                 {progressPct}%
               </span>
             )}
           </div>
-          <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-700 ${
                 isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-200"
@@ -185,7 +185,7 @@ function CourseCard({
           {isLocked ? (
             <button
               onClick={(e) => { e.stopPropagation(); onOpen(); }}
-              className="w-full bg-slate-50 text-slate-400 font-semibold py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 hover:bg-slate-100 transition-colors"
+              className="w-full bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-semibold py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
             >
               <Play className="w-3 h-3" /> Preview
             </button>
@@ -193,14 +193,14 @@ function CourseCard({
             <>
               <button
                 onClick={onAction}
-                className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100 font-semibold py-2 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full bg-emerald-50 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40 font-semibold py-2 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-colors"
               >
                 <CheckCircle2 className="w-3 h-3" /> Review
               </button>
               {onCertificate && (
                 <button
                   onClick={onCertificate}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-sm shadow-blue-200/60"
+                  className="w-full bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-black py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-sm shadow-blue-200/60 dark:shadow-blue-900/40"
                 >
                   <Award className="w-3 h-3" /> Get Certificate
                 </button>
@@ -209,7 +209,7 @@ function CourseCard({
           ) : (
             <button
               onClick={onAction}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-sm shadow-blue-100"
+              className="w-full bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-[11px] flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-sm shadow-blue-100 dark:shadow-blue-900/40"
             >
               <Play className="w-3 h-3 fill-current" />
               {isActive ? "Continue" : "Start"}
@@ -362,18 +362,18 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
   // ── Dashboard ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#F7F8FA]">
+    <div className="min-h-screen bg-[#F7F8FA] dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-4 sm:py-7 space-y-5 sm:space-y-8">
 
         {/* ── GREETING ── */}
         <div className="space-y-1">
           <div className="flex items-start justify-between gap-2">
             <h1
-              className="font-black text-slate-900 leading-tight tracking-tight"
+              className="font-black text-slate-900 dark:text-slate-50 leading-tight tracking-tight"
               style={{ fontSize: "clamp(22px, 5.5vw, 44px)" }}
             >
               {greeting},{" "}
-              <span className="text-blue-600">{firstName}</span> 
+              <span className="text-blue-600 dark:text-blue-400">{firstName}</span> 
             </h1>
             {hasStartedCourse && userId && (
               <div className="flex-shrink-0 pt-1">
@@ -381,7 +381,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
               </div>
             )}
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium leading-snug">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-snug">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "Keep going , you're on an active track!"
               : hasStartedCourse
@@ -395,7 +395,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
         {/* ── NO COURSE: HERO BANNER ── */}
         {!hasStartedCourse && (
-          <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-2xl text-white shadow-2xl">
+          <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-blue-800 dark:via-blue-900 dark:to-slate-900 rounded-2xl text-white shadow-2xl dark:shadow-blue-950/40">
             {/* dot grid */}
             <div
               className="absolute inset-0 opacity-[0.06]"
@@ -409,7 +409,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
               <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
                 {/* Text */}
                 <div className="flex-1 text-center sm:text-left">
-                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 text-[11px] font-bold mb-4">
+                  <div className="inline-flex items-center gap-2 bg-white/10 dark:bg-blue-900/30 border border-white/15 dark:border-blue-700/30 rounded-full px-3 py-1 text-[11px] font-bold mb-4">
                     <Rocket className="w-3 h-3" /> Start your journey
                   </div>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-3">
@@ -422,12 +422,12 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     <div className="h-0.5 w-4 bg-white/30 rounded-full" />
                     <div className="h-0.5 w-2 bg-white/15 rounded-full" />
                   </div>
-                  <p className="text-slate-300 text-xs sm:text-sm font-medium max-w-sm mb-5 leading-relaxed mx-auto sm:mx-0">
+                  <p className="text-blue-100 dark:text-blue-200 text-xs sm:text-sm font-medium max-w-sm mb-5 leading-relaxed mx-auto sm:mx-0">
                     Sequential, structured learning paths built for real results. Pick one track and build momentum from day one.
                   </p>
                   <button
                     onClick={() => onNavigate?.("explore")}
-                    className="inline-flex items-center gap-2 bg-white text-slate-900 font-black px-6 py-3 rounded-full text-sm hover:bg-blue-50 transition-all active:scale-95 shadow-lg"
+                    className="inline-flex items-center gap-2 bg-white dark:bg-slate-100 text-slate-900 dark:text-slate-900 font-black px-6 py-3 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-slate-50 transition-all active:scale-95 shadow-lg"
                   >
                     Browse Tracks <ArrowUpRight className="w-4 h-4" />
                   </button>
@@ -439,7 +439,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     <div
                       key={c.id}
                       onClick={() => handleCourseCardClick(c.id)}
-                      className={`w-24 h-24 lg:w-28 lg:h-28 rounded-xl overflow-hidden border border-white/20 shadow-lg hover:scale-105 transition-transform cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
+                      className={`w-24 h-24 lg:w-28 lg:h-28 rounded-xl overflow-hidden border border-white/20 dark:border-blue-700/30 shadow-lg dark:shadow-blue-950/40 hover:scale-105 transition-transform cursor-pointer ${i % 2 === 0 ? "translate-y-2" : "-translate-y-2"}`}
                     >
                       <img src={c.thumbnail} alt="" className="w-full h-full object-cover" />
                     </div>
@@ -452,20 +452,20 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
         {/* ── ACTIVE COURSE BANNER ── */}
         {activeCourseId && !completedCourseIds.includes(activeCourseId) && activeCourse && (
-          <div className="flex items-center gap-3 bg-blue-600 rounded-2xl px-4 sm:px-5 py-3.5 shadow-lg shadow-blue-200/60">
+          <div className="flex items-center gap-3 bg-blue-600 dark:bg-blue-700 rounded-2xl px-4 sm:px-5 py-3.5 shadow-lg shadow-blue-200/60 dark:shadow-blue-950/40">
             <div className="w-0.5 h-8 bg-white/30 rounded-full flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-white text-xs sm:text-sm font-semibold line-clamp-1">
-                <span className="opacity-70 text-blue-200">Active: </span>
+              <p className="text-white dark:text-slate-100 text-xs sm:text-sm font-semibold line-clamp-1">
+                <span className="opacity-70 text-blue-200 dark:text-blue-300">Active: </span>
                 <span className="font-black">{activeCourse.title}</span>
               </p>
-              <p className="text-blue-200 text-[10px] font-medium mt-0.5">
+              <p className="text-blue-200 dark:text-blue-300 text-[10px] font-medium mt-0.5">
                 {activeLessonsDone} of {activeCourse.lessons} lessons · {activeProgress}% complete
               </p>
             </div>
             <button
               onClick={() => handleStartFromGrid(activeCourseId)}
-              className="flex-shrink-0 flex items-center gap-1.5 bg-white text-blue-700 text-[10px] sm:text-xs font-black px-3 py-1.5 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap"
+              className="flex-shrink-0 flex items-center gap-1.5 bg-white dark:bg-slate-100 text-blue-700 dark:text-slate-900 text-[10px] sm:text-xs font-black px-3 py-1.5 rounded-xl hover:bg-blue-50 dark:hover:bg-slate-50 transition-colors whitespace-nowrap"
             >
               Resume <ArrowUpRight className="w-3 h-3" />
             </button>
@@ -477,7 +477,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
 
             {/* Course progress ring — spans 2 cols on mobile */}
-            <div className="col-span-2 sm:col-span-1 relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-4 sm:p-5 shadow-lg shadow-blue-200/60 text-white flex items-center gap-3.5">
+            <div className="col-span-2 sm:col-span-1 relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900 rounded-2xl p-4 sm:p-5 shadow-lg shadow-blue-200/60 dark:shadow-blue-950/40 text-white flex items-center gap-3.5">
               <svg className="absolute -right-4 -bottom-4 w-28 h-28 opacity-10" viewBox="0 0 96 96">
                 <circle cx="48" cy="48" r="40" fill="none" stroke="white" strokeWidth="14" />
               </svg>
@@ -496,8 +496,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
               </div>
               {/* Text */}
               <div className="min-w-0">
-                <p className="text-blue-200 text-[9px] font-bold uppercase tracking-widest leading-none">My Progress</p>
-                <p className="text-2xl font-black leading-none mt-1">
+                <p className="text-blue-200 dark:text-blue-300 text-[9px] font-bold uppercase tracking-widest leading-none">My Progress</p>
+                <p className="text-2xl font-black leading-none mt-1 dark:text-slate-100"></p>
                   {activeLessonsDone}
                   <span className="text-blue-300 text-sm font-semibold">/{activeCourseTotalLessons}</span>
                 </p>

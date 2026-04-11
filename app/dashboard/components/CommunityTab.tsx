@@ -245,19 +245,19 @@ const CommunityTab: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 xl:px-10">
         <div className="max-w-5xl mx-auto">
 
           {/* ── Header ── */}
           <div className="mb-8 sm:mb-10">
-            <span className="text-xs sm:text-sm font-semibold text-blue-500 tracking-widest uppercase">
+            <span className="text-xs sm:text-sm font-semibold text-blue-500 dark:text-blue-400 tracking-widest uppercase">
               Communities
             </span>
-            <h1 className="mt-1 text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+            <h1 className="mt-1 text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-slate-50 tracking-tight leading-tight">
               Find your people.
             </h1>
-            <p className="mt-2 text-sm sm:text-base lg:text-lg text-slate-500 max-w-xl leading-relaxed">
+            <p className="mt-2 text-sm sm:text-base lg:text-lg text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">
               Join communities of learners who share your interests. Click{" "}
               <span>Get Started</span> to jump into the conversation.
             </p>

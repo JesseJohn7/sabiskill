@@ -166,10 +166,10 @@ export default function ResourcesTab() {
     <div className="animate-in fade-in slide-in-from-bottom-4">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
+        <h2 className="text-3xl font-black text-slate-900 dark:text-slate-50 tracking-tight mb-1">
           Resources
         </h2>
-        <p className="text-xs text-slate-400 font-medium uppercase tracking-widest">
+        <p className="text-xs text-slate-400 dark:text-slate-500 font-medium uppercase tracking-widest">
           Curated tools &amp; platforms for developers
         </p>
       </div>
@@ -184,12 +184,12 @@ export default function ResourcesTab() {
               key={res.name}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
-              className="flex flex-col rounded-xl overflow-hidden bg-white"
+              className="flex flex-col rounded-xl overflow-hidden bg-white dark:bg-slate-900"
               style={{
-                border: `1.5px solid ${active ? res.accent : "#e5e7eb"}`,
+                border: `1.5px solid ${active ? res.accent : "#e5e7eb"} ${active ? "" : "dark:#1e293b"}`,
                 boxShadow: active
                   ? `0 8px 24px -6px ${res.accent}35`
-                  : "0 1px 4px rgba(0,0,0,0.05)",
+                  : "0 1px 4px rgba(0,0,0,0.05), 0 0px 0px rgba(0,0,0,0.02) inset",
                 transform: active ? "translateY(-2px)" : "translateY(0)",
                 transition: "all 0.18s ease",
               }}
@@ -223,7 +223,7 @@ export default function ResourcesTab() {
                 </p>
 
                 {/* Description */}
-                <p className="text-[11px] text-slate-500 leading-relaxed flex-1">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed flex-1">
                   {res.description}
                 </p>
 
@@ -232,7 +232,7 @@ export default function ResourcesTab() {
                   {res.chips.map((c) => (
                     <span
                       key={c}
-                      className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-slate-50 border border-slate-100 text-slate-400"
+                      className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500"
                     >
                       {c}
                     </span>
@@ -244,7 +244,7 @@ export default function ResourcesTab() {
                   href={res.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-[10.5px] font-bold text-white transition-opacity duration-150"
+                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-[10.5px] font-bold text-white dark:text-slate-900 transition-opacity duration-150"
                   style={{
                     background: res.accent,
                     opacity: active ? 0.88 : 1,

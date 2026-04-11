@@ -69,22 +69,22 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-[120] bg-white border-r border-blue-100 flex flex-col
+        className={`fixed inset-y-0 left-0 z-[120] bg-white dark:bg-slate-950 border-r border-blue-100 dark:border-slate-800 flex flex-col
           transition-all duration-300 ease-out shadow-xl lg:shadow-none
           ${isOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0 lg:w-20"}
         `}
       >
-        <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-blue-50 lg:border-0">
+        <div className="p-5 lg:p-6 flex items-center justify-between lg:justify-center border-b border-blue-50 dark:border-slate-800 lg:border-0">
           <div className="flex items-center gap-3">
             {isOpen && (
-              <span className="font-black text-xl text-blue-900 tracking-tight lg:hidden">
+              <span className="font-black text-xl text-blue-900 dark:text-blue-400 tracking-tight lg:hidden">
                 Sabiskill
               </span>
             )}
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-2 rounded-lg hover:bg-blue-50 text-blue-400 hover:text-blue-900 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 text-blue-400 dark:text-blue-500 hover:text-blue-900 dark:hover:text-blue-400 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -105,8 +105,8 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                   transition-all duration-200 ease-out
                   ${isOpen ? "px-4 py-3.5 justify-start" : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"}
                   ${isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                    : "text-blue-600 hover:text-blue-700 hover:bg-blue-50 active:bg-blue-100"
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20 dark:bg-blue-600 dark:shadow-blue-600/30"
+                    : "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-slate-700"
                   }`}
               >
                 <item.icon
@@ -119,13 +119,13 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
                   </span>
                 )}
                 {!isOpen && (
-                  <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white
+                  <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 dark:bg-slate-800 text-white
                     text-xs font-semibold rounded-lg opacity-0 invisible
                     group-hover:opacity-100 group-hover:visible
                     whitespace-nowrap transition-all duration-200 pointer-events-none
                     shadow-lg hidden lg:block z-50">
                     {item.label}
-                    <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900" />
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900 dark:border-r-slate-800" />
                   </div>
                 )}
               </button>
@@ -134,11 +134,11 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
         </nav>
 
         {/* Sign Out Button */}
-        <div className="p-3 border-t border-blue-100">
+        <div className="p-3 border-t border-blue-100 dark:border-slate-800">
           <button
             onClick={handleSignOut}
             className={`group relative flex items-center w-full rounded-xl
-              text-blue-600 hover:text-red-600 hover:bg-red-50 active:bg-red-100
+              text-blue-600 dark:text-blue-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 active:bg-red-100 dark:active:bg-red-900/30
               font-semibold transition-all duration-200 ease-out
               ${isOpen ? "px-4 py-3.5 justify-start" : "px-0 py-3.5 justify-center lg:mx-auto lg:w-14"}`}
           >
@@ -152,13 +152,13 @@ const Sidebar: React.FC<Props> = ({ currentTab, setCurrentTab, isOpen, setIsOpen
               </span>
             )}
             {!isOpen && (
-              <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 text-white
+              <div className="absolute left-full ml-3 px-3 py-2 bg-slate-900 dark:bg-slate-800 text-white
                 text-xs font-semibold rounded-lg opacity-0 invisible
                 group-hover:opacity-100 group-hover:visible
                 whitespace-nowrap transition-all duration-200 pointer-events-none
                 shadow-lg hidden lg:block z-50">
                 Sign Out
-                <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900" />
+                <div className="absolute right-full top-1/2 -translate-y-1/2 mr-[-4px] border-4 border-transparent border-r-slate-900 dark:border-r-slate-800" />
               </div>
             )}
           </button>

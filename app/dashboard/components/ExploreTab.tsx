@@ -565,6 +565,50 @@ export const ALL_COURSES = [
     ] as Lesson[],
   },
   {
+  id: "ai-full-course",
+  title: "Artificial Intelligence Full Course 2025",
+  description: "Deep learning, maths for ML, reinforcement learning, RNNs, LLMs, transformers & beginner AI projects.",
+  longDescription:
+    "A comprehensive AI bootcamp covering the full spectrum of modern artificial intelligence. Starting from AI fundamentals and deep learning, you'll work through the mathematics powering machine learning, explore the AI Engineer roadmap, and dive deep into reinforcement learning, recurrent neural networks, and neural network architecture. Then go hands-on: build LLM chatbots, create an AI clone, understand how transformers work, and finish with beginner-friendly AI projects you can add to your portfolio.",
+  thumbnail: "https://i.ytimg.com/vi/LGCZ-Fhm48c/maxresdefault.jpg",
+  videoId: "LGCZ-Fhm48c",
+  lessons: 12,
+  level: "Intermediate",
+  tag: "New",
+  duration: "10h 22m",
+  students: 0,
+  rating: 4.9,
+  reviewCount: 0,
+  instructor: "Simplilearn",
+  topics: [
+    "Introduction to Artificial Intelligence",
+    "What is Deep Learning",
+    "Mathematics for Machine Learning",
+    "AI Engineer Roadmap 2025",
+    "Reinforcement Learning (Full Deep Dive)",
+    "Recurrent Neural Networks (RNN)",
+    "Neural Network Tutorial",
+    "Building LLM Chatbots — Full Demo",
+    "How to Create an AI Clone",
+    "Transformers in AI Explained",
+    "AI Projects for Beginners",
+  ],
+  playlist: [
+    { id: "LGCZ-Fhm48c", title: "Introduction to AI Full Course 2025",  duration: "3:00",    startSeconds: 0     },
+    { id: "LGCZ-Fhm48c", title: "Introduction to AI",                   duration: "19:06",   startSeconds: 180   },
+    { id: "LGCZ-Fhm48c", title: "What is Deep Learning",                duration: "44:53",   startSeconds: 1326  },
+    { id: "LGCZ-Fhm48c", title: "Mathematics for Machine Learning",     duration: "1:50:24", startSeconds: 4019  },
+    { id: "LGCZ-Fhm48c", title: "AI Engineer Roadmap",                  duration: "9:19",    startSeconds: 10643 },
+    { id: "LGCZ-Fhm48c", title: "Reinforcement Learning",               duration: "3:17:57", startSeconds: 11202 },
+    { id: "LGCZ-Fhm48c", title: "Recurrent Neural Networks (RNN)",      duration: "2:04:15", startSeconds: 23079 },
+    { id: "LGCZ-Fhm48c", title: "Neural Network Tutorial",              duration: "53:08",   startSeconds: 30534 },
+    { id: "LGCZ-Fhm48c", title: "Create LLM Chatbots — Full Demo",      duration: "41:55",   startSeconds: 33722 },
+    { id: "LGCZ-Fhm48c", title: "How to Create an AI Clone",            duration: "10:53",   startSeconds: 36237 },
+    { id: "LGCZ-Fhm48c", title: "Transformers in AI",                   duration: "7:18",    startSeconds: 36890 },
+    { id: "LGCZ-Fhm48c", title: "AI Projects for Beginners",            duration: "rest",    startSeconds: 37328 },
+  ] as Lesson[],
+},
+  {
     id: "graphic-design",
     title: "Graphic Design Full Course",
     description: "Master Canva, Photoshop, Illustrator & Figma — from design essentials to branding and packaging.",
@@ -764,6 +808,7 @@ export const ALL_COURSES = [
     { id: "KOutPbKc9UM", title: "Final Commit & Conclusion",                  duration: "rest",  startSeconds: 8713  },
   ] as Lesson[],
 },
+
 ];
 
 const COURSE_REVIEWS: Record<
