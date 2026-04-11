@@ -617,8 +617,8 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
                   </div>
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-2">Locked — come back later</p>
-                    <h2 className="text-xl font-black text-slate-900 mb-2">1-Hour Cooldown Active</h2>
-                    <p className="text-sm text-slate-500">Review the course material, then retake in:</p>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-slate-50 mb-2">1-Hour Cooldown Active</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Review the course material, then retake in:</p>
                     <p className="text-5xl font-black text-red-500 mt-3 tabular-nums tracking-wider">{formatTime(lockoutMs)}</p>
                   </div>
                   <div className="w-full max-w-xs">
@@ -640,10 +640,10 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
                     <p className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: accent }}>
                       AI-Powered • Adaptive Quiz
                     </p>
-                    <h2 className="text-2xl font-black text-slate-900 mb-3">Ready to prove it?</h2>
-                    <p className="text-sm text-slate-500 leading-relaxed max-w-[280px] mx-auto">
-                      Answer <strong className="text-slate-700">10 unique questions</strong> generated just for you.
-                      Score <strong className="text-slate-700">8 or higher</strong> to unlock your certificate.
+                    <h2 className="text-2xl font-black text-slate-900 dark:text-slate-50 mb-3">Ready to prove it?</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-[280px] mx-auto">
+                      Answer <strong className="text-slate-700 dark:text-slate-300">10 unique questions</strong> generated just for you.
+                      Score <strong className="text-slate-700 dark:text-slate-300">8 or higher</strong> to unlock your certificate.
                     </p>
                   </div>
                   <div className="w-full space-y-2">
@@ -879,7 +879,7 @@ export function CourseQuiz({ isOpen, courseId, courseTitle, onClose, onPassed }:
                   {result.passed ? "🎉 Quiz Passed!" : "Almost there"}
                 </p>
                 <div className="flex items-baseline justify-center gap-1 mb-2">
-                  <span className="text-5xl font-black text-slate-900">{result.score}</span>
+                  <span className="text-5xl font-black text-slate-900 dark:text-slate-50">{result.score}</span>
                   <span className="text-2xl font-black text-slate-300">/{result.total}</span>
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed max-w-xs mx-auto">

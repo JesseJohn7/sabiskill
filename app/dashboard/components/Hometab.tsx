@@ -497,11 +497,11 @@ const HomeTab: React.FC<HomeTabProps> = ({
               {/* Text */}
               <div className="min-w-0">
                 <p className="text-blue-200 dark:text-blue-300 text-[9px] font-bold uppercase tracking-widest leading-none">My Progress</p>
-                <p className="text-2xl font-black leading-none mt-1 dark:text-slate-100"></p>
+                <p className="text-2xl font-black leading-none mt-1 dark:text-slate-100">
                   {activeLessonsDone}
                   <span className="text-blue-300 text-sm font-semibold">/{activeCourseTotalLessons}</span>
                 </p>
-                <p className="text-blue-200 text-[10px] font-medium mt-0.5 line-clamp-1">lessons in this course</p>
+                <p className="text-blue-200 dark:text-blue-300 text-[10px] font-medium mt-0.5 line-clamp-1">lessons in this course</p>
               </div>
             </div>
 
@@ -553,27 +553,27 @@ const HomeTab: React.FC<HomeTabProps> = ({
         {activeCourse && !completedCourseIds.includes(activeCourse.id) && (
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm sm:text-base font-black text-slate-900">Continue Learning</h2>
+              <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-50">Continue Learning</h2>
               <button
                 onClick={() => handleCourseCardClick(activeCourse.id)}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5 group"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-0.5 group"
               >
                 Details <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
 
             <div
-              className="bg-white border border-blue-100 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-md shadow-blue-50 hover:shadow-xl hover:shadow-blue-100/40 transition-all duration-300 group/hero cursor-pointer"
+              className="bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-900/40 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-md shadow-blue-50 dark:shadow-blue-950/30 hover:shadow-xl hover:shadow-blue-100/40 dark:hover:shadow-blue-950/40 transition-all duration-300 group/hero cursor-pointer"
               onClick={() => handleCourseCardClick(activeCourse.id)}
             >
               {/* Thumbnail */}
-              <div className="relative w-full sm:w-56 lg:w-72 flex-shrink-0 overflow-hidden bg-slate-900" style={{ aspectRatio: "16/9" }}>
+                <div className="relative w-full sm:w-56 lg:w-72 flex-shrink-0 overflow-hidden bg-slate-900 dark:bg-slate-800" style={{ aspectRatio: "16/9" }}>
                 <img
                   src={activeCourse.thumbnail}
                   alt={activeCourse.title}
                   className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover/hero:opacity-95 group-hover/hero:scale-105 transition-all duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent sm:bg-gradient-to-r" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 dark:from-slate-950/70 via-transparent to-transparent sm:bg-gradient-to-r" />
                 <button
                   onClick={(e) => { e.stopPropagation(); handleStartFromGrid(activeCourse.id); }}
                   className="absolute inset-0 flex items-center justify-center"
@@ -590,23 +590,23 @@ const HomeTab: React.FC<HomeTabProps> = ({
               {/* Info */}
               <div className="flex-1 p-4 sm:p-5 lg:p-7 flex flex-col justify-between min-w-0">
                 <div>
-                  <h3 className="text-base sm:text-lg lg:text-xl font-black text-slate-900 leading-tight mb-1">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-black text-slate-900 dark:text-slate-50 leading-tight mb-1">
                     {activeCourse.title}
                   </h3>
-                  <p className="text-[11px] text-slate-400 font-medium mb-4">by {activeCourse.instructor}</p>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mb-4">by {activeCourse.instructor}</p>
 
                   {/* Progress */}
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-semibold text-slate-600">
-                        <span className="font-black text-slate-800">{activeLessonsDone}</span>
-                        {" "}<span className="text-slate-400">of</span>{" "}
-                        <span className="font-black text-slate-800">{activeCourse.lessons}</span>
-                        {" "}<span className="text-slate-400">lessons</span>
+                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                        <span className="font-black text-slate-800 dark:text-slate-100">{activeLessonsDone}</span>
+                        {" "}<span className="text-slate-400 dark:text-slate-500">of</span>{" "}
+                        <span className="font-black text-slate-800 dark:text-slate-100">{activeCourse.lessons}</span>
+                        {" "}<span className="text-slate-400 dark:text-slate-500">lessons</span>
                       </span>
-                      <span className="text-xs font-black text-blue-600">{activeProgress}%</span>
+                      <span className="text-xs font-black text-blue-600 dark:text-blue-400">{activeProgress}%</span>
                     </div>
-                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-700"
                         style={{ width: `${activeProgress}%` }}
@@ -614,13 +614,13 @@ const HomeTab: React.FC<HomeTabProps> = ({
                     </div>
                   </div>
 
-                  <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
-                    <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Zap className="w-3 h-3 text-blue-600" />
+                  <div className="inline-flex items-center gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl px-3 py-2">
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Up next</p>
-                      <p className="text-[11px] font-black text-slate-700">
+                      <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Up next</p>
+                      <p className="text-[11px] font-black text-slate-700 dark:text-slate-200">
                         Lesson {activeLessonsDone + 1} of {activeCourse.lessons}
                       </p>
                     </div>
@@ -645,8 +645,8 @@ const HomeTab: React.FC<HomeTabProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h2 className="text-sm sm:text-base font-black text-slate-900">Completed</h2>
-                <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+                <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-50">Completed</h2>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
                   {completedCourses.length} course{completedCourses.length !== 1 ? "s" : ""} finished
                 </p>
               </div>
@@ -671,18 +671,18 @@ const HomeTab: React.FC<HomeTabProps> = ({
         )}
 
         {/* ── ALL LEARNING TRACKS (8 shown) ── */}
-        <div>run dev
+        <div>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-sm sm:text-base font-black text-slate-900">Learning Tracks</h2>
-              <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+              <h2 className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-50">Learning Tracks</h2>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
                 {ALL_COURSES.length} tracks available
               </p>
             </div>
             {hasMore && (
               <button
                 onClick={() => onNavigate?.("explore")}
-                className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 border border-slate-200 bg-white hover:bg-slate-50 px-3.5 py-1.5 rounded-xl transition-all group"
+                className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 px-3.5 py-1.5 rounded-xl transition-all group"
               >
                 View All <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </button>
@@ -713,7 +713,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
           {hasMore && (
             <button
               onClick={() => onNavigate?.("explore")}
-              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border border-slate-200 text-slate-700 bg-white font-bold text-sm hover:bg-slate-50 transition-all active:scale-95 sm:hidden"
+              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95 sm:hidden"
             >
               View All Courses <ChevronRight className="w-4 h-4" />
             </button>
@@ -723,7 +723,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
             <div className="hidden sm:flex justify-center mt-5">
               <button
                 onClick={() => onNavigate?.("explore")}
-                className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 group"
+                className="flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 group"
               >
                 View all Courses  
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -734,17 +734,17 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
         {/* ── START STREAK PROMPT (no courses started) ── */}
         {!hasStartedCourse && (
-          <div className="bg-white border border-slate-100 rounded-2xl p-5 sm:p-6 text-center shadow-sm">
-            <div className="w-11 h-11 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-3">
-              <TrendingUp className="w-5 h-5 text-amber-500" />
+          <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 sm:p-6 text-center shadow-sm dark:shadow-slate-950/30">
+            <div className="w-11 h-11 bg-amber-50 dark:bg-amber-950/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+              <TrendingUp className="w-5 h-5 text-amber-500 dark:text-amber-400" />
             </div>
-            <h3 className="text-sm font-black text-slate-900 mb-1.5">Start Your Learning Streak</h3>
-            <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto mb-4 leading-relaxed">
+            <h3 className="text-sm font-black text-slate-900 dark:text-slate-50 mb-1.5">Start Your Learning Streak</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xs mx-auto mb-4 leading-relaxed">
               Pick a track above and build a daily habit. Your streak and progress will appear right here.
             </p>
             <button
               onClick={() => onNavigate?.("explore")}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all shadow-sm shadow-blue-200 active:scale-95"
+              className="inline-flex items-center gap-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all shadow-sm shadow-blue-200 dark:shadow-blue-950/40 active:scale-95"
             >
               Explore All Courses <ArrowUpRight className="w-3.5 h-3.5" />
             </button>

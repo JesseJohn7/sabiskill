@@ -204,14 +204,14 @@ export function StreakBar({ userId }: { userId: string }) {
         .sb-wrap  { animation: sb-pop .4s cubic-bezier(.34,1.56,.64,1) both; }
         .sb-flame { animation: sb-flame ${isActive ? "1.8s" : "4s"} ease-in-out infinite; display:inline-block; }
       `}</style>
-      <div className="sb-wrap flex items-center gap-1.5 bg-white border border-slate-200 rounded-full px-3 py-1.5 shadow-sm select-none cursor-default">
+      <div className="sb-wrap flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1.5 shadow-sm dark:shadow-slate-950/40 select-none cursor-default">
         <span className="sb-flame text-base sm:text-lg leading-none">
           {todayDone ? "🔥" : isActive ? "🔥" : "💤"}
         </span>
-        <span className={`text-sm sm:text-base font-black tabular-nums leading-none ${isActive ? "text-orange-500" : "text-slate-400"}`}>
+        <span className={`text-sm sm:text-base font-black tabular-nums leading-none ${isActive ? "text-orange-500" : "text-slate-400 dark:text-slate-500"}`}>
           {data.count}
         </span>
-        <span className="hidden sm:inline text-[11px] font-semibold text-slate-400 leading-none">
+        <span className="hidden sm:inline text-[11px] font-semibold text-slate-400 dark:text-slate-500 leading-none">
           day streak
         </span>
       </div>
@@ -259,15 +259,29 @@ export function StreakCard({ userId }: { userId: string }) {
 
       <div className={`sc2 max-w-7xl mx-auto mb-4 sm:mb-5 transition-all duration-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
         <div
-          className="sc2-card relative overflow-hidden rounded-2xl border"
+          className="sc2-card relative overflow-hidden rounded-2xl border dark:border-slate-700"
           style={{
-            background: "linear-gradient(135deg,#f0f7ff 0%,#ffffff 55%,#eff6ff 100%)",
-            borderColor: isActive ? "rgba(59,130,246,.2)" : "rgba(226,232,240,1)",
-            boxShadow: `0 2px 16px -4px ${isActive ? "rgba(59,130,246,.1)" : "rgba(0,0,0,.05)"}`,
+            background: window.matchMedia?.("(prefers-color-scheme: dark)").matches 
+              ? "linear-gradient(135deg,#0f172a 0%,#1e293b 55%,#1a2a47 100%)"
+              : "linear-gradient(135deg,#f0f7ff 0%,#ffffff 55%,#eff6ff 100%)",
+            borderColor: isActive 
+              ? window.matchMedia?.("(prefers-color-scheme: dark)").matches 
+                ? "rgba(59,130,246,.3)"
+                : "rgba(59,130,246,.2)"
+              : window.matchMedia?.("(prefers-color-scheme: dark)").matches
+              ? "rgba(71,85,105,.3)"
+              : "rgba(226,232,240,1)",
+            boxShadow: `0 2px 16px -4px ${isActive 
+              ? window.matchMedia?.("(prefers-color-scheme: dark)").matches
+                ? "rgba(59,130,246,.15)"
+                : "rgba(59,130,246,.1)"
+              : window.matchMedia?.("(prefers-color-scheme: dark)").matches
+              ? "rgba(0,0,0,.2)"
+              : "rgba(0,0,0,.05)"}`,
           }}
         >
           {/* Dot texture */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
+          <div className="absolute inset-0 pointer-events-none opacity-[0.035] dark:opacity-[0.08]"
             style={{ backgroundImage: "radial-gradient(circle,#2563eb 1px,transparent 1px)", backgroundSize: "20px 20px" }} />
 
           {/* ── Top row ── */}
@@ -282,20 +296,20 @@ export function StreakCard({ userId }: { userId: string }) {
                 style={{ color: isActive ? "#fb923c" : "#64748b" }}>
                 {data.count}
               </span>
-              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mt-0.5">
                 {data.count === 1 ? "day" : "days"}
               </span>
             </div>
 
             {/* Divider */}
-            <div className="w-px h-14 bg-slate-200 shrink-0" />
+            <div className="w-px h-14 bg-slate-200 dark:bg-slate-700 shrink-0" />
 
             {/* Label + status */}
             <div className="flex-1 min-w-0">
               <p className="text-sm sm:text-base font-black leading-tight" style={{ color: level.color }}>
                 {level.label}
               </p>
-              <p className="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 leading-snug">
+              <p className="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 font-medium mt-0.5 leading-snug">
                 {isActive
                   ? todayDone
                     ? "Today's session logged ✓"
@@ -305,10 +319,10 @@ export function StreakCard({ userId }: { userId: string }) {
             </div>
 
             {/* Best streak */}
-            <div className="flex flex-col items-center gap-0.5 shrink-0 bg-amber-50 border border-amber-100 rounded-2xl px-3 py-2">
+            <div className="flex flex-col items-center gap-0.5 shrink-0 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/40 rounded-2xl px-3 py-2">
               <span className="text-lg sm:text-xl">🏆</span>
-              <span className="text-sm sm:text-base font-black text-slate-800 tabular-nums">{data.longest}</span>
-              <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">best</span>
+              <span className="text-sm sm:text-base font-black text-slate-800 dark:text-slate-100 tabular-nums">{data.longest}</span>
+              <span className="text-[8px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">best</span>
             </div>
           </div>
 
