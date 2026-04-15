@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, User, Menu, X, Moon, Sun } from "lucide-react";
+import { Search, User, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "@/app/lib/ThemeContext";
 
 interface Course {
   id: string;
@@ -58,7 +57,6 @@ const Header: React.FC<Props> = ({
   onSettingsClick, // <-- add this
 }) =>  {
   const router = useRouter();
-  const { isDark, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Course[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -191,18 +189,6 @@ const Header: React.FC<Props> = ({
         {/* Right Section */}
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           
-          <button
-            onClick={toggleTheme}
-            className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? (
-              <Sun className="w-5 h-5 text-amber-500" />
-            ) : (
-              <Moon className="w-5 h-5 text-slate-600" />
-            )}
-          </button>
-
           <button
             onClick={onSettingsClick}
             className="w-9 h-9 sm:w-10 sm:h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
