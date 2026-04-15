@@ -1471,12 +1471,12 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                 className={`group bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
                   ${
                     isLocked
-                      ? "border-slate-200 dark:border-slate-800 opacity-60"
+                      ? "border-slate-300 dark:border-slate-700 opacity-60"
                       : isCompleted
-                      ? "border-emerald-200 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-800 hover:shadow-xl dark:hover:shadow-emerald-950/30"
+                      ? "border-emerald-300 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xl dark:hover:shadow-emerald-950/30"
                       : isActive
-                      ? "border-blue-300 dark:border-blue-900/40 hover:shadow-xl dark:hover:shadow-blue-950/40 ring-2 ring-blue-400 dark:ring-blue-900/50 ring-offset-1"
-                      : "border-slate-200 dark:border-slate-800 hover:border-blue-200 dark:hover:border-slate-700 hover:shadow-xl dark:hover:shadow-slate-950/40"
+                      ? "border-blue-400 dark:border-blue-600 hover:shadow-xl dark:hover:shadow-blue-950/40 ring-2 ring-blue-400 dark:ring-blue-700 ring-offset-1"
+                      : "border-slate-300 dark:border-slate-700 hover:border-blue-300 dark:hover:border-slate-600 hover:shadow-xl dark:hover:shadow-slate-950/40"
                   }`}
               >
                 <div className="relative overflow-hidden">
