@@ -91,7 +91,7 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#FAFAFC] dark:bg-slate-950 overflow-x-hidden">
+    <div className="flex min-h-screen bg-white dark:bg-slate-950 overflow-x-hidden">
       <Sidebar
         currentTab={currentTab}
         setCurrentTab={handleTabChange}

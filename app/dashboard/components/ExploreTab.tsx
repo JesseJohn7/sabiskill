@@ -1419,7 +1419,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
 
   // ── Grid view ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+    <div className="min-h-screen bg-white dark:bg-slate-950 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       <div className="max-w-5xl mx-auto mb-4 sm:mb-6 md:mb-8">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl md:text-2xl lg:text-4xl font-black text-black dark:text-white leading-tight">

@@ -362,7 +362,7 @@ const HomeTab: React.FC<HomeTabProps> = ({
 
   // ── Dashboard ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#F7F8FA] dark:bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-4 sm:py-7 space-y-5 sm:space-y-8">
 
         {/* ── GREETING ── */}

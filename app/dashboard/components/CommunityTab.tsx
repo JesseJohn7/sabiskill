@@ -245,7 +245,7 @@ const CommunityTab: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-white via-white to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 xl:px-10">
         <div className="max-w-5xl mx-auto">
 

@@ -106,7 +106,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ onNameChange }) => {
   const showPhoto = Boolean(avatarUrl) && !imgError;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-4">
 
         {/* Page heading */}
