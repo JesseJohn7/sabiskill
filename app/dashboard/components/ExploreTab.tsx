@@ -1468,15 +1468,15 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
               <div
                 key={c.id}
                 onClick={() => handleCardClick(c.id)}
-                className={`group bg-white rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
+                className={`group bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border shadow-sm transition-all overflow-hidden flex flex-col cursor-pointer
                   ${
                     isLocked
-                      ? "border-slate-200 opacity-60"
+                      ? "border-slate-200 dark:border-slate-800 opacity-60"
                       : isCompleted
-                      ? "border-emerald-200 hover:border-emerald-300 hover:shadow-xl"
+                      ? "border-emerald-200 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-800 hover:shadow-xl dark:hover:shadow-emerald-950/30"
                       : isActive
-                      ? "border-blue-300 hover:shadow-xl ring-2 ring-blue-400 ring-offset-1"
-                      : "border-slate-200 hover:border-blue-200 hover:shadow-xl"
+                      ? "border-blue-300 dark:border-blue-900/40 hover:shadow-xl dark:hover:shadow-blue-950/40 ring-2 ring-blue-400 dark:ring-blue-900/50 ring-offset-1"
+                      : "border-slate-200 dark:border-slate-800 hover:border-blue-200 dark:hover:border-slate-700 hover:shadow-xl dark:hover:shadow-slate-950/40"
                   }`}
               >
                 <div className="relative overflow-hidden">
@@ -1523,13 +1523,13 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                       {c.tag}
                     </div>
                   )}
-                  <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-md">
+                  <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-white dark:bg-slate-800 px-2 py-1 rounded-lg shadow-md dark:shadow-slate-900">
                     <div
                       className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
                         isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"
                       }`}
                     />
-                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">{progress}%</span>
+                    <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300">{progress}%</span>
                   </div>
                   <div className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg flex items-center gap-1">
                     <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
@@ -1543,34 +1543,34 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                   <div className="space-y-1.5">
                     <span
                       className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        LEVEL_COLORS[c.level] || "bg-slate-100 text-slate-600"
+                        LEVEL_COLORS[c.level] || "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                       }`}
                     >
                       {c.level}
                     </span>
-                    <h3 className="font-black text-sm sm:text-base text-slate-800 line-clamp-1">
+                    <h3 className="font-black text-sm sm:text-base text-slate-800 dark:text-slate-50 line-clamp-1">
                       {c.title}
                     </h3>
-                    <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {c.description}
                     </p>
                     <div className="flex items-center gap-1.5 pt-0.5">
                       <StarRating rating={c.rating} size="sm" />
-                      <span className="text-[10px] font-bold text-amber-500">{c.rating}</span>
-                      <span className="text-[10px] text-slate-400">({c.reviewCount.toLocaleString()})</span>
+                      <span className="text-[10px] font-bold text-amber-500 dark:text-amber-400">{c.rating}</span>
+                      <span className="text-[10px] text-slate-400 dark:text-slate-500">({c.reviewCount.toLocaleString()})</span>
                     </div>
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                      <span className="text-slate-600 font-semibold">
+                      <span className="text-slate-600 dark:text-slate-400 font-semibold">
                         {isCompleted ? "Completed" : isActive ? "In progress" : "Not started"}
                       </span>
-                      <span className="text-slate-500 font-bold">{progress}% complete</span>
+                      <span className="text-slate-500 dark:text-slate-500 font-bold">{progress}% complete</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
-                          isCompleted ? "bg-emerald-500" : isActive ? "bg-blue-500" : "bg-slate-300"
+                          isCompleted ? "bg-emerald-500 dark:bg-emerald-600" : isActive ? "bg-blue-500 dark:bg-blue-600" : "bg-slate-300 dark:bg-slate-700"
                         }`}
                         style={{ width: `${progress}%` }}
                       />
@@ -1583,7 +1583,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                           e.stopPropagation();
                           handleCardClick(c.id);
                         }}
-                        className="w-full bg-slate-100 text-slate-500 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors"
+                        className="w-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                       >
                         <Play className="w-3.5 h-3.5" /> Preview Course
                       </button>
@@ -1594,7 +1594,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                             e.stopPropagation();
                             handleStartFromGrid(c.id);
                           }}
-                          className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2"
+                          className="w-full bg-emerald-50 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 font-semibold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" /> Review Course
                         </button>
@@ -1607,7 +1607,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                               setQuizCourse(c);
                             }
                           }}
-                          className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-amber-400/25"
+                          className="w-full bg-gradient-to-r from-amber-400 dark:from-amber-600 to-amber-500 dark:to-amber-700 hover:from-amber-300 dark:hover:from-amber-700 hover:to-amber-400 dark:hover:to-amber-800 text-slate-900 dark:text-slate-100 font-black py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm shadow-amber-400/25 dark:shadow-amber-900/40"
                         >
                           <Award className="w-3.5 h-3.5" /> Get Certificate
                         </button>
@@ -1618,7 +1618,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
                           e.stopPropagation();
                           handleStartFromGrid(c.id);
                         }}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
+                        className="w-full bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md active:scale-95 text-xs"
                       >
                         <Play className="w-3.5 h-3.5 fill-current" />
                         {isActive ? "Continue" : "Get Started"}
