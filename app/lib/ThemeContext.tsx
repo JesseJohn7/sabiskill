@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { createClient } from "@/app/lib/supabase/client";
 
 interface ThemeContextType {
@@ -10,87 +10,64 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const applyTheme = (isDarkMode: boolean) => {
+  if (typeof document === "undefined") return;
+  const html = document.documentElement;
+  if (isDarkMode) {
+    html.classList.add("dark");
+    document.body.style.colorScheme = "dark";
+  } else {
+    html.classList.remove("dark");
+    document.body.style.colorScheme = "light";
+  }
+};
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Load theme preference from localStorage and Supabase
+  // Load theme on mount
   useEffect(() => {
-    const loadTheme = async () => {
-      // First check localStorage
-      const stored = localStorage.getItem("sabiskill_theme");
-      if (stored !== null) {
-        const isDarkMode = stored === "dark";
-        setIsDark(isDarkMode);
-        applyTheme(isDarkMode);
-        setMounted(true);
-        return;
-      }
+    const stored = localStorage.getItem("sabiskill_theme");
+    const newIsDark = stored === "dark";
+    setIsDark(newIsDark);
+    applyTheme(newIsDark);
+    setIsMounted(true);
+  }, []);
 
-      // Try to fetch from Supabase
+  // Apply theme whenever isDark changes (after mounted)
+  useEffect(() => {
+    if (!isMounted) return;
+    applyTheme(isDark);
+  }, [isDark, isMounted]);
+
+  const toggleTheme = useCallback(() => {
+    setIsDark((prev) => !prev);
+  }, []);
+
+  // Save theme changes to localStorage and Supabase
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    localStorage.setItem("sabiskill_theme", isDark ? "dark" : "light");
+    
+    // Save to Supabase (non-blocking)
+    (async () => {
       try {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          const { data, error } = await supabase
-            .from("user_preferences")
-            .select("theme")
-            .eq("user_id", user.id)
-            .maybeSingle();
-
-          if (!error && data?.theme) {
-            const isDarkMode = data.theme === "dark";
-            setIsDark(isDarkMode);
-            applyTheme(isDarkMode);
-            localStorage.setItem("sabiskill_theme", isDarkMode ? "dark" : "light");
-          }
-        }
-      } catch (e) {
-        console.log("Could not fetch theme from Supabase:", e);
-      }
-      
-      applyTheme(false);
-      setMounted(true);
-    };
-
-    loadTheme();
-  }, []);
-
-  const applyTheme = (isDarkMode: boolean) => {
-    const html = document.documentElement;
-    if (isDarkMode) {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
-  };
-
-  const toggleTheme = async () => {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
-    applyTheme(newIsDark);
-    
-    // Save to localStorage
-    localStorage.setItem("sabiskill_theme", newIsDark ? "dark" : "light");
-
-    // Save to Supabase
-    try {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await supabase.from("user_preferences").upsert(
-          {
+          await supabase.from("user_preferences").upsert({
             user_id: user.id,
-            theme: newIsDark ? "dark" : "light",
+            theme: isDark ? "dark" : "light",
             updated_at: new Date().toISOString(),
-          },
-          { onConflict: "user_id" }
-        );
+          });
+        }
+      } catch (error) {
+        console.log("Could not save theme:", error);
       }
-    } catch (e) {
-      console.log("Could not save theme to Supabase:", e);
-    }
-  };
+    })();
+  }, [isDark, isMounted]);
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
