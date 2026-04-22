@@ -1,2 +1,11 @@
-@import "tailwindcss"; 
+@import "tailwindcss";
+
+/* Ensure dark mode is applied by default */
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply dark:bg-slate-950 dark:text-slate-50;
+} 
 

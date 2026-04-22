@@ -23,13 +23,13 @@ const applyTheme = (isDarkMode: boolean) => {
 };
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
   // Load theme on mount
   useEffect(() => {
     const stored = localStorage.getItem("sabiskill_theme");
-    const newIsDark = stored === "dark";
+    const newIsDark = stored ? stored === "dark" : true;
     setIsDark(newIsDark);
     applyTheme(newIsDark);
     setIsMounted(true);
