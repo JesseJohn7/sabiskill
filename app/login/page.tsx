@@ -76,7 +76,7 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/dashboard` },
     });
     if (error) setError("Could not connect to Google. Please try again.");
     setLoading(false);
@@ -341,9 +341,6 @@ export default function LoginPage() {
             <div className="fade-3">
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Password</label>
-                <a href="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                  Forgot password?
-                </a>
               </div>
               <div className="relative">
                 <input
