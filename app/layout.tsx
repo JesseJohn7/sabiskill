@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./lib/ThemeContext";
@@ -16,16 +16,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sabiskill - Learn Anything",
   description: "Your personal learning platform for continuous skill development",
-  formatDetection: {
-    telephone: false,
+  icons: {
+    icon: "/favicon.ico",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    minimumScale: 1,
-    userScalable: true,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  minimumScale: 1,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -35,10 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50`}>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50`}
+      >
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
