@@ -14,7 +14,13 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  //Turns Supabase's confusing error codes into plain English 
+  // ── Forgot password state ──
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
+
   function getLoginErrorMessage(error: { message: string; code?: string }): string {
     const msg = error.message?.toLowerCase() || "";
     const code = error.code || "";
@@ -41,7 +47,6 @@ export default function LoginPage() {
     if (msg.includes("network") || msg.includes("fetch")) {
       return "Connection problem — please check your internet and try again.";
     }
-    // Fallback: show something friendly instead of Supabase's raw error
     return "Something went wrong. Please try again.";
   }
 
@@ -49,17 +54,16 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
 
-    // ── Step 1: Validate email CLIENT-SIDE first (no Supabase call yet) ──
     const emailError = validateEmail(email);
     if (emailError) {
       setError(emailError);
-      return; // Stop here — don't waste an email send
+      return;
     }
 
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(), // trim spaces the user may have accidentally typed
+      email: email.trim(),
       password,
     });
 
@@ -82,6 +86,33 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleForgotPassword = async () => {
+    setResetError(null);
+    const emailError = validateEmail(resetEmail);
+    if (emailError) {
+      setResetError(emailError);
+      return;
+    }
+
+    setResetLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetLoading(false);
+
+    if (error) {
+      const msg = error.message?.toLowerCase() || "";
+      if (msg.includes("rate limit") || msg.includes("over_email_send_rate_limit")) {
+        setResetError("Too many attempts — please wait a few minutes.");
+      } else {
+        setResetError("Something went wrong. Please try again.");
+      }
+    } else {
+      setResetSent(true);
+    }
+  };
+
   const isNoAccount = error?.includes("No account found");
 
   return (
@@ -93,6 +124,7 @@ export default function LoginPage() {
         @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes float3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
         @keyframes float4 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 
         .fade-1{animation:fadeUp 0.5s ease forwards}
         .fade-2{animation:fadeUp 0.5s 0.1s ease both}
@@ -104,6 +136,8 @@ export default function LoginPage() {
         .float-2{animation:float2 5s ease-in-out infinite 0.5s}
         .float-3{animation:float3 7s ease-in-out infinite 1s}
         .float-4{animation:float4 4.5s ease-in-out infinite 1.5s}
+
+        .slide-down{animation:slideDown 0.25s ease forwards}
 
         .gradient-text{
           background:linear-gradient(135deg,#60a5fa,#a78bfa,#34d399);
@@ -174,6 +208,13 @@ export default function LoginPage() {
           justify-content: center;
         }
         .password-toggle:hover{ color: rgba(148,163,184,1); }
+
+        .forgot-panel{
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          padding: 16px;
+        }
       `}</style>
 
       {/* ── LEFT PANEL — Illustration ── */}
@@ -341,7 +382,21 @@ export default function LoginPage() {
             <div className="fade-3">
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Password</label>
+                {/* ── Forgot password trigger ── */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForgot((prev) => !prev);
+                    setResetSent(false);
+                    setResetError(null);
+                    setResetEmail("");
+                  }}
+                  className="text-xs text-slate-500 hover:text-blue-400 transition-colors"
+                >
+                  Forgot password?
+                </button>
               </div>
+
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -361,6 +416,60 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+
+              {/* ── Forgot password inline panel ── */}
+              {showForgot && (
+                <div className="forgot-panel slide-down mt-3">
+                  {resetSent ? (
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                        style={{ background: "rgba(52,211,153,0.15)" }}>
+                        <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-emerald-400 text-xs font-semibold">Reset link sent!</p>
+                        <p className="text-slate-500 text-xs mt-0.5">Check your inbox and follow the link.</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-slate-400 text-xs mb-3">
+                        Enter your email and we'll send you a reset link.
+                      </p>
+                      <input
+                        type="email"
+                        value={resetEmail}
+                        onChange={(e) => { setResetEmail(e.target.value); setResetError(null); }}
+                        placeholder="you@example.com"
+                        className="input-dark px-3.5 py-2.5 rounded-lg text-xs mb-2"
+                      />
+                      {resetError && (
+                        <p className="text-red-400 text-xs mb-2">{resetError}</p>
+                      )}
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={handleForgotPassword}
+                          disabled={resetLoading || !resetEmail}
+                          className="flex-1 btn-glow py-2 rounded-lg text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {resetLoading ? "Sending..." : "Send reset link"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowForgot(false)}
+                          className="px-3 py-2 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             {error && (
