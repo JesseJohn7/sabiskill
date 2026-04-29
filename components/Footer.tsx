@@ -12,10 +12,43 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div>
             <h3 className="text-xl font-semibold text-white mb-2">Sabi Skill</h3>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 mb-4">
               Learn smarter, not harder. Free learning paths for every dreamer in
               Nigeria and beyond.
             </p>
+
+            {/* Product Hunt Badge */}
+            <a
+              href="https://www.producthunt.com/products/sabiskill?utm_source=other&utm_medium=social"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-600 text-white text-xs font-medium px-3 py-2 rounded-lg transition-all duration-200 group"
+            >
+              {/* PH Logo */}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="flex-shrink-0"
+              >
+                <circle cx="20" cy="20" r="20" fill="#FF6154" />
+                <path
+                  d="M22.5 13.5H16V26H19V22.5H22.5C24.985 22.5 27 20.485 27 18C27 15.515 24.985 13.5 22.5 13.5ZM22.5 20H19V16.5H22.5C23.605 16.5 24.5 17.395 24.5 18.5C24.5 19.605 23.605 20.5 22.5 20.5V20Z"
+                  fill="white"
+                />
+              </svg>
+
+              <span className="text-gray-300 group-hover:text-white transition-colors">
+                Find us on Product Hunt
+              </span>
+
+              {/* Upvote chip */}
+              <span className="flex items-center gap-1 bg-black text-gray-400 group-hover:text-gray-300 rounded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide border border-gray-700 transition-colors">
+                ▲ Upvote
+              </span>
+            </a>
           </div>
 
           {/* Quick Links */}
@@ -66,37 +99,6 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Product Hunt Badge */}
-        <div className="flex justify-center mb-6">
-          <a
-            href="https://www.producthunt.com/products/sabiskill?utm_source=other&utm_medium=social"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 bg-[#FF6154] hover:bg-[#e8503f] text-white text-sm font-semibold px-4 py-2.5 rounded-full transition-all duration-200 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,97,84,0.4)] group"
-          >
-            {/* PH Logo */}
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="flex-shrink-0"
-            >
-              <circle cx="20" cy="20" r="20" fill="white" fillOpacity="0.2" />
-              <path
-                d="M22.5 14H16V26H19V22.5H22.5C24.985 22.5 27 20.485 27 18C27 15.515 24.985 13.5 22.5 13.5V14ZM22.5 20H19V16.5H22.5C23.605 16.5 24.5 17.395 24.5 18.5C24.5 19.605 23.605 20.5 22.5 20.5V20Z"
-                fill="white"
-              />
-            </svg>
-            <span>Find us on Product Hunt</span>
-            {/* upvote arrow */}
-            <span className="flex items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 text-xs font-bold">
-              ▲ Upvote
-            </span>
-          </a>
         </div>
 
         {/* Bottom Section */}
