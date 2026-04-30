@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.3 }}
           >
-            20+ users learning
+            270+ users learning
           </motion.span>
         </motion.div>
 
