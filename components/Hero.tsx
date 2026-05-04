@@ -22,16 +22,15 @@ interface AvatarUser {
 }
 
 const avatarUsers: AvatarUser[] = [
-  { name: "Mykhailo Sorochuk",  handle: "@sir4K_zen",      image: "/avatar1.jpg" },
-  { name: "Musa",               handle: "@moseskwagga",     image: "/avatar2.jpg" },
+  { name: "Mykhailo Sorochuk", handle: "@sir4K_zen",      image: "/avatar1.jpg" },
+  { name: "Musa",              handle: "@moseskwagga",     image: "/avatar2.jpg" },
   {
-    name: "IfeOluwa Olajubaje",
-    handle: "@emanncodedev",
-    // white man — Oliver Brooks photo from original PrebuiltUI set
+    name: "James Hartley",
+    handle: "@jameshartley",
     image: "https://randomuser.me/api/portraits/men/75.jpg",
   },
-  { name: "Felix Hongo",        handle: "@devfelixhongo",   image: "/avatar4.jpg" },
-  { name: "Andrew",             handle: "@amuche_andrew",   image: "/avatar5.jpg" },
+  { name: "Felix Hongo",       handle: "@devfelixhongo",  image: "/avatar4.jpg" },
+  { name: "Andrew",            handle: "@amuche_andrew",  image: "/avatar5.jpg" },
 ];
 
 interface AvatarCardProps {
