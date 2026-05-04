@@ -16,7 +16,7 @@ const VerifiedIcon = () => (
   </svg>
 );
 
-// ── Avatar data — real SabiSkill community members ────────────────────────────
+// ── Avatar data ───────────────────────────────────────────────────────────────
 interface AvatarUser {
   name: string;
   handle: string;
@@ -24,11 +24,20 @@ interface AvatarUser {
 }
 
 const avatarUsers: AvatarUser[] = [
-  { name: "Mykhailo Sorochuk", handle: "@sir4K_zen",       image: "/avatar1.jpg" },
-  { name: "Musa",              handle: "@moseskwagga",      image: "/avatar2.jpg" },
-  { name: "IfeOluwa Olajubaje",handle: "@emanncodedev",     image: "/avatar3.jpg" },
-  { name: "Felix Hongo",       handle: "@devfelixhongo",    image: "/avatar4.jpg" },
-  { name: "Andrew",            handle: "@amuche_andrew",    image: "/avatar5.jpg" },
+  {
+    name: "Mykhailo Sorochuk",
+    handle: "@sir4K_zen",
+    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+  },
+  { name: "Musa",        handle: "@moseskwagga",   image: "/avatar2.jpg" },
+  {
+    // IfeOluwa — swapped to white man from original avatar set
+    name: "IfeOluwa Olajubaje",
+    handle: "@emanncodedev",
+    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+  },
+  { name: "Felix Hongo", handle: "@devfelixhongo", image: "/avatar4.jpg" },
+  { name: "Andrew",      handle: "@amuche_andrew", image: "/avatar5.jpg" },
 ];
 
 // ── Single avatar with hover tooltip ─────────────────────────────────────────
@@ -53,7 +62,7 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ user, index }) => (
         </div>
         <span className="text-xs text-slate-500">{user.handle}</span>
       </div>
-      {/* Caret arrow */}
+      {/* Caret */}
       <div className="size-3 border-r border-b border-gray-200 bg-white rotate-45 absolute right-4 -bottom-[7px]" />
     </div>
 
@@ -87,7 +96,7 @@ const Hero: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center pt-17.5 md:pt-17.5">
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-4 md:py-20">
 
-        {/* ── Avatar stack with tooltips ── */}
+        {/* ── Avatar stack ── */}
         <motion.div
           className="flex items-center justify-center gap-3 mb-4"
           initial={{ opacity: 0, y: 20 }}
