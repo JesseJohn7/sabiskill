@@ -16,7 +16,7 @@ const VerifiedIcon = () => (
   </svg>
 );
 
-// ── Avatar data ───────────────────────────────────────────────────────────────
+// ── Avatar data — real SabiSkill community members ────────────────────────────
 interface AvatarUser {
   name: string;
   handle: string;
@@ -24,76 +24,49 @@ interface AvatarUser {
 }
 
 const avatarUsers: AvatarUser[] = [
-  {
-    name: "Richard Nelson",
-    handle: "@richard",
-    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
-  },
-  {
-    name: "Avery Johnson",
-    handle: "@averywrites",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
-  },
-  {
-    name: "Jordan Lee",
-    handle: "@jordantalks",
-    image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/userImage/userImage1.png",
-  },
-  {
-    name: "Noah Patel",
-    handle: "@noahpatel",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
-  },
-  {
-    name: "Oliver Brooks",
-    handle: "@oliverbrooks",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
-  },
+  { name: "Mykhailo Sorochuk", handle: "@sir4K_zen",       image: "/avatar1.jpg" },
+  { name: "Musa",              handle: "@moseskwagga",      image: "/avatar2.jpg" },
+  { name: "IfeOluwa Olajubaje",handle: "@emanncodedev",     image: "/avatar3.jpg" },
+  { name: "Felix Hongo",       handle: "@devfelixhongo",    image: "/avatar4.jpg" },
+  { name: "Andrew",            handle: "@amuche_andrew",    image: "/avatar5.jpg" },
 ];
 
-// ── Single avatar with tooltip ────────────────────────────────────────────────
+// ── Single avatar with hover tooltip ─────────────────────────────────────────
 interface AvatarCardProps {
   user: AvatarUser;
-  isLast?: boolean;
   index: number;
 }
 
-const AvatarCard: React.FC<AvatarCardProps> = ({ user, isLast = false, index }) => {
-  return (
-    <motion.div
-      className="group relative"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: index * 0.08, duration: 0.35, type: "spring", stiffness: 200 }}
-    >
-      {/* Tooltip */}
-      <div className="absolute pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 -top-16 right-0 transition-all duration-300 pl-4 pr-10 py-2 rounded-lg text-nowrap bg-white border border-gray-200 shadow-lg z-50">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-1">
-            <p className="font-medium text-gray-900 text-sm">{user.name}</p>
-            <VerifiedIcon />
-          </div>
-          <span className="text-xs text-slate-500">{user.handle}</span>
+const AvatarCard: React.FC<AvatarCardProps> = ({ user, index }) => (
+  <motion.div
+    className="group relative"
+    initial={{ scale: 0, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ delay: index * 0.08, duration: 0.35, type: "spring", stiffness: 200 }}
+  >
+    {/* Tooltip */}
+    <div className="absolute pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 -top-16 right-0 transition-all duration-300 pl-4 pr-10 py-2 rounded-lg whitespace-nowrap bg-white border border-gray-200 shadow-lg z-50">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1">
+          <p className="font-medium text-gray-900 text-sm">{user.name}</p>
+          <VerifiedIcon />
         </div>
-        {/* Tooltip arrow */}
-        <div className="size-3 border-r border-b border-gray-200 bg-white rotate-45 absolute right-4 -bottom-[7px]" />
+        <span className="text-xs text-slate-500">{user.handle}</span>
       </div>
+      {/* Caret arrow */}
+      <div className="size-3 border-r border-b border-gray-200 bg-white rotate-45 absolute right-4 -bottom-[7px]" />
+    </div>
 
-      {/* Avatar image */}
-      <img
-        src={user.image}
-        alt={user.name}
-        className={[
-          "size-11 rounded-full border-2 border-white object-cover",
-          "transition-all duration-300 group-hover:-translate-y-1",
-          !isLast ? "group-hover:-translate-x-1" : "",
-        ].join(" ")}
-      />
-    </motion.div>
-  );
-};
+    {/* Avatar image */}
+    <img
+      src={user.image}
+      alt={user.name}
+      className="size-11 rounded-full border-2 border-white object-cover transition-all duration-300 group-hover:-translate-y-1"
+    />
+  </motion.div>
+);
 
-// ── Hero component ────────────────────────────────────────────────────────────
+// ── Hero ──────────────────────────────────────────────────────────────────────
 const Hero: React.FC = () => {
   const words = ["Learn", "Sabi", "Koyi", "Kọ ẹkọ", "ịmụta"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -107,7 +80,6 @@ const Hero: React.FC = () => {
         setIsAnimating(false);
       }, 300);
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -124,12 +96,7 @@ const Hero: React.FC = () => {
         >
           <div className="flex -space-x-4">
             {avatarUsers.map((user, index) => (
-              <AvatarCard
-                key={user.handle}
-                user={user}
-                isLast={index === avatarUsers.length - 1}
-                index={index}
-              />
+              <AvatarCard key={user.handle} user={user} index={index} />
             ))}
           </div>
 
@@ -183,6 +150,7 @@ const Hero: React.FC = () => {
             </button>
           </Link>
         </div>
+
       </div>
     </div>
   );
