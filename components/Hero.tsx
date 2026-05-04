@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// ── Verified badge SVG ────────────────────────────────────────────────────────
 const VerifiedIcon = () => (
   <svg className="mt-0.5" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -16,7 +15,6 @@ const VerifiedIcon = () => (
   </svg>
 );
 
-// ── Avatar data ───────────────────────────────────────────────────────────────
 interface AvatarUser {
   name: string;
   handle: string;
@@ -24,23 +22,18 @@ interface AvatarUser {
 }
 
 const avatarUsers: AvatarUser[] = [
+  { name: "Mykhailo Sorochuk",  handle: "@sir4K_zen",      image: "/avatar1.jpg" },
+  { name: "Musa",               handle: "@moseskwagga",     image: "/avatar2.jpg" },
   {
-    name: "Mykhailo Sorochuk",
-    handle: "@sir4K_zen",
-    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
-  },
-  { name: "Musa",        handle: "@moseskwagga",   image: "/avatar2.jpg" },
-  {
-    // IfeOluwa — swapped to white man from original avatar set
     name: "IfeOluwa Olajubaje",
     handle: "@emanncodedev",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+    // white man — Oliver Brooks photo from original PrebuiltUI set
+    image: "https://randomuser.me/api/portraits/men/75.jpg",
   },
-  { name: "Felix Hongo", handle: "@devfelixhongo", image: "/avatar4.jpg" },
-  { name: "Andrew",      handle: "@amuche_andrew", image: "/avatar5.jpg" },
+  { name: "Felix Hongo",        handle: "@devfelixhongo",   image: "/avatar4.jpg" },
+  { name: "Andrew",             handle: "@amuche_andrew",   image: "/avatar5.jpg" },
 ];
 
-// ── Single avatar with hover tooltip ─────────────────────────────────────────
 interface AvatarCardProps {
   user: AvatarUser;
   index: number;
@@ -53,7 +46,6 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ user, index }) => (
     animate={{ scale: 1, opacity: 1 }}
     transition={{ delay: index * 0.08, duration: 0.35, type: "spring", stiffness: 200 }}
   >
-    {/* Tooltip */}
     <div className="absolute pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 -top-16 right-0 transition-all duration-300 pl-4 pr-10 py-2 rounded-lg whitespace-nowrap bg-white border border-gray-200 shadow-lg z-50">
       <div className="flex flex-col">
         <div className="flex items-center gap-1">
@@ -62,11 +54,8 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ user, index }) => (
         </div>
         <span className="text-xs text-slate-500">{user.handle}</span>
       </div>
-      {/* Caret */}
       <div className="size-3 border-r border-b border-gray-200 bg-white rotate-45 absolute right-4 -bottom-[7px]" />
     </div>
-
-    {/* Avatar image */}
     <img
       src={user.image}
       alt={user.name}
@@ -75,7 +64,6 @@ const AvatarCard: React.FC<AvatarCardProps> = ({ user, index }) => (
   </motion.div>
 );
 
-// ── Hero ──────────────────────────────────────────────────────────────────────
 const Hero: React.FC = () => {
   const words = ["Learn", "Sabi", "Koyi", "Kọ ẹkọ", "ịmụta"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -96,7 +84,6 @@ const Hero: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center pt-17.5 md:pt-17.5">
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center gap-6 px-6 py-4 md:py-20">
 
-        {/* ── Avatar stack ── */}
         <motion.div
           className="flex items-center justify-center gap-3 mb-4"
           initial={{ opacity: 0, y: 20 }}
@@ -108,7 +95,6 @@ const Hero: React.FC = () => {
               <AvatarCard key={user.handle} user={user} index={index} />
             ))}
           </div>
-
           <motion.span
             className="text-white/80 text-sm ml-2"
             initial={{ opacity: 0 }}
@@ -119,7 +105,6 @@ const Hero: React.FC = () => {
           </motion.span>
         </motion.div>
 
-        {/* ── Headline ── */}
         <h1 className="font-extrabold text-[2.8rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem] leading-[1.08] text-white/95 tracking-tight">
           Come{" "}
           <span
@@ -144,14 +129,12 @@ const Hero: React.FC = () => {
           <span className="text-blue-400/90">for free, no wahala.</span>
         </h1>
 
-        {/* ── Sub-copy ── */}
         <p className="max-w-2xl text-[0.95rem] md:text-[1.05rem] leading-[1.7] text-white/70">
           Nigeria's free learning platform built for you. Access quality courses,
           learn new skills, and grow your career. No subscription fees, no hidden
           costs, just pure knowledge.
         </p>
 
-        {/* ── CTA ── */}
         <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
           <Link href="/signup">
             <button className="w-full font-medium text-base whitespace-nowrap leading-5.5 rounded-full px-8 py-4 md:px-10 md:py-3.75 text-white bg-blue-600 hover:bg-blue-700 transition-all duration-300 active:scale-95 cursor-pointer min-w-48 md:min-w-40">
