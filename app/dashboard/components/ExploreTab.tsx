@@ -1485,7 +1485,7 @@ const ExploreTab: React.FC<ExploreTabProps> = ({
           <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium">
             {activeCourseId && !completedCourseIds.includes(activeCourseId)
               ? "Finish your active course to unlock other tracks."
-              : "Pick one track to start — complete it before unlocking the next."}
+              : "Pick one track to start  complete it before unlocking the next."}
           </p>
         </div>
       </div>
